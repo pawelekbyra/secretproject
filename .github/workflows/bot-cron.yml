@@ -1,0 +1,16 @@
+name: Bot Action Cron
+
+on:
+  schedule:
+    # Run every 4 hours
+    - cron: '0 */4 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Bot Endpoint
+        run: |
+          curl -X GET ${{ secrets.APP_URL }}/api/cron/bot-action \
+          -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
