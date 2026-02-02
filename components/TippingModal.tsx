@@ -7,6 +7,7 @@ import { useUser } from '@/context/UserContext';
 import { useTranslation } from '@/context/LanguageContext';
 import { useToast } from '@/context/ToastContext';
 import { useStore } from '@/store/useStore';
+import { useRouter } from 'next/navigation';
 import { X, ChevronDown, Check, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -19,7 +20,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK!);
 const STRIPE_APPEARANCE = {
     theme: 'night' as const,
     variables: {
-        colorPrimary: '#db2777', // bg-pink-600
+        colorPrimary: '#d4af37', // Gold (#d4af37)
         colorBackground: '#2C2C2E',
         colorText: '#ffffff',
         colorDanger: '#ff4444',
@@ -33,7 +34,7 @@ const STRIPE_APPEARANCE = {
             backgroundColor: 'rgba(0,0,0,0.3)',
         },
         '.Input:focus': {
-            border: '1px solid #db2777',
+            border: '1px solid #d4af37',
         }
     }
 };
@@ -98,7 +99,7 @@ const CheckoutForm = ({ clientSecret, email, onClose, onBack }: { clientSecret: 
                 }
                 setIsProcessing(false);
             } else if (paymentIntent && paymentIntent.status === 'succeeded') {
-                addToast('Płatność udana!', 'success');
+                addToast('Dziękujemy za wsparcie!', 'success');
                 onClose();
             }
         } catch (e) {
@@ -135,14 +136,14 @@ const CheckoutForm = ({ clientSecret, email, onClose, onBack }: { clientSecret: 
                     type="submit"
                     // Blokujemy przycisk dopóki Stripe nie jest gotowy (isReady)
                     disabled={isProcessing || !stripe || !elements || !isReady}
-                    className="flex-1 h-10 rounded-xl font-bold text-white text-base bg-pink-600 hover:bg-pink-700 transition-all disabled:opacity-50 tracking-wider shadow-lg active:scale-[0.98] uppercase flex items-center justify-center gap-2"
+                    className="flex-1 h-10 rounded-xl font-bold text-black text-base bg-amber-500 hover:bg-amber-400 transition-all disabled:opacity-50 tracking-wider shadow-lg active:scale-[0.98] uppercase flex items-center justify-center gap-2"
                 >
                     {isProcessing ? (
                         <div className="flex items-center justify-center gap-2">
                             <Loader2 className="animate-spin h-5 w-5" />
                         </div>
                     ) : (
-                        "Napiwkuj"
+                        "Wspieram"
                     )}
                 </button>
             </div>
@@ -151,6 +152,7 @@ const CheckoutForm = ({ clientSecret, email, onClose, onBack }: { clientSecret: 
 };
 
 const TippingModal = () => {
+  const router = useRouter();
   const { isLoggedIn, user } = useUser();
   const { addToast } = useToast();
   const { t } = useTranslation();
@@ -159,11 +161,11 @@ const TippingModal = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     email: '',
-    amount: 10,
+    amount: 50,
     currency: 'PLN',
-    create_account: false,
+    create_account: true, // Default to true for better conversion
     terms_accepted: false,
-    recipient: '',
+    recipient: 'Paweł', // Default to Paweł
   });
 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -189,7 +191,7 @@ const TippingModal = () => {
         // Małe opóźnienie resetu, aby animacja wyjścia wyglądała płynnie
         const timeout = setTimeout(() => {
             setCurrentStep(0);
-            setFormData(prev => ({ ...prev, create_account: false, terms_accepted: false, recipient: '' }));
+            setFormData(prev => ({ ...prev, create_account: true, terms_accepted: false, recipient: 'Paweł' }));
             setIsCurrencyDropdownOpen(false);
             setShowTerms(false);
             setClientSecret(null);
@@ -214,19 +216,16 @@ const TippingModal = () => {
   const handleNext = async () => {
     setValidationError(null);
 
+    // Skip recipient selection step if default is used, go straight to email/account
     if (currentStep === 0) {
         if (!formData.recipient) {
-            addToast('Wybierz odbiorcę, aby kontynuować.', 'error');
-            return;
+            setFormData(prev => ({...prev, recipient: 'Paweł'}));
         }
-        if (formData.recipient === 'Nikt') {
-            closeTippingModal();
-            return;
-        }
+
         if (isLoggedIn) {
-            setCurrentStep(2);
+            setCurrentStep(2); // Go to amount
         } else {
-            setCurrentStep(1);
+            setCurrentStep(1); // Go to email/account
         }
     }
     else if (currentStep === 1) {
@@ -316,9 +315,9 @@ const TippingModal = () => {
   const currentVisualStep = isLoggedIn && currentStep >= 1 ? currentStep - 1 : currentStep;
   const progress = ((currentVisualStep + 1) / totalSteps) * 100;
 
-  const suggestedAmounts = [10, 20, 50];
+  const suggestedAmounts = [20, 50, 100];
   const currencies = ['PLN', 'EUR', 'USD', 'GBP'];
-  const modalTitle = showTerms ? "Regulamin i Polityka" : "Bramka Napiwkowa";
+  const modalTitle = showTerms ? "Regulamin i Polityka" : "Dołącz do Wyprawy";
 
   // MEMOIZACJA OPCJI DLA ELEMENTS
   // Ważne: loader: 'auto' tutaj też można dodać dla pewności
@@ -365,7 +364,7 @@ const TippingModal = () => {
 
         {/* NAGŁÓWEK */}
         <div className="relative h-14 flex items-center justify-center px-6 text-center shrink-0 z-10 bg-[#1C1C1E] border-b border-white/5 rounded-t-3xl">
-            <h2 className="text-xl font-bold text-white/50 tracking-widest">
+            <h2 className="text-xl font-bold text-white/50 tracking-widest uppercase">
                 {modalTitle}
             </h2>
             <button
@@ -379,7 +378,7 @@ const TippingModal = () => {
         {/* PROGRESS BAR */}
         <div className="h-1 w-full bg-white/5 relative overflow-hidden z-10">
             <motion.div
-                className="h-full bg-pink-600"
+                className="h-full bg-amber-500"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -403,14 +402,14 @@ const TippingModal = () => {
                         className="space-y-3"
                     >
                         <div className="text-left">
-                            <p className="text-base font-medium text-white/90 tracking-wide">Komu chcesz wysłać napiwek?</p>
+                            <p className="text-base font-medium text-white/90 tracking-wide">Komu chcesz pomóc w wyprawie?</p>
                         </div>
                         <div className="space-y-3 pt-1">
                             <div
                                 className={cn(
                                     "flex items-center justify-start h-10 px-3 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
                                     formData.recipient === 'Paweł'
-                                        ? "bg-[#2C2C2E] border-pink-600 shadow-[0_0_15px_rgba(219,39,119,0.15)]"
+                                        ? "bg-[#2C2C2E] border-amber-500 shadow-[0_0_15px_rgba(212,175,55,0.15)]"
                                         : "bg-[#2C2C2E] border-white/5 hover:border-white/20 hover:bg-[#3A3A3C]"
                                 )}
                                 onClick={() => setFormData(prev => ({ ...prev, recipient: 'Paweł' }))}
@@ -418,34 +417,13 @@ const TippingModal = () => {
                                 <div className={cn(
                                     "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 shrink-0",
                                     formData.recipient === 'Paweł'
-                                        ? "border-pink-600"
+                                        ? "border-amber-500"
                                         : "border-white/30 group-hover:border-white"
                                 )}>
-                                    {formData.recipient === 'Paweł' && <div className="w-2.5 h-2.5 bg-pink-600 rounded-full" />}
+                                    {formData.recipient === 'Paweł' && <div className="w-2.5 h-2.5 bg-amber-500 rounded-full" />}
                                 </div>
                                 <span className={cn("text-base font-semibold transition-colors", formData.recipient === 'Paweł' ? "text-white" : "text-white/70 group-hover:text-white")}>
-                                    Pawłowi Polutkowi
-                                </span>
-                            </div>
-                            <div
-                                className={cn(
-                                    "flex items-center justify-start h-10 px-3 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
-                                    formData.recipient === 'Nikt'
-                                        ? "bg-[#2C2C2E] border-white shadow-lg"
-                                        : "bg-[#2C2C2E] border-white/5 hover:border-white/20 hover:bg-[#3A3A3C]"
-                                )}
-                                onClick={() => setFormData(prev => ({ ...prev, recipient: 'Nikt' }))}
-                            >
-                                <div className={cn(
-                                    "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 shrink-0",
-                                    formData.recipient === 'Nikt'
-                                        ? "border-white"
-                                        : "border-white/30 group-hover:border-white"
-                                )}>
-                                    {formData.recipient === 'Nikt' && <div className="w-2.5 h-2.5 bg-white rounded-full" />}
-                                </div>
-                                <span className={cn("text-base font-semibold transition-colors", formData.recipient === 'Nikt' ? "text-white" : "text-white/70 group-hover:text-white")}>
-                                    Nikomu
+                                    Pawłowi (Artysta)
                                 </span>
                             </div>
                         </div>
@@ -463,7 +441,7 @@ const TippingModal = () => {
                         className="space-y-3"
                     >
                         <div className="text-left">
-                            <p className="text-base font-medium text-white/90 tracking-wide">Czy chcesz utworzyć konto Patrona?</p>
+                            <p className="text-base font-medium text-white/90 tracking-wide">Stwórz Konto Mecenasa</p>
                         </div>
                         <div className="space-y-3">
                             {!isLoggedIn && (
@@ -471,7 +449,7 @@ const TippingModal = () => {
                                     className={cn(
                                         "flex items-center justify-start h-10 px-3 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
                                         formData.create_account
-                                            ? "bg-[#2C2C2E] border-pink-600 shadow-[0_0_15px_rgba(219,39,119,0.15)]"
+                                            ? "bg-[#2C2C2E] border-amber-500 shadow-[0_0_15px_rgba(212,175,55,0.15)]"
                                             : "bg-[#2C2C2E] border-white/5 hover:border-white/20 hover:bg-[#3A3A3C]"
                                     )}
                                     onClick={() => setFormData(prev => ({ ...prev, create_account: !prev.create_account }))}
@@ -479,13 +457,13 @@ const TippingModal = () => {
                                     <div className={cn(
                                         "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 shrink-0",
                                         formData.create_account
-                                            ? "border-pink-600"
+                                            ? "border-amber-500"
                                             : "border-white/30 group-hover:border-white"
                                     )}>
-                                        {formData.create_account && <div className="w-2.5 h-2.5 bg-pink-600 rounded-full" />}
+                                        {formData.create_account && <div className="w-2.5 h-2.5 bg-amber-500 rounded-full" />}
                                     </div>
                                     <span className={cn("text-base font-semibold transition-colors", formData.create_account ? "text-white" : "text-white/70 group-hover:text-white")}>
-                                        No jacha!
+                                        Odblokuj dostęp (Konto Patrona)
                                     </span>
                                 </div>
                             )}
@@ -496,11 +474,11 @@ const TippingModal = () => {
                                         placeholder="Twój adres email"
                                         value={formData.email}
                                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        className="relative w-full bg-black/30 border border-white/10 rounded-xl h-10 px-3 text-white placeholder:text-white/30 focus:outline-none focus:bg-black/50 focus:border-pink-600 transition-all font-medium text-base"
+                                        className="relative w-full bg-black/30 border border-white/10 rounded-xl h-10 px-3 text-white placeholder:text-white/30 focus:outline-none focus:bg-black/50 focus:border-amber-500 transition-all font-medium text-base"
                                     />
                                 </div>
                                 <p className="text-xs text-white/40 text-left px-2 font-medium">
-                                    Na podany adres e-mail otrzymasz dane do logowania.
+                                    Na ten email wyślemy dane dostępu do Skarbca.
                                 </p>
                             </div>
                         </div>
@@ -521,28 +499,19 @@ const TippingModal = () => {
                              <div className="flex flex-col h-full overflow-hidden">
                                 <div className="flex-1 overflow-y-auto bg-black/20 border border-white/10 rounded-xl p-4 text-sm text-white/80 space-y-3 custom-scrollbar h-[50vh] max-h-[400px]">
                                     <p className="font-bold text-white">1. Postanowienia ogólne</p>
-                                    <p>Korzystając z Bramki Napiwkowej, użytkownik (&quot;Darczyńca&quot;) oświadcza, że zapoznał się z niniejszym regulaminem i w pełni go akceptuje. Wpłaty są dobrowolne i mają charakter darowizny na rzecz twórcy (&quot;Beneficjent&quot;).</p>
+                                    <p>Korzystając z Bramki, użytkownik (&quot;Mecenas&quot;) oświadcza, że zapoznał się z niniejszym regulaminem i w pełni go akceptuje. Wpłaty są dobrowolne i mają charakter darowizny na rzecz artysty.</p>
 
                                     <p className="font-bold text-white">2. Płatności i Zwroty</p>
-                                    <p>Wszystkie transakcje są przetwarzane przez zewnętrznego operatora płatności Stripe. Serwis nie przechowywuje pełnych danych kart płatniczych. Z uwagi na charakter usługi (darowizna cyfrowa), wpłaty są bezzwrotne, chyba że przepisy prawa stanowią inaczej. Reklamacje dotyczące błędów technicznych należy zgłaszać w ciągu 14 dni.</p>
+                                    <p>Wszystkie transakcje są przetwarzane przez Stripe. Wpłaty są bezzwrotne (darowizna). Reklamacje techniczne: 14 dni.</p>
 
-                                    <p className="font-bold text-white">3. Prywatność i Dane Osobowe</p>
-                                    <p>Administratorem danych jest właściciel serwisu. Podany adres e-mail przetwarzany jest wyłącznie w celu:</p>
-                                    <ul className="list-disc pl-5 space-y-1">
-                                        <li>Przesłania potwierdzenia transakcji.</li>
-                                        <li>Utworzenia konta Patrona (jeśli zaznaczono opcję).</li>
-                                        <li>Kontaktu w sprawach technicznych.</li>
-                                    </ul>
-                                    <p>Dane nie są udostępniane podmiotom trzecim w celach marketingowych.</p>
-
-                                    <p className="font-bold text-white">4. Postanowienia końcowe</p>
-                                    <p>Regulamin może ulec zmianie. W sprawach nieuregulowanych decydują przepisy prawa polskiego.</p>
+                                    <p className="font-bold text-white">3. Prywatność</p>
+                                    <p>Twoje dane (e-mail) służą tylko do realizacji usługi dostępu do treści.</p>
                                 </div>
                             </div>
                         ) : (
                             <>
                                 <div>
-                                    <h3 className="text-base font-medium text-white/90">Wybierz lub wpisz kwotę napiwku</h3>
+                                    <h3 className="text-base font-medium text-white/90">Wybierz kwotę wsparcia</h3>
                                 </div>
                                 <div className="grid grid-cols-3 gap-3">
                                     {suggestedAmounts.map(amount => (
@@ -555,7 +524,7 @@ const TippingModal = () => {
                                             className={cn(
                                                 "h-10 flex items-center justify-center rounded-xl font-bold transition-all border relative overflow-hidden group text-lg",
                                                 formData.amount === amount
-                                                    ? "bg-pink-600 border-pink-600 text-white shadow-lg"
+                                                    ? "bg-amber-500 border-amber-500 text-black shadow-lg"
                                                     : "bg-[#2C2C2E] border-white/5 text-white/80 hover:bg-[#3A3A3C] hover:text-white"
                                             )}
                                         >
@@ -575,7 +544,7 @@ const TippingModal = () => {
                                                 setFormData({ ...formData, amount: Number(e.target.value) });
                                                 setValidationError(null);
                                             }}
-                                            className="w-full h-full bg-black/30 border border-white/10 text-center text-xl font-black text-white rounded-l-xl focus:outline-none focus:bg-black/50 focus:border-pink-600 transition-all z-10 relative"
+                                            className="w-full h-full bg-black/30 border border-white/10 text-center text-xl font-black text-white rounded-l-xl focus:outline-none focus:bg-black/50 focus:border-amber-500 transition-all z-10 relative"
                                             placeholder="0"
                                         />
                                     </div>
@@ -612,7 +581,7 @@ const TippingModal = () => {
                                                             >
                                                                 <span className="text-base">{currency}</span>
                                                                 {formData.currency === currency && (
-                                                                    <Check size={20} className="text-pink-600" />
+                                                                    <Check size={20} className="text-amber-500" />
                                                                 )}
                                                             </button>
                                                         ))}
@@ -632,13 +601,13 @@ const TippingModal = () => {
                                     <div className={cn(
                                         "w-5 h-5 rounded border flex items-center justify-center transition-all duration-200 shrink-0",
                                         formData.terms_accepted
-                                            ? "bg-pink-600 border-pink-600"
+                                            ? "bg-amber-500 border-amber-500"
                                             : "border-white/30 bg-transparent group-hover:border-white"
                                     )}>
-                                        {formData.terms_accepted && <Check size={14} className="text-white" strokeWidth={3} />}
+                                        {formData.terms_accepted && <Check size={14} className="text-black" strokeWidth={3} />}
                                     </div>
                                     <p className="text-sm font-medium text-white/50 group-hover:text-white transition-colors select-none text-left">
-                                        Akceptuję <span className="underline decoration-white/30 underline-offset-2 hover:text-white cursor-pointer" onClick={(e) => { e.stopPropagation(); setShowTerms(true); }}>Regulamin i Politykę Prywatności</span>
+                                        Akceptuję <span className="underline decoration-white/30 underline-offset-2 hover:text-white cursor-pointer" onClick={(e) => { e.stopPropagation(); setShowTerms(true); }}>Zasady Wyprawy</span>
                                     </p>
                                 </div>
                             </>
@@ -680,7 +649,7 @@ const TippingModal = () => {
                         ) : (
                              // Fallback podczas pobierania sekretu
                              <div className="flex items-center justify-center h-[260px]">
-                                <Loader2 className="animate-spin h-8 w-8 text-pink-600" />
+                                <Loader2 className="animate-spin h-8 w-8 text-amber-500" />
                             </div>
                         )}
                     </motion.div>
@@ -702,14 +671,14 @@ const TippingModal = () => {
                     <button
                         onClick={handleNext}
                         disabled={isProcessing}
-                        className="group flex-1 h-10 flex items-center justify-center gap-2 rounded-xl font-bold uppercase tracking-wider text-white bg-pink-600 hover:bg-pink-700 transition-all disabled:opacity-50 shadow-lg active:scale-[0.98]"
+                        className="group flex-1 h-10 flex items-center justify-center gap-2 rounded-xl font-bold uppercase tracking-wider text-black bg-amber-500 hover:bg-amber-400 transition-all disabled:opacity-50 shadow-lg active:scale-[0.98]"
                     >
                         {isProcessing ? (
                             <div className="flex items-center gap-2">
                                 <Loader2 className="animate-spin h-5 w-5" />
                             </div>
                         ) : (
-                            "ENTER"
+                            "DOŁĄCZ"
                         )}
                     </button>
                 </div>
