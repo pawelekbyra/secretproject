@@ -37,6 +37,27 @@ export default function ClientLayoutWrapper({
     );
   }
 
+  // Landing page bypasses the mobile emulator frame on desktop
+  if (pathname === '/') {
+    return (
+      <Providers>
+        <AppLayout>{children}</AppLayout>
+        <Script
+          data-name="BMC-Widget"
+          data-cfasync="false"
+          src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+          data-id="pawelperfect"
+          data-description="Support me on Buy me a coffee!"
+          data-message=""
+          data-color="#FF5F5F"
+          data-position="Right"
+          data-x_margin="18"
+          data-y_margin="18"
+        />
+      </Providers>
+    );
+  }
+
   return (
     <Providers>
       <div className="hidden md:block">

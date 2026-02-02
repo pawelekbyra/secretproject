@@ -1,27 +1,22 @@
-"use client";
+import { auth } from "@/auth";
+import HeroSection from "@/components/landing/HeroSection";
+import StorySection from "@/components/landing/StorySection";
+import VaultSection from "@/components/landing/VaultSection";
 
-import React from 'react';
-import dynamic from 'next/dynamic';
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
-import { Skeleton } from '@/components/ui/skeleton';
+export const metadata = {
+  title: "Polutek - Głos, który budzi duchy",
+  description: "Ekskluzywna zbiórka na wyprawę do Gabonu.",
+};
 
-// --- React Query Client ---
-const queryClient = new QueryClient();
+export default async function Home() {
+  const session = await auth();
+  const isPatron = session?.user?.role === 'patron';
 
-// Dynamically import FeedSwiper to ensure it only runs on the client side.
-const DynamicFeedSwiper = dynamic(() => import('@/components/FeedSwiper'), {
-  ssr: false,
-  loading: () => <div className="w-screen h-screen bg-black flex items-center justify-center"><Skeleton className="w-full h-full" /></div>,
-});
-
-// --- Main Page Export ---
-export default function Home() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <DynamicFeedSwiper />
-    </QueryClientProvider>
+    <main className="bg-[#0a0a0a] min-h-screen text-white overflow-x-hidden">
+      <HeroSection />
+      <StorySection />
+      <VaultSection isPatron={!!isPatron} />
+    </main>
   );
 }

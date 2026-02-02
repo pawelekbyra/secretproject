@@ -16,8 +16,10 @@ import { AnimatePresence } from 'framer-motion';
 import { useUser } from '@/context/UserContext';
 import PWAInstallPrompt from './PWAInstallPrompt';
 import { ToastContainer } from '@/context/ToastContext';
+import { usePathname } from 'next/navigation';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const { user } = useUser();
   const {
     activeModal,
@@ -64,8 +66,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             bg-black
         "
     >
-      <Preloader />
-      <TopBar />
+      {pathname !== '/' && <Preloader />}
+      {pathname !== '/' && <TopBar />}
       <div
         className="flex-1 overflow-auto z-10 custom-scrollbar relative scroll-snap-y-mandatory"
         data-scroll-container
@@ -108,7 +110,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {activeModal === 'account' && <AccountPanel key="account-panel" onClose={() => setActiveModal(null)} />}
       </AnimatePresence>
 
-      <PWAInstallPrompt />
+      {pathname !== '/' && <PWAInstallPrompt />}
       <ToastContainer />
     </div>
   );
