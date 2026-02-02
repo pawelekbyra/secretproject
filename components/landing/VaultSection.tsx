@@ -45,7 +45,7 @@ const VaultSection = ({ isPatron }: { isPatron: boolean }) => {
                     </div>
 
                     <button
-                        onClick={openTippingModal}
+                        onClick={() => openTippingModal()}
                         className="w-full py-4 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-black font-bold text-lg rounded-xl transition-all shadow-lg hover:shadow-amber-900/40 active:scale-95"
                     >
                         WPŁAĆ, ABY OTWORZYĆ

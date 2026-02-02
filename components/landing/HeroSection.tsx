@@ -65,7 +65,7 @@ const HeroSection = () => {
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.8, type: "spring" }}
-                    onClick={openTippingModal}
+                    onClick={() => openTippingModal()}
                     className="group relative px-8 py-4 bg-amber-600 hover:bg-amber-500 text-black font-bold text-xl tracking-widest rounded-full shadow-[0_0_30px_rgba(217,119,6,0.4)] transition-all hover:scale-105 active:scale-95 overflow-hidden"
                 >
                     <span className="relative z-10">ODBLOKUJ KONCERT - 50 PLN</span>
