@@ -1,19 +1,19 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import './globals.css'
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: "Secret Project 3D",
-  description: "A 3D FPP/TPP Game",
-};
+  title: 'Secret Project: GHOST',
+  description: 'High-End WebGL Game',
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
       <body>{children}</body>
     </html>
-  );
+  )
 }

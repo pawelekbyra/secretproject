@@ -92,7 +92,7 @@ function Level() {
 
 export default function Game() {
   return (
-    <div className="w-full h-full bg-black">
+    <div className="w-full h-screen bg-black overflow-hidden relative">
       <div className="absolute top-5 left-5 z-10 text-white font-mono pointer-events-none select-none">
         <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">
           GHOST // PROTOCOL
@@ -100,7 +100,7 @@ export default function Game() {
         <p className="text-sm opacity-70">WASD: Move | SPACE: Jump | SHIFT: Sprint</p>
       </div>
 
-      <Canvas shadows camera={{ position: [0, 5, 10], fov: 60 }}>
+      <Canvas shadows camera={{ position: [0, 5, 10], fov: 60 }} className="w-full h-full">
         <color attach="background" args={['#050505']} />
         <fog attach="fog" args={['#050505', 5, 40]} />
 
