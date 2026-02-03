@@ -2,7 +2,7 @@
 
 import { Canvas } from '@react-three/fiber';
 import { Physics, RigidBody } from '@react-three/rapier';
-import { Environment, KeyboardControls, MeshReflectorMaterial, Float, Text, Stars } from '@react-three/drei';
+import { Environment, KeyboardControls, Float, Stars, MeshReflectorMaterial } from '@react-three/drei';
 import Ecctrl from 'ecctrl';
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing';
 import { Suspense, useMemo } from 'react';
@@ -48,10 +48,10 @@ function Level() {
     <>
       {/* Podłoga - Mokry Asfalt (Reflector) */}
       <RigidBody type="fixed" colliders="cuboid" friction={1}>
-        <mesh position={[0, -1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <mesh position={[0, -1, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <planeGeometry args={[200, 200]} />
+          {/* @ts-ignore */}
           <MeshReflectorMaterial
-            mirror={1}
             blur={[400, 100]}
             resolution={1024}
             mixBlur={1}
@@ -66,7 +66,7 @@ function Level() {
         </mesh>
       </RigidBody>
 
-      {/* Proceduralne Platformy - Neonowe Ruiny */}
+      {/* Platformy */}
       {platforms.map((p, i) => (
         <RigidBody key={i} type="fixed" position={p.position}>
           <Float speed={1} rotationIntensity={0.2} floatIntensity={0.5}>
@@ -82,8 +82,8 @@ function Level() {
         </RigidBody>
       ))}
 
-      {/* Oświetlenie */}
-      <ambientLight intensity={0.2} />
+      <ambientLight intensity={0.4} />
+      <pointLight position={[10, 10, 10]} intensity={1.5} castShadow />
       <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
       <Environment preset="city" />
     </>
@@ -92,9 +92,9 @@ function Level() {
 
 export default function Game() {
   return (
-    <div className="w-full h-screen bg-black overflow-hidden relative">
-      <div className="absolute top-5 left-5 z-10 text-white font-mono pointer-events-none select-none">
-        <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">
+    <div className="w-full h-screen bg-[#050505] overflow-hidden relative">
+      <div className="absolute top-5 left-5 z-20 text-white font-mono pointer-events-none select-none">
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
           GHOST // PROTOCOL
         </h1>
         <p className="text-sm opacity-70">WASD: Move | SPACE: Jump | SHIFT: Sprint</p>
@@ -104,7 +104,7 @@ export default function Game() {
         <color attach="background" args={['#050505']} />
         <fog attach="fog" args={['#050505', 5, 40]} />
 
-        <Suspense fallback={<Text color="white">LOADING WORLD...</Text>}>
+        <Suspense fallback={null}>
           <Physics timeStep="vary">
             <KeyboardControls map={keyboardMap}>
               <Player />
