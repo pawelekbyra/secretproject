@@ -1,115 +1,50 @@
 "use client";
 
-import React, { useEffect } from 'react';
-import Preloader from './Preloader';
+import React, { useState } from 'react';
 import TopBar from './TopBar';
-import { useStore } from '@/store/useStore';
-import { shallow } from 'zustand/shallow';
-import { AuthorProfileModal } from './AuthorProfileModal';
-import { PatronProfileModal } from './PatronProfileModal';
-import AdminModal from './AdminModal';
-import TippingModal from './TippingModal';
-import CommentsModal from './CommentsModal';
-import AccountPanel from './AccountPanel';
-import NotificationPopup from './NotificationPopup';
-import { AnimatePresence } from 'framer-motion';
-import { useUser } from '@/context/UserContext';
-import PWAInstallPrompt from './PWAInstallPrompt';
-import { ToastContainer } from '@/context/ToastContext';
+import Sidebar from './Sidebar'; // Zakładam, że masz ten komponent
+import Preloader from './Preloader'; // Zakładam, że masz ten komponent
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const { user } = useUser();
-  const {
-    activeModal,
-    setActiveModal,
-    activeSlide,
-    isAuthorProfileModalOpen,
-    activeAuthorId,
-    closeAuthorProfileModal,
-    isPatronProfileModalOpen,
-    activePatronId,
-    closePatronProfileModal,
-    isAdminModalOpen,
-    closeAdminModal
-  } = useStore(state => ({
-    activeModal: state.activeModal,
-    setActiveModal: state.setActiveModal,
-    activeSlide: state.activeSlide,
-    isAuthorProfileModalOpen: state.isAuthorProfileModalOpen,
-    activeAuthorId: state.activeAuthorId,
-    closeAuthorProfileModal: state.closeAuthorProfileModal,
-    isPatronProfileModalOpen: state.isPatronProfileModalOpen,
-    activePatronId: state.activePatronId,
-    closePatronProfileModal: state.closePatronProfileModal,
-    isAdminModalOpen: state.isAdminModalOpen,
-    closeAdminModal: state.closeAdminModal
-  }), shallow);
+  // Dodajemy stan do zarządzania sidebar'em
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    const setAppHeight = () => {
-      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
-    };
-    window.addEventListener('resize', setAppHeight);
-    setAppHeight();
-
-    return () => window.removeEventListener('resize', setAppHeight);
-  }, []);
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
-    <div
-        id="app-layout"
-        className="
-            relative flex flex-col
-            w-full h-full
-            bg-black
-        "
-    >
+    <div className="flex h-full flex-col bg-background text-foreground overflow-hidden">
       <Preloader />
-      <TopBar />
-      <div
-        className="flex-1 overflow-auto z-10 custom-scrollbar relative scroll-snap-y-mandatory"
-        data-scroll-container
-      >
-        {children}
-      </div>
-      <AnimatePresence mode="wait">
-        {isAuthorProfileModalOpen && activeAuthorId && (
-          <AuthorProfileModal
-            authorId={activeAuthorId}
-            onClose={closeAuthorProfileModal}
+      
+      {/* Przekazujemy wymagane propsy do TopBar */}
+      <TopBar 
+        toggleSidebar={toggleSidebar} 
+        isSidebarOpen={isSidebarOpen} 
+      />
+
+      <div className="flex-1 flex overflow-hidden relative">
+        {/* Przekazujemy stan do Sidebar jeśli jest potrzebny */}
+        <Sidebar 
+          isOpen={isSidebarOpen} 
+          onClose={() => setIsSidebarOpen(false)} 
+        />
+        
+        {/* Overlay na mobile gdy sidebar jest otwarty */}
+        {isSidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            onClick={() => setIsSidebarOpen(false)}
           />
         )}
-      </AnimatePresence>
-      <AnimatePresence mode="wait">
-        {isPatronProfileModalOpen && activePatronId && (
-            <PatronProfileModal
-                patronId={activePatronId}
-                onClose={closePatronProfileModal}
-            />
-        )}
-      </AnimatePresence>
-      <AnimatePresence mode="wait">
-          {isAdminModalOpen && (
-              <AdminModal />
-          )}
-      </AnimatePresence>
-      <TippingModal />
-      <CommentsModal
-        isOpen={activeModal === 'comments'}
-        onClose={() => setActiveModal(null)}
-        slideId={activeSlide?.id || null}
-        initialCommentsCount={activeSlide?.initialComments || 0}
-      />
-      <NotificationPopup
-        isOpen={activeModal === 'notifications'}
-        onClose={() => setActiveModal(null)}
-      />
-      <AnimatePresence>
-        {activeModal === 'account' && <AccountPanel key="account-panel" onClose={() => setActiveModal(null)} />}
-      </AnimatePresence>
 
-      <PWAInstallPrompt />
-      <ToastContainer />
+        <main 
+          className="flex-1 overflow-auto z-10 custom-scrollbar relative scroll-snap-y-mandatory w-full"
+          data-scroll-container
+        >
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
