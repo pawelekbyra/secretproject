@@ -9,6 +9,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Polutek",
   description: "Polutek — pionowy feed wideo z prefetchingiem i trybem HLS/CDN-ready.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({
