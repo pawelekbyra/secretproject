@@ -1,270 +1,83 @@
-"use client";
-
-import { useEffect, useState } from 'react';
-import { useUser } from '@/context/UserContext';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from '@/context/LanguageContext';
-import { useStore } from '@/store/useStore';
-import LoginForm from './LoginForm';
-import { useToast } from '@/context/ToastContext';
-import MenuIcon from './icons/MenuIcon';
-import BellIcon from './icons/BellIcon';
-import PwaDesktopModal from './PwaDesktopModal';
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { User, LogOut, ChevronDown, Settings } from 'lucide-react';
-import { usePushSubscription } from '@/hooks/usePushSubscription';
-import { usePathname } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
+import { MenuIcon } from '@/components/icons/MenuIcon';
+import { BellIcon } from '@/components/icons/BellIcon';
+import { useUser } from '@/context/UserContext';
+import { usePathname, useRouter } from 'next/navigation';
+import NotificationPopup from './NotificationPopup';
 
-const TopBar = () => {
-  const { user, logout } = useUser();
-  const { activeModal, setActiveModal, openAdminModal } = useStore();
-  const { t, lang } = useTranslation();
-  const { addToast } = useToast();
-  const [isLoginPanelOpen, setIsLoginPanelOpen] = useState(false);
-  const [showPwaModal, setShowPwaModal] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+interface TopBarProps {
+  toggleSidebar: () => void;
+  isSidebarOpen: boolean;
+}
+
+export default function TopBar({ toggleSidebar, isSidebarOpen }: TopBarProps) {
+  const { user } = useUser();
   const pathname = usePathname();
+  const router = useRouter();
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [hasUnread, setHasUnread] = useState(false);
 
-  // Hook for push subscription
-  const { permission, subscribe } = usePushSubscription();
-
+  // Sprawdzamy czy są nieprzeczytane powiadomienia
   useEffect(() => {
-    if (activeModal === 'login') {
-      setIsLoginPanelOpen(true);
+    if (user?.notifications) {
+      const unread = user.notifications.some((n: any) => !n.read);
+      setHasUnread(unread);
     }
-  }, [activeModal]);
+  }, [user?.notifications]);
 
-  const handleToggleLoginPanel = () => {
-    setIsLoginPanelOpen(prev => {
-      const newState = !prev;
-      if (!newState && activeModal === 'login') {
-        setActiveModal(null);
-      }
-      return newState;
-    });
+  const getPageTitle = () => {
+    if (pathname === '/') return 'Strona Główna';
+    if (pathname === '/admin') return 'Panel Administratora';
+    if (pathname === '/admin/users') return 'Użytkownicy';
+    if (pathname === '/admin/slides') return 'Slajdy';
+    if (pathname === '/setup') return 'Konfiguracja Profilu';
+    return 'Strona Główna';
   };
-
-  useEffect(() => {
-    const checkIsDesktop = () => setIsDesktop(window.innerWidth >= 768);
-    checkIsDesktop();
-    window.addEventListener('resize', checkIsDesktop);
-    return () => window.removeEventListener('resize', checkIsDesktop);
-  }, []);
-
-  const { data: notificationData } = useQuery({
-    queryKey: ['notifications'],
-    queryFn: async () => {
-      const res = await fetch('/api/notifications');
-      return res.json();
-    },
-    enabled: !!user,
-    refetchInterval: 30000, // Poll every 30s
-  });
-
-  if (pathname?.startsWith('/setup')) {
-    return null;
-  }
-
-  const unreadCount = notificationData?.unreadCount || 0;
-
-  const handleLoggedOutMenuClick = () => {
-    addToast(t('loginRequired') || 'Musisz się zalogować', 'locked');
-  };
-
-  const handleBellClick = async () => {
-    // If not logged in, ALWAYS show the login toast, regardless of permissions.
-    if (!user) {
-        addToast(t('loginRequired') || 'Musisz się zalogować', 'locked');
-        return;
-    }
-
-    // Only if logged in, proceed with subscription/notifications logic
-    if (permission === 'default') {
-      const granted = await subscribe();
-      if (granted) {
-          addToast(t('notificationsEnabled') || 'Powiadomienia włączone', 'success');
-      }
-    } else if (permission === 'granted') {
-        setActiveModal('notifications');
-    } else {
-        // Denied
-        setActiveModal('notifications');
-    }
-  };
-
-  const handleShowPwaModal = () => {
-    setShowPwaModal(true);
-  };
-
-  const handleLogout = async () => {
-      setIsMenuOpen(false);
-      setTimeout(async () => {
-        await logout();
-        addToast(t('logoutSuccess'), 'success');
-      }, 300);
-  };
-
-  const handleOpenAccount = () => {
-      setActiveModal('account');
-      setIsMenuOpen(false);
-  };
-
-  const handleOpenAdmin = () => {
-      openAdminModal();
-      setIsMenuOpen(false);
-  };
-
-  // Custom titles
-  const loggedOutTitle = lang === 'pl' ? "Nie masz psychy się zalogować" : "Too scared to log in?";
-  const loggedInTitle = "Ting Tong";
 
   return (
     <>
-      <div
-        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10"
-        style={{
-          height: 'var(--topbar-height)',
-          paddingTop: 'var(--safe-area-top)',
-        }}
-      >
-        {!user ? (
-          // --- WIDOK DLA UŻYTKOWNIKÓW NIEZALOGOWANYCH ---
-          <>
-            <div className="flex justify-start">
-              <motion.button
-                whileTap={{ scale: 0.9 }}
-                className="p-1 ml-1.5 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
-                onClick={handleLoggedOutMenuClick}
-                aria-label={t('menuAriaLabel')}
-              >
-                <MenuIcon className="w-6 h-6" />
-              </motion.button>
-            </div>
-            <div className="flex justify-center flex-1 text-center">
-              <button
-                onClick={handleToggleLoginPanel}
-                className="relative flex items-center justify-center font-semibold text-sm text-white transition-all duration-300 focus:outline-none whitespace-nowrap outline-none"
-              >
-                <span>{loggedOutTitle}</span>
-                <div className="absolute left-full ml-0.5 flex items-center">
-                  <ChevronDown
-                    size={16}
-                    className={`transition-transform duration-200 ${isLoginPanelOpen ? 'rotate-180' : ''}`}
-                  />
-                </div>
-              </button>
-            </div>
-            <div className="flex justify-end items-center gap-1">
-              {isDesktop && (
-                <Button variant="ghost" size="icon" onClick={handleShowPwaModal} aria-label={t('installPwaAriaLabel')}>
-                  <span className="text-sm font-semibold">{t('installAppText')}</span>
-                </Button>
-              )}
-              <motion.button
-                 whileTap={{ scale: 0.9 }}
-                 className="p-1 mr-1.5 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
-                 onClick={handleBellClick}
-                 aria-label={t('notificationAriaLabel')}
-              >
-                <BellIcon className="w-6 h-6" />
-              </motion.button>
-            </div>
-          </>
-        ) : (
-          // --- WIDOK DLA ZALOGOWANYCH UŻYTKOWNIKÓW ---
-          <>
-            <div className="flex justify-start">
-              <Popover open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-                  <PopoverTrigger asChild>
-                    <Button variant="ghost" size="icon" aria-label={t('menuAriaLabel')} className="ml-1.5">
-                        <MenuIcon className="w-6 h-6" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    align="start"
-                    sideOffset={5}
-                    className="w-auto min-w-[150px] p-2 bg-zinc-900 border-zinc-800 text-white shadow-xl rounded-xl data-[state=closed]:slide-out-to-top-5 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
-                  >
-                      <div className="flex flex-col gap-2">
-                          {/* Admin Button */}
-                          {user.role === 'admin' && (
-                              <button
-                                  onClick={handleOpenAdmin}
-                                  className="flex flex-row items-center gap-3 p-3 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors w-full mb-1 border border-pink-500/30"
-                              >
-                                  <Settings size={20} className="text-pink-500" />
-                                  <span className="text-sm font-medium whitespace-nowrap text-pink-100">Zarządzaj</span>
-                              </button>
-                          )}
-                          <button
-                            onClick={handleOpenAccount}
-                            className="flex flex-row items-center gap-3 p-3 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors w-full"
-                          >
-                              <User size={20} className="text-blue-400" />
-                              <span className="text-sm font-medium whitespace-nowrap">{t('account')}</span>
-                          </button>
-                          <button
-                            onClick={handleLogout}
-                            className="flex flex-row items-center gap-3 p-3 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors w-full"
-                          >
-                              <LogOut size={20} className="text-red-400" />
-                              <span className="text-sm font-medium whitespace-nowrap">{t('logout')}</span>
-                          </button>
-                      </div>
-                  </PopoverContent>
-              </Popover>
-
-            </div>
-            <div className="flex justify-center flex-1">
-              <span className="font-semibold text-lg text-white">{loggedInTitle}</span>
-            </div>
-            <div className="flex justify-end">
-              {isDesktop && (
-                <Button variant="ghost" size="icon" onClick={handleShowPwaModal} aria-label={t('installPwaAriaLabel')}>
-                  <span className="text-sm font-semibold">{t('installAppText')}</span>
-                </Button>
-              )}
-              <div className="relative">
-                <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="mr-1.5 relative">
-                  <BellIcon className="w-6 h-6" />
-                  {unreadCount > 0 && (
-                    <span className="absolute top-1 right-2 block h-2 w-2 rounded-full bg-pink-500 ring-2 ring-black" />
-                  )}
-                </Button>
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* --- Login Panel --- */}
-      <AnimatePresence>
-        {isLoginPanelOpen && (
-          <motion.div
-            className="absolute left-0 w-full z-[50] bg-black/80 backdrop-blur-md pt-0 border-b border-zinc-800"
-            style={{ top: 'var(--topbar-height)' }}
-            initial={{ y: '-100%' }}
-            animate={{ y: '0%', transition: { type: 'spring', stiffness: 200, damping: 30 } }}
-            exit={{ y: '-100%', transition: { ease: 'easeInOut', duration: 0.5 } }}
+      <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-background/80 backdrop-blur-md border-b border-white/10 safe-top">
+        {/* LEWA STRONA: Flex container z flex-1 i min-w-0 zapobiega ucinaniu i pozwala na skalowanie */}
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            className="text-foreground hover:bg-white/10 shrink-0"
           >
-            {/* Zmieniono padding na pt-5 (20px) i usunięto dodatkowy div spacerujący, aby wyrównać odległości (20px góra / 20px dół) */}
-            <div className="relative z-[70] pt-5">
-                <LoginForm onLoginSuccess={() => {
-                  setIsLoginPanelOpen(false);
-                  if (activeModal === 'login') setActiveModal(null);
-                }} />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <MenuIcon className="w-6 h-6" />
+          </Button>
+          
+          {/* USUNIĘTO max-w-[200px]. Teraz tekst zajmuje dostępne miejsce i ucina się (truncate) tylko gdy to absolutnie konieczne */}
+          <h1 className="text-lg font-semibold truncate pr-2">
+            {getPageTitle()}
+          </h1>
+        </div>
 
-      {/* --- PWA Modal --- */}
-      {showPwaModal && <PwaDesktopModal isOpen={showPwaModal} onClose={() => setShowPwaModal(false)} />}
+        {/* PRAWA STRONA: shrink-0 zapobiega zgniataniu ikon przez długi tytuł */}
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="relative">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-foreground hover:bg-white/10"
+              onClick={() => setShowNotifications(!showNotifications)}
+            >
+              <BellIcon className="w-6 h-6" />
+              {hasUnread && (
+                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-background" />
+              )}
+            </Button>
+            
+            {showNotifications && (
+              <NotificationPopup 
+                onClose={() => setShowNotifications(false)} 
+              />
+            )}
+          </div>
+        </div>
+      </header>
     </>
   );
-};
-
-export default TopBar;
+}
