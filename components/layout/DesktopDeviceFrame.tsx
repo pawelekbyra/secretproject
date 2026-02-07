@@ -1,104 +1,58 @@
-"use client";
-
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
+import { usePathname } from 'next/navigation';
 import DesktopQRWidget from './DesktopQRWidget';
 
 interface DesktopDeviceFrameProps {
   children: React.ReactNode;
 }
 
-const DesktopDeviceFrame: React.FC<DesktopDeviceFrameProps> = ({ children }) => {
+export default function DesktopDeviceFrame({ children }: DesktopDeviceFrameProps) {
+  const pathname = usePathname();
+  const isPublicRoute = ['/login', '/register', '/forgot-password'].includes(pathname);
 
-  // Obsługa klawiatury dla symulacji swipe
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Znajdź kontener scrollowalny wewnątrz ramki
-      // AppLayout ma div z klasą "flex-1 overflow-auto" - dodamy mu atrybut data-scroll-container
-      const container = document.querySelector('[data-scroll-container]');
-      if (!container) return;
-
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        // Przewijanie o wysokość ekranu (symulacja swipe w dół/następny slide)
-        container.scrollBy({ top: container.clientHeight, behavior: 'smooth' });
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        // Przewijanie w górę
-        container.scrollBy({ top: -container.clientHeight, behavior: 'smooth' });
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  if (isPublicRoute) {
+    return <>{children}</>;
+  }
 
   return (
-    <div className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-zinc-950">
-
-      {/* Ambient Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-pink-600/20 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[100px] mix-blend-screen" />
+    <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-4 md:p-8 lg:p-12 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px]" />
       </div>
 
-      <div className="relative z-10 flex items-center gap-12 xl:gap-24">
-
-        {/* Lewa strona - Widget QR (może być po prawej w zależności od preferencji, tutaj po lewej) */}
-        <div className="hidden xl:block">
-             <DesktopQRWidget />
+      <div className="w-full max-w-[1400px] flex gap-8 z-10 items-stretch h-[85vh] max-h-[900px]">
+        {/* Left side - QR Code & Info */}
+        <div className="hidden lg:flex flex-col flex-1 justify-center max-w-[500px] text-white space-y-8 pr-8">
+          <div className="space-y-4">
+            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-neutral-400">
+              Secret Project
+            </h1>
+            <p className="text-lg text-neutral-400 leading-relaxed">
+              Zarządzaj swoimi treściami, komunikuj się z patronami i rozwijaj swoją społeczność - wszystko w jednym miejscu.
+            </p>
+          </div>
+          <DesktopQRWidget />
         </div>
 
-        {/* Ramka Telefonu */}
-        <div className="relative shrink-0">
-          {/* Cień i poświata telefonu */}
-          <div className="absolute inset-0 bg-black/40 rounded-[50px] blur-2xl transform translate-y-8 scale-90" />
-
-          {/* Fizyczna Ramka */}
-          <div
-            className="
-              relative bg-[#121212]
-              w-[400px] h-[85vh] max-h-[900px]
-              rounded-[50px]
-              border-[8px] border-[#2a2a2a]
-              shadow-[0_0_0_2px_#3a3a3a,0_20px_60px_-10px_rgba(0,0,0,0.8)]
-              overflow-hidden
-              z-20
-            "
-          >
-            {/* Notch / Dynamic Island */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-[20px] z-[9999] pointer-events-none flex items-center justify-center">
-                 <div className="w-[60px] h-[60px] bg-black/50 absolute -top-4 blur-xl rounded-full" />
+        {/* Right side - The App Frame */}
+        <div className="flex-1 flex justify-center lg:justify-start w-full">
+          {/* ZWIĘKSZONO max-w do 480px i USUNIĘTO sztuczny notch, który zasłaniał TopBar */}
+          <div className="relative w-full max-w-[480px] h-full bg-background rounded-[40px] shadow-2xl overflow-hidden border-[8px] border-neutral-800 flex flex-col mx-auto lg:mx-0 ring-1 ring-white/10">
+            
+            {/* USUNIĘTO: <div className="absolute top-0 left-0 right-0 h-6 bg-neutral-800 z-50..." /> - to zasłaniało tytuł */}
+            
+            {/* Content */}
+            <div className="flex-1 w-full h-full overflow-hidden bg-background relative rounded-[32px]">
+              {children}
             </div>
-
-            {/* Ekran */}
-            <div className="w-full h-full bg-black overflow-hidden relative rounded-[42px] select-none">
-               {children}
-            </div>
-
-            {/* Odbicie światła na szkle (Glass reflection) */}
-            <div className="absolute inset-0 rounded-[42px] pointer-events-none bg-gradient-to-tr from-white/5 via-transparent to-transparent opacity-50 z-50" />
+            
+            {/* Opcjonalnie: Usunięto dolny pasek "Home Bar", jeśli przeszkadzał w nawigacji */}
+            {/* <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-neutral-600/50 rounded-full z-50 pointer-events-none" /> */}
           </div>
         </div>
-
-        {/* Prawa strona - Pusty slot lub drugi widget, jeśli potrzeba. Obecnie tylko centrujemy ramkę. */}
-        {/* Na mniejszych ekranach desktop (lg), QR widget może być ukryty lub przenieść się tutaj. */}
-         <div className="hidden lg:block xl:hidden">
-             <DesktopQRWidget />
-        </div>
-
       </div>
-
-      <style jsx global>{`
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.2; transform: scale(1); }
-          50% { opacity: 0.3; transform: scale(1.1); }
-        }
-        .animate-pulse-slow {
-          animation: pulse-slow 8s infinite ease-in-out;
-        }
-      `}</style>
     </div>
   );
-};
-
-export default DesktopDeviceFrame;
+}
