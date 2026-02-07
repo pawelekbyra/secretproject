@@ -30,8 +30,11 @@ jules-scratch/
 test-db.ts
 cookie.txt
 package-lock.json
+public/sw.js
+public/sw.js.map
 
 /lib/generated/prisma
 
 # User Uploads
 /public/uploads
+node_modules/
