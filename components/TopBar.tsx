@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { MenuIcon } from '@/components/icons/MenuIcon';
-import { BellIcon } from '@/components/icons/BellIcon';
+// ZMIANA: Importujemy defaultowo (bez nawiasów klamrowych)
+import MenuIcon from '@/components/icons/MenuIcon';
+import BellIcon from '@/components/icons/BellIcon';
 import { useUser } from '@/context/UserContext';
 import { usePathname, useRouter } from 'next/navigation';
 import NotificationPopup from './NotificationPopup';
 
-interface TopBarProps {
+export interface TopBarProps {
   toggleSidebar: () => void;
   isSidebarOpen: boolean;
 }
@@ -14,11 +15,9 @@ interface TopBarProps {
 export default function TopBar({ toggleSidebar, isSidebarOpen }: TopBarProps) {
   const { user } = useUser();
   const pathname = usePathname();
-  const router = useRouter();
   const [showNotifications, setShowNotifications] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
 
-  // Sprawdzamy czy są nieprzeczytane powiadomienia
   useEffect(() => {
     if (user?.notifications) {
       const unread = user.notifications.some((n: any) => !n.read);
@@ -36,48 +35,43 @@ export default function TopBar({ toggleSidebar, isSidebarOpen }: TopBarProps) {
   };
 
   return (
-    <>
-      <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-background/80 backdrop-blur-md border-b border-white/10 safe-top">
-        {/* LEWA STRONA: Flex container z flex-1 i min-w-0 zapobiega ucinaniu i pozwala na skalowanie */}
-        <div className="flex items-center gap-3 flex-1 min-w-0">
+    <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-background/80 backdrop-blur-md border-b border-white/10 safe-top">
+      <div className="flex items-center gap-3 flex-1 min-w-0">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleSidebar}
+          className="text-foreground hover:bg-white/10 shrink-0"
+        >
+          <MenuIcon className="w-6 h-6" />
+        </Button>
+        
+        <h1 className="text-lg font-semibold truncate pr-2">
+          {getPageTitle()}
+        </h1>
+      </div>
+
+      <div className="flex items-center gap-2 shrink-0">
+        <div className="relative">
           <Button
             variant="ghost"
             size="icon"
-            onClick={toggleSidebar}
-            className="text-foreground hover:bg-white/10 shrink-0"
+            className="text-foreground hover:bg-white/10"
+            onClick={() => setShowNotifications(!showNotifications)}
           >
-            <MenuIcon className="w-6 h-6" />
+            <BellIcon className="w-6 h-6" />
+            {hasUnread && (
+              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-background" />
+            )}
           </Button>
           
-          {/* USUNIĘTO max-w-[200px]. Teraz tekst zajmuje dostępne miejsce i ucina się (truncate) tylko gdy to absolutnie konieczne */}
-          <h1 className="text-lg font-semibold truncate pr-2">
-            {getPageTitle()}
-          </h1>
+          {showNotifications && (
+            <NotificationPopup 
+              onClose={() => setShowNotifications(false)} 
+            />
+          )}
         </div>
-
-        {/* PRAWA STRONA: shrink-0 zapobiega zgniataniu ikon przez długi tytuł */}
-        <div className="flex items-center gap-2 shrink-0">
-          <div className="relative">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-foreground hover:bg-white/10"
-              onClick={() => setShowNotifications(!showNotifications)}
-            >
-              <BellIcon className="w-6 h-6" />
-              {hasUnread && (
-                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-background" />
-              )}
-            </Button>
-            
-            {showNotifications && (
-              <NotificationPopup 
-                onClose={() => setShowNotifications(false)} 
-              />
-            )}
-          </div>
-        </div>
-      </header>
-    </>
+      </div>
+    </header>
   );
 }
