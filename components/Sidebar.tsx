@@ -105,44 +105,37 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   // Shared styles
-  const buttonClass = "flex flex-col items-center gap-[2px] justify-center cursor-pointer";
-  const labelClass = "text-[11px] leading-[1.1] text-center drop-shadow-md font-medium text-white";
-  const iconSize = 32;
-
-  // Determine avatar border color
-  // In Sidebar, this is the Author's avatar.
-  // Requirement: Author = White border with white glow.
-  const avatarBorderColor = 'border-white';
+  const buttonClass = "flex flex-col items-center gap-1 justify-center cursor-pointer group";
+  const labelClass = "text-[10px] leading-none text-center font-medium text-white/80 group-hover:text-white transition-colors";
+  const iconSize = 26;
+  const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200";
+  const iconGlass = { background: 'var(--glass-bg)', backdropFilter: 'blur(12px)', border: '1px solid var(--glass-border)' };
 
   return (
     <aside
-      className="absolute right-0 flex flex-col items-center gap-[12px] z-20 pointer-events-auto"
+      className="absolute right-2 flex flex-col items-center gap-3 z-20 pointer-events-auto"
       style={{
         top: 'calc((var(--app-height) - var(--topbar-height) - var(--bottombar-height)) / 2 + var(--topbar-height))',
         transform: 'translateY(-50%)',
-        textShadow: '0 0 4px rgba(0, 0, 0, 0.8)',
       }}
     >
       {/* Avatar / Author Profile */}
-      <div className="relative w-12 h-12 mb-1.5">
+      <div className="relative mb-1">
         <button
             onClick={handleOpenAuthorProfile}
-            className={cn(
-                "w-full h-full flex items-center justify-center text-white bg-gray-600 rounded-full overflow-hidden border-2 shadow-[0_0_15px_rgba(255,255,255,0.5)]",
-                avatarBorderColor
-            )}
+            className="w-11 h-11 flex items-center justify-center rounded-full overflow-hidden ring-2 ring-primary/60 hover:ring-primary transition-all duration-200"
         >
            {displayAvatar ? (
-             <Image src={displayAvatar} alt="Author" width={48} height={48} className="w-full h-full object-cover" />
+             <Image src={displayAvatar} alt="Author" width={44} height={44} className="w-full h-full object-cover" />
            ) : (
-             <User size={32} strokeWidth={1.4} />
+             <div className="w-full h-full flex items-center justify-center bg-muted">
+               <User size={24} strokeWidth={1.4} className="text-white/70" />
+             </div>
            )}
         </button>
          {showPlusIcon && (
-             <div
-                className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-5 h-5 rounded-full flex items-center justify-center text-white border-2 border-white pointer-events-none bg-primary"
-              >
-                <Plus size={14} strokeWidth={4} />
+             <div className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-4 h-4 rounded-full flex items-center justify-center text-white pointer-events-none bg-primary shadow-lg">
+                <Plus size={10} strokeWidth={4} />
               </div>
          )}
       </div>
@@ -153,14 +146,15 @@ const Sidebar: React.FC<SidebarProps> = ({
         className={buttonClass}
         data-action="toggle-like"
         data-slide-id={slideId}
-        whileTap={{ scale: 0.9 }}
+        whileTap={{ scale: 0.85 }}
       >
-        <Heart
-          size={iconSize}
-          strokeWidth={1.5}
-          className={`transition-colors duration-200 ${(isLiked && isLoggedIn) ? 'fill-[var(--accent-color,theme(colors.rose.500))] stroke-white' : 'fill-transparent stroke-white'}`}
-          style={{ filter: 'drop-shadow(0 0 3px rgba(0,0,0,0.5))' }}
-        />
+        <div className={cn(iconWrapClass, (isLiked && isLoggedIn) && "bg-primary/20")} style={!(isLiked && isLoggedIn) ? iconGlass : { ...iconGlass, background: 'rgba(225,29,72,0.2)', borderColor: 'rgba(225,29,72,0.3)' }}>
+          <Heart
+            size={iconSize}
+            strokeWidth={1.8}
+            className={`transition-all duration-200 ${(isLiked && isLoggedIn) ? 'fill-primary stroke-primary' : 'fill-transparent stroke-white/90'}`}
+          />
+        </div>
         <span className={labelClass}>{formatCount(currentLikes)}</span>
       </motion.button>
 
@@ -170,30 +164,36 @@ const Sidebar: React.FC<SidebarProps> = ({
         data-action="open-comments-modal"
         onClick={() => setActiveModal('comments')}
         className={buttonClass}
-        whileTap={{ scale: 0.9 }}
+        whileTap={{ scale: 0.85 }}
       >
-        <MessageSquare size={iconSize} strokeWidth={1.5} className="stroke-white" style={{ filter: 'drop-shadow(0 0 3px rgba(0,0,0,0.5))' }}/>
+        <div className={iconWrapClass} style={iconGlass}>
+          <MessageSquare size={iconSize} strokeWidth={1.8} className="stroke-white/90" />
+        </div>
         <span className={labelClass}>{formatCount(currentCommentCount)}</span>
       </motion.button>
 
       {/* Share */}
-      <button onClick={handleShare} data-action="share" className={buttonClass}>
-        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={iconSize} height={iconSize} className="stroke-white" style={{ filter: 'drop-shadow(0 0 3px rgba(0,0,0,0.5))' }}>
-            <polyline points="15 14 20 9 15 4"></polyline>
-            <path d="M4 20v-7a4 4 0 0 1 4-4h12"></path>
-        </svg>
+      <motion.button onClick={handleShare} data-action="share" className={buttonClass} whileTap={{ scale: 0.85 }}>
+        <div className={iconWrapClass} style={iconGlass}>
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={iconSize} height={iconSize} className="stroke-white/90">
+              <polyline points="15 14 20 9 15 4"></polyline>
+              <path d="M4 20v-7a4 4 0 0 1 4-4h12"></path>
+          </svg>
+        </div>
         <span className={labelClass}>{t('shareText') || 'Udostępnij'}</span>
-      </button>
+      </motion.button>
 
-      {/* Tip Jar (Custom SVG) */}
-      <button onClick={() => openTippingModal()} data-action="show-tip-jar" className={buttonClass + " mt-2"}>
-        <svg viewBox="0 0 24 24" className="text-white drop-shadow-md" style={{ width: iconSize, height: iconSize }} fill="none" stroke="currentColor" strokeWidth="1.5">
-           <rect x="2" y="7" width="20" height="12" rx="2" ry="2" />
-           <path d="M2 10h20" />
-           <circle cx="18" cy="13" r="2" />
-        </svg>
+      {/* Tip Jar */}
+      <motion.button onClick={() => openTippingModal()} data-action="show-tip-jar" className={buttonClass} whileTap={{ scale: 0.85 }}>
+        <div className={iconWrapClass} style={iconGlass}>
+          <svg viewBox="0 0 24 24" className="text-white/90" style={{ width: iconSize, height: iconSize }} fill="none" stroke="currentColor" strokeWidth="1.8">
+             <rect x="2" y="7" width="20" height="12" rx="2" ry="2" />
+             <path d="M2 10h20" />
+             <circle cx="18" cy="13" r="2" />
+          </svg>
+        </div>
         <span className={labelClass}>Napiwek</span>
-      </button>
+      </motion.button>
     </aside>
   );
 };

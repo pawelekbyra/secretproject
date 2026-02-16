@@ -14,26 +14,19 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="flex h-full flex-col bg-background text-foreground overflow-hidden">
+    <div className="flex h-full flex-col bg-background text-foreground overflow-hidden relative">
       <Preloader />
       
-      {/* Przekazujemy wymagane propsy do TopBar */}
-      <TopBar 
-        toggleSidebar={toggleSidebar} 
-        isSidebarOpen={isSidebarOpen} 
-      />
-
+      {/* Content area first so TopBar overlays on top */}
       <div className="flex-1 flex overflow-hidden relative">
-        {/* Przekazujemy stan do Sidebar jeśli jest potrzebny */}
         <Sidebar 
           isOpen={isSidebarOpen} 
           onClose={() => setIsSidebarOpen(false)} 
         />
         
-        {/* Overlay na mobile gdy sidebar jest otwarty */}
         {isSidebarOpen && (
           <div 
-            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            className="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-sm"
             onClick={() => setIsSidebarOpen(false)}
           />
         )}
@@ -44,6 +37,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         >
           {children}
         </main>
+      </div>
+
+      {/* TopBar floating on top */}
+      <div className="absolute top-0 left-0 right-0 z-30">
+        <TopBar 
+          toggleSidebar={toggleSidebar} 
+          isSidebarOpen={isSidebarOpen} 
+        />
       </div>
     </div>
   );

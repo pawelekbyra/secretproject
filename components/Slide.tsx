@@ -77,15 +77,19 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
     return (
       <div
         className={cn(
-            "absolute inset-0 z-20 p-4 flex flex-col justify-end text-white",
+            "absolute inset-0 z-20 flex flex-col justify-end text-white",
             isLocked && "pointer-events-none"
         )}
         onClick={handleContainerClick}
       >
-        {/* Top gradient */}
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
-        {/* Bottom gradient */}
-        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/70 via-black/40 to-transparent pointer-events-none" />
+        {/* Bottom gradient - richer, taller for depth */}
+        <div 
+          className="absolute inset-x-0 bottom-0 pointer-events-none"
+          style={{
+            height: '55%',
+            background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.15) 60%, transparent 100%)',
+          }}
+        />
 
         <AnimatePresence>
             {!isLocked && showPlaybackIcon && (
@@ -93,35 +97,44 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                     className="absolute inset-0 flex items-center justify-center pointer-events-none"
                     initial={{ opacity: 0, scale: 1.5 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1.2 }}
-                    transition={{ duration: 0.2 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
                 >
-                    <div className="bg-black/50 rounded-full p-4">
+                    <div className="rounded-full p-5" style={{ background: 'var(--glass-bg)', backdropFilter: 'blur(16px)', border: '1px solid var(--glass-border)' }}>
                         {isPlaying ? (
-                            <PlayIcon className="w-12 h-12 text-white" />
+                            <PlayIcon className="w-10 h-10 text-white" />
                         ) : (
-                            <PauseIcon className="w-12 h-12 text-white" />
+                            <PauseIcon className="w-10 h-10 text-white" />
                         )}
                     </div>
                 </motion.div>
             )}
         </AnimatePresence>
 
-        {/* UI Controls Container - Added bottom padding/margin to lift it up */}
-        <div className="relative z-20 pointer-events-none w-full max-w-[calc(100%-60px)] flex flex-col items-start text-left mb-2 pb-[calc(env(safe-area-inset-bottom)+10px)]">
-            <div className="flex items-center gap-2 mb-2 pointer-events-auto max-w-full">
-                <Image
-                    src={slide.avatar || DEFAULT_AVATAR_URL}
-                    alt={slide.username || 'User'}
-                    width={40}
-                    height={40}
-                    className="rounded-full border-2 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)] shrink-0"
-                />
-                <p className="font-bold text-lg truncate min-w-0">{slide.username}</p>
+        {/* Author info + metadata */}
+        <div className="relative z-20 pointer-events-none w-full max-w-[calc(100%-64px)] flex flex-col items-start text-left px-4 mb-1 pb-[calc(env(safe-area-inset-bottom)+8px)]">
+            <div className="flex items-center gap-2.5 mb-2.5 pointer-events-auto max-w-full">
+                <div className="relative">
+                    <Image
+                        src={slide.avatar || DEFAULT_AVATAR_URL}
+                        alt={slide.username || 'User'}
+                        width={38}
+                        height={38}
+                        className="rounded-full ring-2 ring-primary/70 shrink-0"
+                    />
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 ring-2 ring-black" />
+                </div>
+                <div className="flex flex-col min-w-0">
+                    <p className="font-semibold text-[15px] leading-tight truncate min-w-0 drop-shadow-sm">{slide.username}</p>
+                </div>
             </div>
 
-            {slide.data && 'title' in slide.data && <h2 className="text-xl font-semibold mb-1 truncate w-full">{slide.data.title}</h2>}
-            {slide.data && 'description' in slide.data && <p className="text-sm opacity-90 truncate w-full">{slide.data.description}</p>}
+            {slide.data && 'title' in slide.data && (
+                <h2 className="text-base font-semibold mb-0.5 truncate w-full drop-shadow-sm leading-snug">{slide.data.title}</h2>
+            )}
+            {slide.data && 'description' in slide.data && (
+                <p className="text-[13px] text-white/75 truncate w-full drop-shadow-sm">{slide.data.description}</p>
+            )}
         </div>
 
         <Sidebar
@@ -133,9 +146,8 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
             authorAvatar={slide.avatar || DEFAULT_AVATAR_URL}
         />
 
-        {/* Hide video controls if locked? Usually yes. */}
         {isVideoSlide && !isLocked && (
-            <div className="pointer-events-auto w-full px-2">
+            <div className="pointer-events-auto w-full px-3 pb-1">
                 <VideoControls
                     isPlaying={isPlaying}
                     isMuted={isMuted}
