@@ -70,11 +70,10 @@ export default function TopBar({ toggleSidebar, isSidebarOpen }: TopBarProps) {
             )}
           </Button>
           
-          {showNotifications && (
-            <NotificationPopup 
-              onClose={() => setShowNotifications(false)} 
-            />
-          )}
+          <NotificationPopup 
+            isOpen={showNotifications}
+            onClose={() => setShowNotifications(false)} 
+          />
         </div>
       </div>
     </header>
