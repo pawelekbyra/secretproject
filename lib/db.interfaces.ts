@@ -17,7 +17,6 @@ export interface User {
   isFirstLogin?: boolean;
   emailConsent?: boolean;
   emailLanguage?: string | null;
-  notifications?: Notification[];
 }
 
 export interface Comment {

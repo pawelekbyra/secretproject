@@ -286,7 +286,7 @@ const translations: Record<string, Record<string, string>> = {
         loginPlaceholder: 'Login',
         passwordPlaceholder: 'Password',
         loggingIn: 'Logging in...',
-        loginButton: 'Enter',
+        loginButton: 'enter.',
         loginUnknownError: 'An unknown error occurred.',
         userAvatar: "{user}'s avatar",
         reply: 'Reply',
