@@ -47,10 +47,6 @@
     --ring: 336 100% 50%;
 
     --radius: 0.5rem;
-
-    /* Custom feed tokens */
-    --glass-bg: rgba(255, 255, 255, 0.06);
-    --glass-border: rgba(255, 255, 255, 0.1);
   }
 }
 
