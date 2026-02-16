@@ -52,8 +52,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     openTippingModal: state.openTippingModal
   }), shallow);
 
-  const likeState = likeChanges[slideId];
-  const currentCommentCount = commentCountChanges[slideId] ?? commentsCount;
+  const likeState = slideId ? likeChanges[slideId] : null;
+  const currentCommentCount = slideId ? (commentCountChanges[slideId] ?? commentsCount) : commentsCount;
   const [liveLikes, setLiveLikes] = React.useState(initialLikes);
   const currentLikes = likeState ? likeState.likes : liveLikes;
   const isLiked = likeState ? likeState.isLiked : initialIsLiked;
@@ -66,6 +66,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const showPlusIcon = !isLoggedIn && (!currentUser || currentUser.id !== authorId);
 
   useEffect(() => {
+    if (!slideId) return;
     setLiveLikes(initialLikes);
     const channel = ably.channels.get(`likes:${slideId}`);
 
@@ -81,6 +82,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   }, [initialLikes, slideId]);
 
   const handleLike = () => {
+    if (!slideId) return;
     if (!isLoggedIn) {
       addToast(t('loginRequired') || 'Musisz się zalogować', 'locked');
       return;
@@ -117,31 +119,40 @@ const Sidebar: React.FC<SidebarProps> = ({
   const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200";
   const iconGlass = { background: 'var(--glass-bg)', backdropFilter: 'blur(12px)', border: '1px solid var(--glass-border)' };
 
+  // Determine avatar border color
+  // In Sidebar, this is the Author's avatar.
+  // Requirement: Author = White border with white glow.
+  const avatarBorderColor = 'border-white';
+
   return (
     <aside
-      className="absolute right-2 flex flex-col items-center gap-3 z-20 pointer-events-auto"
+      className="absolute right-0 flex flex-col items-center gap-[12px] z-20 pointer-events-auto"
       style={{
         top: 'calc((var(--app-height) - var(--topbar-height) - var(--bottombar-height)) / 2 + var(--topbar-height))',
         transform: 'translateY(-50%)',
+        textShadow: '0 0 4px rgba(0, 0, 0, 0.8)',
       }}
     >
       {/* Avatar / Author Profile */}
-      <div className="relative mb-1">
+      <div className="relative w-12 h-12 mb-1.5">
         <button
             onClick={handleOpenAuthorProfile}
-            className="w-11 h-11 flex items-center justify-center rounded-full overflow-hidden ring-2 ring-primary/60 hover:ring-primary transition-all duration-200"
+            className={cn(
+                "w-full h-full flex items-center justify-center text-white bg-gray-600 rounded-full overflow-hidden border-2 shadow-[0_0_15px_rgba(255,255,255,0.5)]",
+                avatarBorderColor
+            )}
         >
            {displayAvatar ? (
-             <Image src={displayAvatar} alt="Author" width={44} height={44} className="w-full h-full object-cover" />
+             <Image src={displayAvatar} alt="Author" width={48} height={48} className="w-full h-full object-cover" />
            ) : (
-             <div className="w-full h-full flex items-center justify-center bg-muted">
-               <User size={24} strokeWidth={1.4} className="text-white/70" />
-             </div>
+             <User size={32} strokeWidth={1.4} />
            )}
         </button>
          {showPlusIcon && (
-             <div className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-4 h-4 rounded-full flex items-center justify-center text-white pointer-events-none bg-primary shadow-lg">
-                <Plus size={10} strokeWidth={4} />
+             <div
+                className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-5 h-5 rounded-full flex items-center justify-center text-white border-2 border-white pointer-events-none bg-primary"
+              >
+                <Plus size={14} strokeWidth={4} />
               </div>
          )}
       </div>
