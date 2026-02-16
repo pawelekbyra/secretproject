@@ -15,21 +15,21 @@ export default function DesktopDeviceFrame({ children }: DesktopDeviceFrameProps
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-4 md:p-8 lg:p-12 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8 lg:p-12 relative overflow-hidden" style={{ background: '#050507' }}>
       {/* Background decoration */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px]" />
+        <div className="absolute top-[-15%] left-[-5%] w-[500px] h-[500px] rounded-full blur-[150px]" style={{ background: 'hsl(340 82% 55% / 0.08)' }} />
+        <div className="absolute bottom-[-15%] right-[-5%] w-[500px] h-[500px] rounded-full blur-[150px]" style={{ background: 'hsl(220 60% 50% / 0.06)' }} />
       </div>
 
       <div className="w-full max-w-[1400px] flex gap-8 z-10 items-stretch h-[85vh] max-h-[900px]">
         {/* Left side - QR Code & Info */}
         <div className="hidden lg:flex flex-col flex-1 justify-center max-w-[500px] text-white space-y-8 pr-8">
           <div className="space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-neutral-400">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
               Secret Project
             </h1>
-            <p className="text-lg text-neutral-400 leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed">
               Zarządzaj swoimi treściami, komunikuj się z patronami i rozwijaj swoją społeczność - wszystko w jednym miejscu.
             </p>
           </div>
@@ -39,7 +39,7 @@ export default function DesktopDeviceFrame({ children }: DesktopDeviceFrameProps
         {/* Right side - The App Frame */}
         <div className="flex-1 flex justify-center lg:justify-start w-full">
           {/* ZWIĘKSZONO max-w do 480px i USUNIĘTO sztuczny notch, który zasłaniał TopBar */}
-          <div className="relative w-full max-w-[480px] h-full bg-background rounded-[40px] shadow-2xl overflow-hidden border-[8px] border-neutral-800 flex flex-col mx-auto lg:mx-0 ring-1 ring-white/10">
+          <div className="relative w-full max-w-[480px] h-full bg-background rounded-[40px] shadow-[0_0_60px_rgba(0,0,0,0.8)] overflow-hidden border-[6px] border-neutral-800/80 flex flex-col mx-auto lg:mx-0 ring-1 ring-white/5">
             
             {/* USUNIĘTO: <div className="absolute top-0 left-0 right-0 h-6 bg-neutral-800 z-50..." /> - to zasłaniało tytuł */}
             

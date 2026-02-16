@@ -19,11 +19,12 @@ export default function TopBar({ toggleSidebar, isSidebarOpen }: TopBarProps) {
   const [hasUnread, setHasUnread] = useState(false);
 
   useEffect(() => {
-    if (user?.notifications) {
-      const unread = user.notifications.some((n: any) => !n.read);
+    const notifications = (user as any)?.notifications;
+    if (notifications) {
+      const unread = notifications.some((n: any) => !n.read);
       setHasUnread(unread);
     }
-  }, [user?.notifications]);
+  }, [user]);
 
   const getPageTitle = () => {
     if (pathname === '/') return 'Strona Główna';
@@ -35,41 +36,44 @@ export default function TopBar({ toggleSidebar, isSidebarOpen }: TopBarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-background/80 backdrop-blur-md border-b border-white/10 safe-top">
-      <div className="flex items-center gap-3 flex-1 min-w-0">
+    <header className="flex items-center justify-between px-3 py-2 safe-top"
+      style={{
+        background: 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, transparent 100%)',
+      }}
+    >
+      <div className="flex items-center gap-2 flex-1 min-w-0">
         <Button
           variant="ghost"
           size="icon"
           onClick={toggleSidebar}
-          className="text-foreground hover:bg-white/10 shrink-0"
+          className="text-foreground/90 hover:text-foreground hover:bg-white/10 shrink-0 rounded-full w-9 h-9 transition-colors"
         >
-          <MenuIcon className="w-6 h-6" />
+          <MenuIcon className="w-5 h-5" />
         </Button>
         
-        <h1 className="text-lg font-semibold truncate pr-2">
+        <h1 className="text-sm font-semibold truncate pr-2 tracking-wide uppercase text-foreground/70">
           {getPageTitle()}
         </h1>
       </div>
 
-      <div className="flex items-center gap-2 shrink-0">
+      <div className="flex items-center gap-1 shrink-0">
         <div className="relative">
           <Button
             variant="ghost"
             size="icon"
-            className="text-foreground hover:bg-white/10"
+            className="text-foreground/90 hover:text-foreground hover:bg-white/10 rounded-full w-9 h-9 transition-colors"
             onClick={() => setShowNotifications(!showNotifications)}
           >
-            <BellIcon className="w-6 h-6" />
+            <BellIcon className="w-5 h-5" />
             {hasUnread && (
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-background" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full ring-2 ring-background" />
             )}
           </Button>
           
-          {showNotifications && (
-            <NotificationPopup 
-              onClose={() => setShowNotifications(false)} 
-            />
-          )}
+          <NotificationPopup 
+            isOpen={showNotifications}
+            onClose={() => setShowNotifications(false)} 
+          />
         </div>
       </div>
     </header>
