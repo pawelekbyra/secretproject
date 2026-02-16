@@ -105,9 +105,15 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   // Shared styles
-  const buttonClass = "flex flex-col items-center gap-[2px] justify-center cursor-pointer";
-  const labelClass = "text-[11px] leading-[1.1] text-center drop-shadow-md font-medium text-white";
-  const iconSize = 32;
+  const iconSize = 26;
+  const buttonClass = "flex flex-col items-center gap-1 justify-center cursor-pointer group";
+  const labelClass = "text-[10px] leading-none text-center font-medium text-white/80 group-hover:text-white transition-colors";
+  const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200";
+  const iconGlass = {
+    background: 'var(--glass-bg)',
+    backdropFilter: 'blur(12px)',
+    border: '1px solid var(--glass-border)'
+  };
 
   // Determine avatar border color
   // In Sidebar, this is the Author's avatar.
@@ -153,14 +159,15 @@ const Sidebar: React.FC<SidebarProps> = ({
         className={buttonClass}
         data-action="toggle-like"
         data-slide-id={slideId}
-        whileTap={{ scale: 0.9 }}
+        whileTap={{ scale: 0.85 }}
       >
-        <Heart
-          size={iconSize}
-          strokeWidth={1.5}
-          className={`transition-colors duration-200 ${(isLiked && isLoggedIn) ? 'fill-[var(--accent-color,theme(colors.rose.500))] stroke-white' : 'fill-transparent stroke-white'}`}
-          style={{ filter: 'drop-shadow(0 0 3px rgba(0,0,0,0.5))' }}
-        />
+        <div className={iconWrapClass} style={iconGlass}>
+          <Heart
+            size={iconSize}
+            strokeWidth={1.8}
+            className={`transition-colors duration-200 ${(isLiked && isLoggedIn) ? 'fill-[var(--accent-color,theme(colors.rose.500))] stroke-white' : 'fill-transparent stroke-white/90'}`}
+          />
+        </div>
         <span className={labelClass}>{formatCount(currentLikes)}</span>
       </motion.button>
 
@@ -170,30 +177,46 @@ const Sidebar: React.FC<SidebarProps> = ({
         data-action="open-comments-modal"
         onClick={() => setActiveModal('comments')}
         className={buttonClass}
-        whileTap={{ scale: 0.9 }}
+        whileTap={{ scale: 0.85 }}
       >
-        <MessageSquare size={iconSize} strokeWidth={1.5} className="stroke-white" style={{ filter: 'drop-shadow(0 0 3px rgba(0,0,0,0.5))' }}/>
+        <div className={iconWrapClass} style={iconGlass}>
+          <MessageSquare size={iconSize} strokeWidth={1.8} className="stroke-white/90" />
+        </div>
         <span className={labelClass}>{formatCount(currentCommentCount)}</span>
       </motion.button>
 
       {/* Share */}
-      <button onClick={handleShare} data-action="share" className={buttonClass}>
-        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={iconSize} height={iconSize} className="stroke-white" style={{ filter: 'drop-shadow(0 0 3px rgba(0,0,0,0.5))' }}>
-            <polyline points="15 14 20 9 15 4"></polyline>
-            <path d="M4 20v-7a4 4 0 0 1 4-4h12"></path>
-        </svg>
+      <motion.button
+        onClick={handleShare}
+        data-action="share"
+        className={buttonClass}
+        whileTap={{ scale: 0.85 }}
+      >
+        <div className={iconWrapClass} style={iconGlass}>
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.0" strokeLinecap="round" strokeLinejoin="round" width={iconSize} height={iconSize} className="stroke-white/90">
+              <polyline points="15 14 20 9 15 4"></polyline>
+              <path d="M4 20v-7a4 4 0 0 1 4-4h12"></path>
+          </svg>
+        </div>
         <span className={labelClass}>{t('shareText') || 'Udostępnij'}</span>
-      </button>
+      </motion.button>
 
       {/* Tip Jar (Custom SVG) */}
-      <button onClick={() => openTippingModal()} data-action="show-tip-jar" className={buttonClass + " mt-2"}>
-        <svg viewBox="0 0 24 24" className="text-white drop-shadow-md" style={{ width: iconSize, height: iconSize }} fill="none" stroke="currentColor" strokeWidth="1.5">
-           <rect x="2" y="7" width="20" height="12" rx="2" ry="2" />
-           <path d="M2 10h20" />
-           <circle cx="18" cy="13" r="2" />
-        </svg>
+      <motion.button
+        onClick={() => openTippingModal()}
+        data-action="show-tip-jar"
+        className={buttonClass}
+        whileTap={{ scale: 0.85 }}
+      >
+        <div className={iconWrapClass} style={iconGlass}>
+          <svg viewBox="0 0 24 24" className="text-white/90" style={{ width: iconSize, height: iconSize }} fill="none" stroke="currentColor" strokeWidth="1.8">
+             <rect x="2" y="7" width="20" height="12" rx="2" ry="2" />
+             <path d="M2 10h20" />
+             <circle cx="18" cy="13" r="2" />
+          </svg>
+        </div>
         <span className={labelClass}>Napiwek</span>
-      </button>
+      </motion.button>
     </aside>
   );
 };
