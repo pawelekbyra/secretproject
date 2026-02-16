@@ -26,7 +26,7 @@ export default function TopBar({ toggleSidebar, isSidebarOpen }: TopBarProps) {
   }, [user?.notifications]);
 
   const getPageTitle = () => {
-    if (pathname === '/') return 'ni masz psychy';
+    if (pathname === '/') return 'Strona Główna';
     if (pathname === '/admin') return 'Panel Administratora';
     if (pathname === '/admin/users') return 'Użytkownicy';
     if (pathname === '/admin/slides') return 'Slajdy';
