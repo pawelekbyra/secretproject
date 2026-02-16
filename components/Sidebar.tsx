@@ -106,7 +106,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   // Shared styles
   const iconSize = 26;
-  const buttonClass = "flex flex-col items-center gap-1 justify-center cursor-pointer group";
+  const buttonClass = "flex flex-col items-center gap-2 justify-center cursor-pointer group";
   const labelClass = "text-[10px] leading-none text-center font-medium text-white/80 group-hover:text-white transition-colors";
   const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200";
   const iconGlass = {
@@ -122,7 +122,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className="absolute right-0 flex flex-col items-center gap-[12px] z-20 pointer-events-auto"
+      className="absolute right-0 flex flex-col items-center gap-2 z-20 pointer-events-auto"
       style={{
         top: 'calc((var(--app-height) - var(--topbar-height) - var(--bottombar-height)) / 2 + var(--topbar-height))',
         transform: 'translateY(-50%)',
@@ -130,7 +130,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       }}
     >
       {/* Avatar / Author Profile */}
-      <div className="relative w-12 h-12 mb-1.5">
+      <div className="relative w-12 h-12 mb-2">
         <button
             onClick={handleOpenAuthorProfile}
             className={cn(
