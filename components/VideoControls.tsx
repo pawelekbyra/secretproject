@@ -60,52 +60,36 @@ const VideoControls: React.FC<VideoControlsProps> = ({
   // Hide controls if no duration (optional, but might flash 0:00 initially)
   // Keeping it visible but 0:00 is usually better UX than popping in.
 
-  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
-
   return (
     <div
-        className="flex items-center gap-2 text-white px-3 py-2.5 rounded-2xl max-w-full"
-        style={{
-          background: 'var(--glass-bg)',
-          backdropFilter: 'blur(16px)',
-          border: '1px solid var(--glass-border)',
-        }}
+        className="flex items-center gap-2 text-white bg-black/30 p-2 rounded-lg mt-2 backdrop-blur-sm max-w-full"
         onClick={(e) => e.stopPropagation()}
     >
-      <button onClick={onTogglePlay} className="p-0.5 hover:text-primary transition-colors shrink-0">
-        {isPlaying ? <Pause size={18} strokeWidth={2} /> : <Play size={18} strokeWidth={2} />}
+      <button onClick={onTogglePlay} className="p-1 hover:text-pink-500 transition-colors shrink-0">
+        {isPlaying ? <Pause size={20} /> : <Play size={20} />}
       </button>
 
-      <span className="text-[10px] font-mono w-8 text-center text-white/60">{formatTime(currentTime)}</span>
+      <span className="text-xs font-mono w-10 text-center">{formatTime(currentTime)}</span>
 
-      <div className="flex-1 relative h-4 flex items-center">
-        {/* Track background */}
-        <div className="absolute inset-x-0 h-[3px] rounded-full bg-white/15" />
-        {/* Progress fill */}
-        <div
-          className="absolute left-0 h-[3px] rounded-full bg-primary"
-          style={{ width: `${progress}%` }}
-        />
-        <input
-          ref={progressRef}
-          type="range"
-          min="0"
-          max={duration || 100}
-          step="0.1"
-          value={currentTime}
-          onMouseDown={handleSeekStart}
-          onTouchStart={handleSeekStart}
-          onChange={handleSeekChange}
-          onMouseUp={handleSeekEnd}
-          onTouchEnd={handleSeekEnd}
-          className="video-progress absolute inset-0 w-full opacity-0 cursor-pointer"
-        />
-      </div>
+      <input
+        ref={progressRef}
+        type="range"
+        min="0"
+        max={duration || 100}
+        step="0.1"
+        value={currentTime}
+        onMouseDown={handleSeekStart}
+        onTouchStart={handleSeekStart}
+        onChange={handleSeekChange}
+        onMouseUp={handleSeekEnd}
+        onTouchEnd={handleSeekEnd}
+        className="flex-1 h-1 bg-white/30 rounded-lg appearance-none cursor-pointer hover:bg-white/50 transition-colors accent-pink-500"
+      />
 
-      <span className="text-[10px] font-mono w-8 text-center text-white/60">{formatTime(duration)}</span>
+      <span className="text-xs font-mono w-10 text-center">{formatTime(duration)}</span>
 
-      <button onClick={onToggleMute} className="p-0.5 hover:text-primary transition-colors shrink-0">
-        {isMuted ? <VolumeX size={18} strokeWidth={2} /> : <Volume2 size={18} strokeWidth={2} />}
+      <button onClick={onToggleMute} className="p-1 hover:text-pink-500 transition-colors">
+        {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
       </button>
     </div>
   );

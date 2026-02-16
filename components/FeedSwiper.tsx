@@ -8,6 +8,7 @@ import 'swiper/css';
 import 'swiper/css/keyboard';
 import 'swiper/css/mousewheel';
 import Slide from '@/components/Slide';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useStore } from '@/store/useStore';
 import { SlidesResponseSchema } from '@/lib/validators';
 import { SlideDTO } from '@/lib/dto';
@@ -148,22 +149,11 @@ const FeedSwiper = () => {
   }, []);
 
   if (isLoading && slides.length === 0) {
-    return (
-      <div className="w-full h-screen bg-background flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-          <p className="text-sm text-muted-foreground">{'Ładowanie...'}</p>
-        </div>
-      </div>
-    );
+    return <div className="w-screen h-screen bg-black flex items-center justify-center"><Skeleton className="w-full h-full" /></div>;
   }
 
   if (isError) {
-    return (
-      <div className="w-full h-screen bg-background flex items-center justify-center">
-        <p className="text-sm text-muted-foreground">{'Błąd ładowania.'}</p>
-      </div>
-    );
+    return <div className="w-screen h-screen bg-black flex items-center justify-center text-white">Error loading slides.</div>;
   }
 
   return (

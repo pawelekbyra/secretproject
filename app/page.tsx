@@ -6,17 +6,15 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import { Skeleton } from '@/components/ui/skeleton';
+
 // --- React Query Client ---
 const queryClient = new QueryClient();
 
 // Dynamically import FeedSwiper to ensure it only runs on the client side.
 const DynamicFeedSwiper = dynamic(() => import('@/components/FeedSwiper'), {
   ssr: false,
-  loading: () => (
-    <div className="w-full h-screen bg-background flex items-center justify-center">
-      <div className="w-10 h-10 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-    </div>
-  ),
+  loading: () => <div className="w-screen h-screen bg-black flex items-center justify-center"><Skeleton className="w-full h-full" /></div>,
 });
 
 // --- Main Page Export ---
