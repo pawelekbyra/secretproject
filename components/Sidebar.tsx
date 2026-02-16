@@ -52,8 +52,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     openTippingModal: state.openTippingModal
   }), shallow);
 
-  const likeState = slideId ? likeChanges[slideId] : null;
-  const currentCommentCount = slideId ? (commentCountChanges[slideId] ?? commentsCount) : commentsCount;
+  const likeState = likeChanges[slideId];
+  const currentCommentCount = commentCountChanges[slideId] ?? commentsCount;
   const [liveLikes, setLiveLikes] = React.useState(initialLikes);
   const currentLikes = likeState ? likeState.likes : liveLikes;
   const isLiked = likeState ? likeState.isLiked : initialIsLiked;
@@ -66,7 +66,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   const showPlusIcon = !isLoggedIn && (!currentUser || currentUser.id !== authorId);
 
   useEffect(() => {
-    if (!slideId) return;
     setLiveLikes(initialLikes);
     const channel = ably.channels.get(`likes:${slideId}`);
 
@@ -82,7 +81,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   }, [initialLikes, slideId]);
 
   const handleLike = () => {
-    if (!slideId) return;
     if (!isLoggedIn) {
       addToast(t('loginRequired') || 'Musisz się zalogować', 'locked');
       return;
