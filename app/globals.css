@@ -17,42 +17,36 @@
     --topbar-height: calc(var(--topbar-base-height) + var(--safe-area-top));
     --bottombar-height: calc(var(--bottombar-base-height) + var(--safe-area-bottom));
 
-    /* Premium dark theme */
-    --background: 0 0% 3%; /* Near-black */
-    --foreground: 0 0% 96%; /* Soft white */
+    /* Shadcn/ui variables - adapted for the prototype's theme */
+    --background: 0 0% 0%; /* Black background */
+    --foreground: 0 0% 100%; /* White text */
 
-    --card: 240 6% 7%;
-    --card-foreground: 0 0% 96%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 240 6% 7%;
-    --popover-foreground: 0 0% 96%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 340 82% 55%; /* Warm rose-pink accent */
-    --primary-foreground: 0 0% 100%;
+    --primary: 336 100% 50%; /* Accent color */
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 240 4% 14%;
-    --secondary-foreground: 0 0% 90%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 240 4% 14%;
-    --muted-foreground: 240 4% 55%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 340 82% 55%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 336 100% 50%; /* Accent color */
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 72% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 240 4% 16%;
-    --input: 240 4% 16%;
-    --ring: 340 82% 55%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 336 100% 50%;
 
-    --radius: 0.75rem;
-
-    /* Custom feed tokens */
-    --glass-bg: rgba(255, 255, 255, 0.06);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-bg-strong: rgba(0, 0, 0, 0.45);
-    --sidebar-icon-size: 28px;
+    --radius: 0.5rem;
   }
 }
 
@@ -147,58 +141,6 @@
   .comments-modal.is-focused {
     height: 50dvh !important;
   }
-}
-
-/* Custom range slider for video controls */
-input[type="range"].video-progress {
-  -webkit-appearance: none;
-  appearance: none;
-  background: transparent;
-  cursor: pointer;
-  height: 16px;
-}
-
-input[type="range"].video-progress::-webkit-slider-runnable-track {
-  height: 3px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2);
-  transition: height 0.15s ease;
-}
-
-input[type="range"].video-progress:hover::-webkit-slider-runnable-track {
-  height: 5px;
-}
-
-input[type="range"].video-progress::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: hsl(var(--primary));
-  margin-top: -5.5px;
-  box-shadow: 0 0 8px hsl(var(--primary) / 0.5);
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
-input[type="range"].video-progress:hover::-webkit-slider-thumb {
-  opacity: 1;
-}
-
-input[type="range"].video-progress::-moz-range-track {
-  height: 3px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2);
-}
-
-input[type="range"].video-progress::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: hsl(var(--primary));
-  border: none;
-  box-shadow: 0 0 8px hsl(var(--primary) / 0.5);
 }
 
 /* Optional: Additional safeguard for landscape on mobile phones */
