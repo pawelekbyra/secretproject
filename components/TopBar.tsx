@@ -19,11 +19,12 @@ export default function TopBar({ toggleSidebar, isSidebarOpen }: TopBarProps) {
   const [hasUnread, setHasUnread] = useState(false);
 
   useEffect(() => {
-    if (user?.notifications) {
-      const unread = user.notifications.some((n: any) => !n.read);
+    const notifications = (user as any)?.notifications;
+    if (notifications) {
+      const unread = notifications.some((n: any) => !n.read);
       setHasUnread(unread);
     }
-  }, [user?.notifications]);
+  }, [user]);
 
   const getPageTitle = () => {
     if (pathname === '/') return 'Strona Główna';
