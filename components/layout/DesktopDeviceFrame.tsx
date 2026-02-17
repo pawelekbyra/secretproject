@@ -57,7 +57,8 @@ const DesktopDeviceFrame: React.FC<DesktopDeviceFrameProps> = ({ children }) => 
           <div
             className="
               relative bg-[#121212]
-              h-[min(85vh,900px)] aspect-[9/19.5] w-auto
+              h-[min(85vh,900px)] aspect-[9/17.5] w-auto
+              min-w-[380px]
               max-w-[calc(100vw-2rem)]
               rounded-[3.5rem]
               border-[10px] border-[#2a2a2a]
