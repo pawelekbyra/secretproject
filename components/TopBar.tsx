@@ -126,57 +126,57 @@ const TopBar = () => {
   return (
     <>
       <div
-        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10 px-1"
+        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10 px-6"
         style={{
           height: 'var(--topbar-height)',
-          paddingTop: 'max(16px, var(--safe-area-top))',
+          paddingTop: 'max(8px, var(--safe-area-top))',
         }}
       >
         {!user ? (
           // --- WIDOK DLA UŻYTKOWNIKÓW NIEZALOGOWANYCH ---
           <>
-            <div className="flex justify-start">
+            <div className="flex justify-start w-8">
               <motion.button
                 whileTap={{ scale: 0.9 }}
-                className="p-1 ml-0.5 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
+                className="p-1 -ml-2 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
                 onClick={handleLoggedOutMenuClick}
                 aria-label={t('menuAriaLabel')}
               >
-                <MenuIcon className="w-6 h-6" />
+                <MenuIcon className="w-5 h-5" />
               </motion.button>
             </div>
             <div className="flex justify-center flex-1 text-center min-w-0">
               <button
                 onClick={handleToggleLoginPanel}
-                className="relative flex items-center justify-center font-bold text-[13px] uppercase tracking-tight text-white transition-all duration-300 focus:outline-none whitespace-nowrap outline-none px-1"
+                className="relative flex items-center justify-center font-bold text-[12px] uppercase tracking-tight text-white transition-all duration-300 focus:outline-none outline-none px-1"
               >
-                <span className="truncate">{loggedOutTitle}</span>
+                <span className="truncate max-w-[180px]">{loggedOutTitle}</span>
                 <div className="absolute left-full ml-0.5 flex items-center">
                   <ChevronDown
-                    size={16}
+                    size={14}
                     className={`transition-transform duration-200 ${isLoginPanelOpen ? 'rotate-180' : ''}`}
                   />
                 </div>
               </button>
             </div>
-            <div className="flex justify-end items-center gap-1">
+            <div className="flex justify-end items-center w-8">
               <motion.button
                  whileTap={{ scale: 0.9 }}
-                 className="p-1 mr-0.5 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
+                 className="p-1 -mr-2 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
                  onClick={handleBellClick}
                  aria-label={t('notificationAriaLabel')}
               >
-                <BellIcon className="w-6 h-6" />
+                <BellIcon className="w-5 h-5" />
               </motion.button>
             </div>
           </>
         ) : (
           // --- WIDOK DLA ZALOGOWANYCH UŻYTKOWNIKÓW ---
           <>
-            <div className="flex justify-start">
+            <div className="flex justify-start w-8">
               <Popover open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <PopoverTrigger asChild>
-                    <Button variant="ghost" size="icon" aria-label={t('menuAriaLabel')} className="ml-0.5">
+                    <Button variant="ghost" size="icon" aria-label={t('menuAriaLabel')} className="-ml-1">
                         <MenuIcon className="w-6 h-6" />
                     </Button>
                   </PopoverTrigger>
@@ -255,13 +255,13 @@ const TopBar = () => {
               </Popover>
 
             </div>
-            <div className="flex justify-center flex-1">
-              <span className="font-semibold text-lg text-white">{loggedInTitle}</span>
+            <div className="flex justify-center flex-1 min-w-0">
+              <span className="font-bold text-[12px] uppercase tracking-tight text-white truncate px-1">{loggedInTitle}</span>
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-end w-8">
               <div className="relative">
-                <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="mr-0.5 relative">
-                  <BellIcon className="w-6 h-6" />
+                <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="-mr-2 relative">
+                  <BellIcon className="w-5 h-5" />
                   {unreadCount > 0 && (
                     <span className="absolute top-1 right-2 block h-2 w-2 rounded-full bg-pink-500 ring-2 ring-black" />
                   )}
