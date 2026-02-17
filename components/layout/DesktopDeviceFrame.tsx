@@ -60,15 +60,15 @@ const DesktopDeviceFrame: React.FC<DesktopDeviceFrameProps> = ({ children }) => 
               h-[min(85vh,900px)] aspect-[9/17.5] w-auto
               min-w-[380px]
               max-w-[calc(100vw-2rem)]
-              rounded-[3.5rem]
-              border-[10px] border-[#2a2a2a]
-              shadow-[0_0_0_2px_#3a3a3a,0_20px_60px_-10px_rgba(0,0,0,0.8)]
+              rounded-[2.2rem]
+              border-[4px] border-[#1a1a1a]
+              shadow-[0_0_0_1px_#2a2a2a,0_20px_60px_-10px_rgba(0,0,0,0.8)]
               overflow-hidden
               z-20
             "
           >
             {/* Ekran */}
-            <div className="w-full h-full bg-black overflow-hidden relative rounded-[2.8rem] select-none">
+            <div className="w-full h-full bg-black overflow-hidden relative rounded-[1.8rem] select-none">
                {children}
             </div>
           </div>
