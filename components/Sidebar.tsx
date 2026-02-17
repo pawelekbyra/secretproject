@@ -105,14 +105,16 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   // Shared styles
-  const iconSize = 26;
-  const buttonClass = "flex flex-col items-center gap-1 justify-center cursor-pointer group";
-  const labelClass = "text-[10px] leading-none text-center font-medium text-white/80 group-hover:text-white transition-colors";
-  const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200";
+  const iconSize = 24;
+  const buttonClass = "flex flex-col items-center gap-1.5 justify-center cursor-pointer group";
+  const labelClass = "text-[10px] leading-none text-center font-semibold text-foreground/70 group-hover:text-foreground/90 transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]";
+  const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 group-active:scale-90";
   const iconGlass = {
-    background: 'var(--glass-bg)',
-    backdropFilter: 'blur(12px)',
-    border: '1px solid var(--glass-border)'
+    background: 'rgba(0, 0, 0, 0.25)',
+    backdropFilter: 'blur(16px)',
+    WebkitBackdropFilter: 'blur(16px)',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
   };
 
   // Determine avatar border color
@@ -130,26 +132,29 @@ const Sidebar: React.FC<SidebarProps> = ({
       }}
     >
       {/* Avatar / Author Profile */}
-      <div className="relative w-12 h-12 mb-1.5">
+      <div className="relative w-12 h-12 mb-2">
         <button
             onClick={handleOpenAuthorProfile}
             className={cn(
-                "w-full h-full flex items-center justify-center text-white bg-gray-600 rounded-full overflow-hidden border-2 shadow-[0_0_15px_rgba(255,255,255,0.5)]",
+                "w-full h-full flex items-center justify-center bg-secondary rounded-full overflow-hidden border-2 shadow-lg shadow-black/40",
                 avatarBorderColor
             )}
         >
            {displayAvatar ? (
              <Image src={displayAvatar} alt="Author" width={48} height={48} className="w-full h-full object-cover" />
            ) : (
-             <User size={32} strokeWidth={1.4} />
+             <User size={28} strokeWidth={1.5} className="text-foreground/60" />
            )}
         </button>
          {showPlusIcon && (
-             <div
-                className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-5 h-5 rounded-full flex items-center justify-center text-white border-2 border-white pointer-events-none bg-primary"
+             <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 15, delay: 0.2 }}
+                className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-5 h-5 rounded-full flex items-center justify-center text-primary-foreground pointer-events-none bg-primary shadow-md shadow-primary/30"
               >
-                <Plus size={14} strokeWidth={4} />
-              </div>
+                <Plus size={12} strokeWidth={4} />
+              </motion.div>
          )}
       </div>
 
@@ -165,7 +170,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <Heart
             size={iconSize}
             strokeWidth={1.8}
-            className={`transition-colors duration-200 ${(isLiked && isLoggedIn) ? 'fill-[var(--accent-color,theme(colors.rose.500))] stroke-white' : 'fill-transparent stroke-white/90'}`}
+            className={`transition-all duration-300 ${(isLiked && isLoggedIn) ? 'fill-primary stroke-primary scale-110' : 'fill-transparent stroke-foreground/80'}`}
           />
         </div>
         <span className={labelClass}>{formatCount(currentLikes)}</span>
@@ -180,7 +185,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         whileTap={{ scale: 0.85 }}
       >
         <div className={iconWrapClass} style={iconGlass}>
-          <MessageSquare size={iconSize} strokeWidth={1.8} className="stroke-white/90" />
+          <MessageSquare size={iconSize} strokeWidth={1.8} className="stroke-foreground/80" />
         </div>
         <span className={labelClass}>{formatCount(currentCommentCount)}</span>
       </motion.button>
@@ -193,7 +198,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         whileTap={{ scale: 0.85 }}
       >
         <div className={iconWrapClass} style={iconGlass}>
-          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.0" strokeLinecap="round" strokeLinejoin="round" width={iconSize} height={iconSize} className="stroke-white/90">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.0" strokeLinecap="round" strokeLinejoin="round" width={iconSize} height={iconSize} className="stroke-foreground/80">
               <polyline points="15 14 20 9 15 4"></polyline>
               <path d="M4 20v-7a4 4 0 0 1 4-4h12"></path>
           </svg>
@@ -209,7 +214,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         whileTap={{ scale: 0.85 }}
       >
         <div className={iconWrapClass} style={iconGlass}>
-          <svg viewBox="0 0 24 24" className="text-white/90" style={{ width: iconSize, height: iconSize }} fill="none" stroke="currentColor" strokeWidth="1.8">
+          <svg viewBox="0 0 24 24" className="text-foreground/80" style={{ width: iconSize, height: iconSize }} fill="none" stroke="currentColor" strokeWidth="1.8">
              <rect x="2" y="7" width="20" height="12" rx="2" ry="2" />
              <path d="M2 10h20" />
              <circle cx="18" cy="13" r="2" />

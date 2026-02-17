@@ -126,10 +126,13 @@ const TopBar = () => {
   return (
     <>
       <div
-        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10"
+        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between text-foreground"
         style={{
           height: 'var(--topbar-height)',
           paddingTop: 'var(--safe-area-top)',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, transparent 100%)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
         }}
       >
         {!user ? (
@@ -137,26 +140,24 @@ const TopBar = () => {
           <>
             <div className="flex justify-start">
               <motion.button
-                whileTap={{ scale: 0.9 }}
-                className="p-1 ml-1.5 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
+                whileTap={{ scale: 0.85 }}
+                className="p-2 ml-1 text-foreground/80 hover:text-foreground rounded-full hover:bg-foreground/5 outline-none"
                 onClick={handleLoggedOutMenuClick}
                 aria-label={t('menuAriaLabel')}
               >
-                <MenuIcon className="w-6 h-6" />
+                <MenuIcon className="w-5 h-5" />
               </motion.button>
             </div>
             <div className="flex justify-center flex-1 text-center">
               <button
                 onClick={handleToggleLoginPanel}
-                className="relative flex items-center justify-center font-semibold text-sm text-white transition-all duration-300 focus:outline-none whitespace-nowrap outline-none"
+                className="relative flex items-center justify-center gap-1 font-display font-semibold text-sm text-foreground/90 hover:text-foreground focus:outline-none whitespace-nowrap outline-none"
               >
-                <span>{loggedOutTitle}</span>
-                <div className="absolute left-full ml-0.5 flex items-center">
-                  <ChevronDown
-                    size={16}
-                    className={`transition-transform duration-200 ${isLoginPanelOpen ? 'rotate-180' : ''}`}
-                  />
-                </div>
+                <span className="tracking-tight">{loggedOutTitle}</span>
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-300 ease-out text-foreground/50 ${isLoginPanelOpen ? 'rotate-180' : ''}`}
+                />
               </button>
             </div>
             <div className="flex justify-end items-center gap-1">
@@ -166,12 +167,12 @@ const TopBar = () => {
                 </Button>
               )}
               <motion.button
-                 whileTap={{ scale: 0.9 }}
-                 className="p-1 mr-1.5 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
+                 whileTap={{ scale: 0.85 }}
+                 className="p-2 mr-1 text-foreground/80 hover:text-foreground rounded-full hover:bg-foreground/5 outline-none"
                  onClick={handleBellClick}
                  aria-label={t('notificationAriaLabel')}
               >
-                <BellIcon className="w-6 h-6" />
+                <BellIcon className="w-5 h-5" />
               </motion.button>
             </div>
           </>
@@ -187,46 +188,46 @@ const TopBar = () => {
                   </PopoverTrigger>
                   <PopoverContent
                     align="start"
-                    sideOffset={5}
-                    className="w-auto min-w-[150px] p-2 bg-zinc-900 border-zinc-800 text-white shadow-xl rounded-xl data-[state=closed]:slide-out-to-top-5 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
+                    sideOffset={8}
+                    className="w-auto min-w-[180px] p-2 bg-surface-elevated/95 backdrop-blur-xl border-border/50 text-foreground shadow-2xl shadow-black/50 rounded-2xl"
                   >
                       <div className="flex flex-col gap-2">
                           {/* Admin Button */}
                           {user.role === 'admin' && (
                               <button
                                   onClick={handleOpenAdmin}
-                                  className="flex flex-row items-center gap-3 p-3 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors w-full mb-1 border border-pink-500/30"
+                                  className="flex flex-row items-center gap-3 px-3 py-2.5 hover:bg-foreground/5 rounded-xl w-full mb-0.5 border border-primary/20 bg-primary/5"
                               >
-                                  <Settings size={20} className="text-pink-500" />
-                                  <span className="text-sm font-medium whitespace-nowrap text-pink-100">Zarządzaj</span>
+                                  <Settings size={18} className="text-primary" />
+                                  <span className="text-sm font-medium whitespace-nowrap text-primary/90">Zarządzaj</span>
                               </button>
                           )}
                           <button
                             onClick={handleOpenAccount}
-                            className="flex flex-row items-center gap-3 p-3 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors w-full"
+                            className="flex flex-row items-center gap-3 px-3 py-2.5 hover:bg-foreground/5 rounded-xl w-full"
                           >
-                              <User size={20} className="text-blue-400" />
-                              <span className="text-sm font-medium whitespace-nowrap">{t('account')}</span>
+                              <User size={18} className="text-blue-400" />
+                              <span className="text-sm font-medium whitespace-nowrap text-foreground/90">{t('account')}</span>
                           </button>
                           <button
                             onClick={handleLogout}
-                            className="flex flex-row items-center gap-3 p-3 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors w-full"
+                            className="flex flex-row items-center gap-3 px-3 py-2.5 hover:bg-foreground/5 rounded-xl w-full"
                           >
-                              <LogOut size={20} className="text-red-400" />
-                              <span className="text-sm font-medium whitespace-nowrap">{t('logout')}</span>
+                              <LogOut size={18} className="text-red-400" />
+                              <span className="text-sm font-medium whitespace-nowrap text-foreground/90">{t('logout')}</span>
                           </button>
 
                           {/* Apki Section */}
-                          <div className="mt-2 pt-2 border-t border-zinc-800 flex flex-col gap-1">
+                          <div className="mt-1.5 pt-1.5 border-t border-border/30 flex flex-col gap-0.5">
                               <button
                                 onClick={() => setIsAppsExpanded(!isAppsExpanded)}
-                                className="px-3 py-2 flex items-center justify-between text-zinc-500 hover:text-white transition-colors"
+                                className="px-3 py-2 flex items-center justify-between text-muted-foreground hover:text-foreground"
                               >
                                   <div className="flex items-center gap-2">
-                                      <LayoutGrid size={14} />
-                                      <span className="text-[10px] font-bold uppercase tracking-wider">{t('apps') || 'Apki'}</span>
+                                      <LayoutGrid size={13} />
+                                      <span className="text-[10px] font-bold uppercase tracking-widest">{t('apps') || 'Apki'}</span>
                                   </div>
-                                  <ChevronDown size={14} className={cn("transition-transform", isAppsExpanded && "rotate-180")} />
+                                  <ChevronDown size={13} className={cn("transition-transform duration-300", isAppsExpanded && "rotate-180")} />
                               </button>
 
                               <AnimatePresence>
@@ -235,21 +236,22 @@ const TopBar = () => {
                                         initial={{ height: 0, opacity: 0 }}
                                         animate={{ height: 'auto', opacity: 1 }}
                                         exit={{ height: 0, opacity: 0 }}
-                                        className="overflow-hidden flex flex-col gap-1"
+                                        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                                        className="overflow-hidden flex flex-col gap-0.5"
                                       >
                                           <button
                                             onClick={() => { setActiveModal('financial'); setIsMenuOpen(false); }}
-                                            className="flex flex-row items-center gap-3 p-3 bg-zinc-800/50 hover:bg-zinc-700 rounded-lg transition-colors w-full"
+                                            className="flex flex-row items-center gap-3 px-3 py-2.5 hover:bg-foreground/5 rounded-xl w-full"
                                           >
                                               <Wallet size={18} className="text-emerald-400" />
-                                              <span className="text-sm font-medium whitespace-nowrap">{t('financialJournal') || 'Dziennik Finansowy'}</span>
+                                              <span className="text-sm font-medium whitespace-nowrap text-foreground/90">{t('financialJournal') || 'Dziennik Finansowy'}</span>
                                           </button>
                                           <button
                                             onClick={() => { setActiveModal('habits'); setIsMenuOpen(false); }}
-                                            className="flex flex-row items-center gap-3 p-3 bg-zinc-800/50 hover:bg-zinc-700 rounded-lg transition-colors w-full"
+                                            className="flex flex-row items-center gap-3 px-3 py-2.5 hover:bg-foreground/5 rounded-xl w-full"
                                           >
                                               <CheckCircle size={18} className="text-orange-400" />
-                                              <span className="text-sm font-medium whitespace-nowrap">{t('habits') || 'Nawyki'}</span>
+                                              <span className="text-sm font-medium whitespace-nowrap text-foreground/90">{t('habits') || 'Nawyki'}</span>
                                           </button>
                                       </motion.div>
                                   )}
@@ -261,7 +263,7 @@ const TopBar = () => {
 
             </div>
             <div className="flex justify-center flex-1">
-              <span className="font-semibold text-lg text-white">{loggedInTitle}</span>
+              <span className="font-display font-bold text-base tracking-tight text-foreground">{loggedInTitle}</span>
             </div>
             <div className="flex justify-end">
               {isDesktop && (
@@ -273,7 +275,7 @@ const TopBar = () => {
                 <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="mr-1.5 relative">
                   <BellIcon className="w-6 h-6" />
                   {unreadCount > 0 && (
-                    <span className="absolute top-1 right-2 block h-2 w-2 rounded-full bg-pink-500 ring-2 ring-black" />
+                    <span className="absolute top-1.5 right-2 block h-2 w-2 rounded-full bg-primary ring-2 ring-background animate-glow-pulse" />
                   )}
                 </Button>
               </div>
@@ -286,13 +288,15 @@ const TopBar = () => {
       <AnimatePresence>
         {isLoginPanelOpen && (
           <motion.div
-            className="absolute left-0 w-full z-[50] bg-black/80 backdrop-blur-md pt-0 border-b border-zinc-800"
-            style={{ top: 'var(--topbar-height)' }}
-            initial={{ y: '-100%' }}
-            animate={{ y: '0%', transition: { type: 'spring', stiffness: 200, damping: 30 } }}
-            exit={{ y: '-100%', transition: { ease: 'easeInOut', duration: 0.5 } }}
+            className="absolute left-0 w-full z-[50] backdrop-blur-xl border-b border-border/30"
+            style={{
+              top: 'var(--topbar-height)',
+              background: 'linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0.75))',
+            }}
+            initial={{ y: '-100%', opacity: 0.5 }}
+            animate={{ y: '0%', opacity: 1, transition: { type: 'spring', stiffness: 260, damping: 28 } }}
+            exit={{ y: '-100%', opacity: 0, transition: { ease: [0.16, 1, 0.3, 1], duration: 0.4 } }}
           >
-            {/* Zmieniono padding na pt-5 (20px) i usunięto dodatkowy div spacerujący, aby wyrównać odległości (20px góra / 20px dół) */}
             <div className="relative z-[70] pt-5">
                 <LoginForm onLoginSuccess={() => {
                   setIsLoginPanelOpen(false);
