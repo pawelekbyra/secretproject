@@ -13,7 +13,7 @@ import CommentsModal from './CommentsModal';
 import AccountPanel from './AccountPanel';
 import HabitTrackerModal from './HabitTrackerModal';
 import NotificationPopup from './NotificationPopup';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useUser } from '@/context/UserContext';
 import PWAInstallPrompt from './PWAInstallPrompt';
 import { ToastContainer } from '@/context/ToastContext';
