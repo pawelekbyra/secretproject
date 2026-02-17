@@ -99,7 +99,7 @@ const NotificationItem: React.FC<{
         </div>
 
         <div className="flex items-center gap-2 pt-1">
-          {notification.unread && <div className="w-2 h-2 bg-primary rounded-full animate-glow-pulse" />}
+          {notification.unread && <div className="w-2 h-2 bg-pink-500 rounded-full" />}
 
           <div onClick={handleToggle}>
              <ChevronDown size={14} className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
@@ -297,18 +297,17 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ isOpen, onClose }
       {isOpen && (
         <motion.div
           // Zmiany: z-[80] (nad TopBar z-[60]), items-start (góra), pt-3 (odstęp od krawędzi)
-          className="absolute inset-0 z-[80] flex items-start justify-center bg-black/40 backdrop-blur-[2px] pt-3 md:pt-5"
+          className="absolute inset-0 z-[80] flex items-start justify-center bg-black/50 pt-3 md:pt-5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="w-[360px] max-w-[calc(100vw-20px)] border border-border/30 rounded-2xl shadow-2xl shadow-black/50 text-foreground flex flex-col overflow-hidden"
+            className="w-[350px] max-w-[calc(100vw-20px)] bg-[rgba(30,30,30,0.9)] border border-white/15 rounded-xl shadow-lg text-white flex flex-col"
             style={{
-              background: 'hsla(var(--surface), 0.92)',
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
             }}
             // Zmiany: animacja y z góry (-10) a nie z dołu (10)
             initial={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -317,10 +316,10 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ isOpen, onClose }
             transition={{ duration: 0.2, ease: 'easeOut' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 flex justify-between items-center px-4 py-3.5 border-b border-border/20">
-              <h3 className="font-display font-semibold text-sm tracking-tight">{t('notificationsTitle')}</h3>
-              <button onClick={onClose} className="text-muted-foreground hover:text-foreground p-1 rounded-full hover:bg-foreground/5">
-                <X size={18} />
+            <div className="flex-shrink-0 flex justify-between items-center p-4 border-b border-white/10">
+              <h3 className="font-semibold text-base">{t('notificationsTitle')}</h3>
+              <button onClick={onClose} className="text-white/70 hover:text-white transition-colors">
+                <X size={20} />
               </button>
             </div>
             {renderContent()}

@@ -62,20 +62,14 @@ const VideoControls: React.FC<VideoControlsProps> = ({
 
   return (
     <div
-        className="flex items-center gap-2 text-foreground rounded-2xl mt-2 max-w-full px-3 py-2.5"
-        style={{
-          background: 'rgba(0, 0, 0, 0.3)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255, 255, 255, 0.06)',
-        }}
+        className="flex items-center gap-2 text-white bg-black/30 p-2 rounded-lg mt-2 backdrop-blur-sm max-w-full"
         onClick={(e) => e.stopPropagation()}
     >
-      <button onClick={onTogglePlay} className="p-0.5 hover:text-primary active:scale-90 shrink-0">
-        {isPlaying ? <Pause size={18} strokeWidth={2.5} /> : <Play size={18} strokeWidth={2.5} />}
+      <button onClick={onTogglePlay} className="p-1 hover:text-pink-500 transition-colors shrink-0">
+        {isPlaying ? <Pause size={20} /> : <Play size={20} />}
       </button>
 
-      <span className="text-[10px] font-mono w-9 text-center text-foreground/60 tabular-nums">{formatTime(currentTime)}</span>
+      <span className="text-xs font-mono w-10 text-center">{formatTime(currentTime)}</span>
 
       <input
         ref={progressRef}
@@ -89,13 +83,13 @@ const VideoControls: React.FC<VideoControlsProps> = ({
         onChange={handleSeekChange}
         onMouseUp={handleSeekEnd}
         onTouchEnd={handleSeekEnd}
-        className="flex-1 h-[3px] bg-foreground/20 rounded-full appearance-none cursor-pointer hover:bg-foreground/30 accent-primary"
+        className="flex-1 h-1 bg-white/30 rounded-lg appearance-none cursor-pointer hover:bg-white/50 transition-colors accent-pink-500"
       />
 
-      <span className="text-[10px] font-mono w-9 text-center text-foreground/60 tabular-nums">{formatTime(duration)}</span>
+      <span className="text-xs font-mono w-10 text-center">{formatTime(duration)}</span>
 
-      <button onClick={onToggleMute} className="p-0.5 hover:text-primary active:scale-90">
-        {isMuted ? <VolumeX size={18} strokeWidth={2.5} /> : <Volume2 size={18} strokeWidth={2.5} />}
+      <button onClick={onToggleMute} className="p-1 hover:text-pink-500 transition-colors">
+        {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
       </button>
     </div>
   );

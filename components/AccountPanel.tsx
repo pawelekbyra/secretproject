@@ -49,8 +49,7 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
       onClick={onClose} // Close on overlay click
     >
       <motion.div
-        className="absolute top-0 left-0 h-full w-full max-w-md flex flex-col shadow-2xl shadow-black/60"
-        style={{ background: 'hsl(var(--surface))' }}
+        className="absolute top-0 left-0 h-full w-full max-w-md bg-gradient-to-br from-[#121212] to-[#1e1e1e] flex flex-col shadow-2xl"
         // Zaktualizowana animacja: taka sama jak AuthorProfileModal, ale z lewej strony (x: -100%)
         initial={{ x: '-100%' }}
         animate={{ x: '0%' }}
@@ -60,39 +59,41 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
       >
         {/* Top Bar - styled to be distinct but integrated */}
         <div
-            className="relative flex-shrink-0 flex items-center justify-center backdrop-blur-md border-b border-border/20 z-10"
-            style={{ height: 'var(--topbar-height)', paddingTop: 'var(--safe-area-top)', background: 'hsl(var(--surface))' }}
+            className="relative flex-shrink-0 flex items-center justify-center bg-[#121212]/90 backdrop-blur-md border-b border-white/5 shadow-sm z-10"
+            style={{ height: 'var(--topbar-height)', paddingTop: 'var(--safe-area-top)'}}
         >
-          <h2 className="text-sm font-display font-semibold text-foreground tracking-tight">{t('account') || 'Konto'}</h2>
+          <div className="flex flex-col items-center gap-1">
+             <h2 className="text-base font-semibold text-white tracking-wide">{t('account') || 'Konto'}</h2>
+          </div>
           <button
             onClick={onClose}
-            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-foreground/5 active:scale-90"
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-all active:scale-90"
             aria-label={t('closeAccountAriaLabel')}
           >
-              <X size={18} />
+              <X size={20} />
           </button>
         </div>
 
         {/* Tabs Header */}
-        <div className="flex-shrink-0 flex border-b border-border/20" style={{ background: 'hsl(var(--surface))' }}>
+        <div className="flex-shrink-0 flex bg-[#1a1a1a] border-b border-white/5">
           <button
             onClick={() => handleTabClick('profile')}
             aria-label={t('profileTab')}
-            className={`flex-1 py-3.5 text-xs font-semibold uppercase tracking-wider border-b-2 transition-all ${activeTab === 'profile' ? 'text-primary border-primary bg-primary/5' : 'text-muted-foreground border-transparent hover:text-foreground/70 hover:bg-foreground/3'}`}
+            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'profile' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
           >
             {t('profileTab')}
           </button>
           <button
             onClick={() => handleTabClick('password')}
             aria-label={t('passwordTab')}
-            className={`flex-1 py-3.5 text-xs font-semibold uppercase tracking-wider border-b-2 transition-all ${activeTab === 'password' ? 'text-primary border-primary bg-primary/5' : 'text-muted-foreground border-transparent hover:text-foreground/70 hover:bg-foreground/3'}`}
+            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'password' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
           >
             {t('passwordTab')}
           </button>
           <button
             onClick={() => handleTabClick('delete')}
             aria-label={t('deleteTab')}
-            className={`flex-1 py-3.5 text-xs font-semibold uppercase tracking-wider border-b-2 transition-all ${activeTab === 'delete' ? 'text-primary border-primary bg-primary/5' : 'text-muted-foreground border-transparent hover:text-foreground/70 hover:bg-foreground/3'}`}
+            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'delete' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
           >
             {t('deleteTab')}
           </button>
