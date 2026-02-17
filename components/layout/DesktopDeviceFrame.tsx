@@ -57,26 +57,19 @@ const DesktopDeviceFrame: React.FC<DesktopDeviceFrameProps> = ({ children }) => 
           <div
             className="
               relative bg-[#121212]
-              w-[400px] h-[85vh] max-h-[900px]
-              rounded-[50px]
-              border-[8px] border-[#2a2a2a]
+              h-[min(85vh,900px)] aspect-[9/19.5] w-auto
+              max-w-[calc(100vw-2rem)]
+              rounded-[3.5rem]
+              border-[10px] border-[#2a2a2a]
               shadow-[0_0_0_2px_#3a3a3a,0_20px_60px_-10px_rgba(0,0,0,0.8)]
               overflow-hidden
               z-20
             "
           >
-            {/* Notch / Dynamic Island */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-[20px] z-[9999] pointer-events-none flex items-center justify-center">
-                 <div className="w-[60px] h-[60px] bg-black/50 absolute -top-4 blur-xl rounded-full" />
-            </div>
-
             {/* Ekran */}
-            <div className="w-full h-full bg-black overflow-hidden relative rounded-[42px] select-none">
+            <div className="w-full h-full bg-black overflow-hidden relative rounded-[2.8rem] select-none">
                {children}
             </div>
-
-            {/* Odbicie światła na szkle (Glass reflection) */}
-            <div className="absolute inset-0 rounded-[42px] pointer-events-none bg-gradient-to-tr from-white/5 via-transparent to-transparent opacity-50 z-50" />
           </div>
         </div>
 
