@@ -11,6 +11,7 @@ import AdminModal from './AdminModal';
 import TippingModal from './TippingModal';
 import CommentsModal from './CommentsModal';
 import AccountPanel from './AccountPanel';
+import HabitTrackerModal from './HabitTrackerModal';
 import NotificationPopup from './NotificationPopup';
 import { AnimatePresence } from 'framer-motion';
 import { useUser } from '@/context/UserContext';
@@ -106,6 +107,18 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       />
       <AnimatePresence>
         {activeModal === 'account' && <AccountPanel key="account-panel" onClose={() => setActiveModal(null)} />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {activeModal === 'habits' && <HabitTrackerModal key="habits-modal" onClose={() => setActiveModal(null)} />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {activeModal === 'financial' && (
+            <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center p-6 text-center">
+                 <h2 className="text-2xl font-bold mb-4">Dziennik Finansowy</h2>
+                 <p className="text-white/60 mb-8">Ta funkcja będzie dostępna wkrótce! Pracujemy nad tym, abyś mógł lepiej zarządzać swoim sianem. 💸</p>
+                 <button onClick={() => setActiveModal(null)} className="px-8 py-3 bg-white text-black font-bold rounded-full">Zamknij</button>
+            </div>
+        )}
       </AnimatePresence>
 
       <PWAInstallPrompt />

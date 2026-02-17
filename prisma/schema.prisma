@@ -32,6 +32,7 @@ model User {
   likes          Like[]
   accounts       Account[]
   sessions       Session[]
+  habits         Habit[]
 
   // Relations added for completeness and to satisfy Prisma validation
   notificationsReceived Notification[] @relation("UserNotifications")
@@ -182,6 +183,34 @@ model PushSubscription {
   is_pwa_installed Boolean @default(false)
 
   @@map("push_subscriptions")
+}
+
+model Habit {
+  id          String     @id @default(cuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  icon        String?
+  type        String     @default("good") // "good" or "bad"
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  logs        HabitLog[]
+
+  @@map("habits")
+  @@index([userId])
+}
+
+model HabitLog {
+  id        String   @id @default(cuid())
+  habitId   String
+  habit     Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  date      DateTime // Date normalized to YYYY-MM-DD
+  isSuccess Boolean  // true = success (green), false = failure (red)
+  createdAt DateTime @default(now())
+
+  @@map("habit_logs")
+  @@unique([habitId, date])
+  @@index([habitId])
 }
 
 enum AccessLevel {
