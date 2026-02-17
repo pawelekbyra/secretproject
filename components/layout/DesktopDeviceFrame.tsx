@@ -67,18 +67,15 @@ const DesktopDeviceFrame: React.FC<DesktopDeviceFrameProps> = ({ children }) => 
               h-[94vh] aspect-[9/19] w-auto
               min-w-[360px]
               max-w-[calc(100vw-2rem)]
-              rounded-[3.2rem]
-              p-[10px]
+              rounded-[2.4rem]
+              p-[6px]
               bg-gradient-to-b from-zinc-800 to-zinc-950
               shadow-2xl shadow-black/80
               z-20
             "
           >
             {/* Inner frame/bezel */}
-            <div className="w-full h-full bg-black overflow-hidden relative rounded-[2.6rem] shadow-inner select-none border border-white/5">
-               {/* Speaker Slit */}
-               <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1 bg-zinc-800 rounded-full z-[70] opacity-50" />
-
+            <div className="w-full h-full bg-black overflow-hidden relative rounded-[2rem] shadow-inner select-none border border-white/5">
                {/* Screen Reflection Overlay */}
                <div className="absolute inset-0 pointer-events-none z-[65] opacity-20 bg-gradient-to-tr from-transparent via-white/5 to-white/10" />
 

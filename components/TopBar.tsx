@@ -129,7 +129,7 @@ const TopBar = () => {
         className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10 px-6"
         style={{
           height: 'var(--topbar-height)',
-          paddingTop: 'max(8px, var(--safe-area-top))',
+          paddingTop: 'var(--safe-area-top)',
         }}
       >
         {!user ? (
@@ -148,9 +148,9 @@ const TopBar = () => {
             <div className="flex justify-center flex-1 text-center min-w-0">
               <button
                 onClick={handleToggleLoginPanel}
-                className="relative flex items-center justify-center font-bold text-[12px] uppercase tracking-tight text-white transition-all duration-300 focus:outline-none outline-none px-1"
+                className="relative flex items-center justify-center font-bold text-[11px] tracking-tight text-white transition-all duration-300 focus:outline-none outline-none px-1"
               >
-                <span className="truncate max-w-[180px]">{loggedOutTitle}</span>
+                <span className="whitespace-nowrap">{loggedOutTitle}</span>
                 <div className="absolute left-full ml-0.5 flex items-center">
                   <ChevronDown
                     size={14}
@@ -219,7 +219,7 @@ const TopBar = () => {
                               >
                                   <div className="flex items-center gap-2">
                                       <LayoutGrid size={14} />
-                                      <span className="text-[10px] font-bold uppercase tracking-wider">{t('apps') || 'Apki'}</span>
+                                      <span className="text-[10px] font-bold tracking-wider">{t('apps') || 'Apki'}</span>
                                   </div>
                                   <ChevronDown size={14} className={cn("transition-transform", isAppsExpanded && "rotate-180")} />
                               </button>
@@ -256,7 +256,7 @@ const TopBar = () => {
 
             </div>
             <div className="flex justify-center flex-1 min-w-0">
-              <span className="font-bold text-[12px] uppercase tracking-tight text-white truncate px-1">{loggedInTitle}</span>
+              <span className="font-bold text-[11px] tracking-tight text-white truncate px-1">{loggedInTitle}</span>
             </div>
             <div className="flex justify-end w-8">
               <div className="relative">

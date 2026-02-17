@@ -194,7 +194,7 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                             <AlertCircle size={12} className="text-rose-500" />
                         )}
                         <p className={cn(
-                            "text-[10px] uppercase tracking-widest font-bold",
+                            "text-[10px] tracking-widest font-bold",
                             habit.type === 'good' ? "text-emerald-500/60" : "text-rose-500/60"
                         )}>
                             {habit.type === 'good' ? 'Pozytywne' : 'Wyzwanie'}
@@ -245,7 +245,7 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                 <div className="bg-zinc-900/30 p-4 rounded-3xl border border-white/5">
                     <div className="grid grid-cols-7 gap-2 mb-4">
                         {['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So', 'Nd'].map(d => (
-                            <div key={d} className="text-center text-[10px] uppercase text-white/20 font-black tracking-widest">{d}</div>
+                            <div key={d} className="text-center text-[10px] text-white/20 font-black tracking-widest">{d}</div>
                         ))}
                     </div>
                     <div className="grid grid-cols-7 gap-2">
@@ -293,14 +293,14 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                     <div className="p-4 bg-zinc-900/50 rounded-2xl border border-white/5 flex flex-col gap-1">
                         <div className="flex items-center gap-2 text-orange-500">
                             <Flame size={16} className="fill-current" />
-                            <span className="text-[10px] uppercase font-black tracking-widest">Streak</span>
+                            <span className="text-[10px] font-black tracking-widest">Seria</span>
                         </div>
                         <div className="text-2xl font-black italic">{calculateStreak(selectedHabit)} dni</div>
                     </div>
                     <div className="p-4 bg-zinc-900/50 rounded-2xl border border-white/5 flex flex-col gap-1">
                         <div className="flex items-center gap-2 text-indigo-500">
                             <Zap size={16} className="fill-current" />
-                            <span className="text-[10px] uppercase font-black tracking-widest">Skuteczność</span>
+                            <span className="text-[10px] font-black tracking-widest">Skuteczność</span>
                         </div>
                         <div className="text-2xl font-black italic">
                             {selectedHabit.logs.length > 0
@@ -330,12 +330,12 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                         </button>
                     )}
                     <div>
-                        <h1 className="text-3xl font-black tracking-tighter uppercase italic leading-none">
+                        <h1 className="text-3xl font-black tracking-tighter italic leading-none">
                             {selectedHabitId ? selectedHabit?.name : (lang === 'pl' ? 'Nawyki' : 'Habits')}
                         </h1>
                         {selectedHabit && (
                              <p className={cn(
-                                "text-[10px] font-bold uppercase tracking-widest mt-1",
+                                "text-[10px] font-bold tracking-widest mt-1",
                                 selectedHabit.type === 'good' ? "text-emerald-500" : "text-rose-500"
                              )}>
                                 {selectedHabit.type === 'good' ? 'Dobry nawyk' : 'Zły nawyk'}
@@ -358,23 +358,23 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                                 <div className="relative z-10">
                                     <div className="flex items-center gap-2 mb-2">
                                         <Star size={16} className="fill-yellow-300 text-yellow-300" />
-                                        <h2 className="text-sm font-black uppercase tracking-widest opacity-80">Twój Postęp</h2>
+                                        <h2 className="text-sm font-black tracking-widest opacity-80">Twój postęp</h2>
                                     </div>
                                     <h3 className="text-2xl font-black italic mb-6">Wykuj swą potęgę! 🔥</h3>
 
                                     <div className="flex gap-8">
                                         <div className="flex flex-col">
-                                            <span className="text-[10px] uppercase font-black opacity-60 tracking-wider mb-1">Dobre</span>
+                                            <span className="text-[10px] font-black opacity-60 tracking-wider mb-1">Dobre</span>
                                             <span className="text-3xl font-black">{goodHabits.length}</span>
                                         </div>
                                         <div className="w-[1px] bg-white/10" />
                                         <div className="flex flex-col">
-                                            <span className="text-[10px] uppercase font-black opacity-60 tracking-wider mb-1">Wyzwania</span>
+                                            <span className="text-[10px] font-black opacity-60 tracking-wider mb-1">Wyzwania</span>
                                             <span className="text-3xl font-black">{badHabits.length}</span>
                                         </div>
                                         <div className="w-[1px] bg-white/10" />
                                         <div className="flex flex-col">
-                                            <span className="text-[10px] uppercase font-black opacity-60 tracking-wider mb-1">Sukcesy</span>
+                                            <span className="text-[10px] font-black opacity-60 tracking-wider mb-1">Sukcesy</span>
                                             <span className="text-3xl font-black text-emerald-300">
                                                 {habits?.reduce((acc, h) => acc + h.logs.filter(l => l.isSuccess).length, 0) || 0}
                                             </span>
@@ -390,7 +390,7 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                             <section className="flex flex-col gap-4">
                                 <div className="flex items-center gap-3 px-2">
                                     <div className="h-[2px] flex-1 bg-emerald-500/20" />
-                                    <h2 className="text-xs font-black uppercase tracking-[0.3em] text-emerald-500/50">Zalety</h2>
+                                    <h2 className="text-xs font-black tracking-[0.3em] text-emerald-500/50">Zalety</h2>
                                     <div className="h-[2px] flex-1 bg-emerald-500/20" />
                                 </div>
                                 <div className="grid grid-cols-1 gap-3">
@@ -404,7 +404,7 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                             <section className="flex flex-col gap-4">
                                 <div className="flex items-center gap-3 px-2">
                                     <div className="h-[2px] flex-1 bg-rose-500/20" />
-                                    <h2 className="text-xs font-black uppercase tracking-[0.3em] text-rose-500/50">Wyzwania</h2>
+                                    <h2 className="text-xs font-black tracking-[0.3em] text-rose-500/50">Wyzwania</h2>
                                     <div className="h-[2px] flex-1 bg-rose-500/20" />
                                 </div>
                                 <div className="grid grid-cols-1 gap-3">
@@ -427,10 +427,10 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                         {/* Add Habit Button */}
                         <button
                             onClick={() => setIsAddingHabit(true)}
-                            className="w-full py-6 rounded-3xl border-2 border-dashed border-white/5 text-white/20 hover:text-white hover:border-white/20 transition-all flex items-center justify-center gap-3 font-black uppercase tracking-widest text-sm hover:bg-white/[0.02]"
+                            className="w-full py-6 rounded-3xl border-2 border-dashed border-white/5 text-white/20 hover:text-white hover:border-white/20 transition-all flex items-center justify-center gap-3 font-black tracking-widest text-sm hover:bg-white/[0.02]"
                         >
                             <Plus size={24} />
-                            Dodaj nowy projekt
+                            Dodaj nowy cel
                         </button>
                     </div>
                 ) : (
@@ -481,14 +481,14 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <h2 className="text-2xl font-black italic mb-8 uppercase tracking-tighter">Nowy Cel</h2>
+                            <h2 className="text-2xl font-black italic mb-8 tracking-tighter">Nowy cel</h2>
 
                             {/* Type Toggle */}
                             <div className="flex p-1 bg-black rounded-2xl mb-8 border border-white/5">
                                 <button
                                     onClick={() => setNewHabitType('good')}
                                     className={cn(
-                                        "flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all",
+                                        "flex-1 py-3 rounded-xl text-xs font-black tracking-widest transition-all",
                                         newHabitType === 'good' ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20" : "text-white/40 hover:text-white"
                                     )}
                                 >
@@ -497,7 +497,7 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                                 <button
                                     onClick={() => setNewHabitType('bad')}
                                     className={cn(
-                                        "flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all",
+                                        "flex-1 py-3 rounded-xl text-xs font-black tracking-widest transition-all",
                                         newHabitType === 'bad' ? "bg-rose-500 text-white shadow-lg shadow-rose-500/20" : "text-white/40 hover:text-white"
                                     )}
                                 >
@@ -514,13 +514,13 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                                         className="aspect-square bg-white/5 border border-white/5 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white/10 transition-all group"
                                     >
                                         <span className="text-3xl group-hover:scale-125 transition-transform">{ph.icon}</span>
-                                        <span className="text-[10px] font-black uppercase tracking-tighter opacity-60">{ph.name}</span>
+                                        <span className="text-[10px] font-black tracking-tighter opacity-60">{ph.name}</span>
                                     </button>
                                 ))}
                             </div>
 
                             <div className="relative">
-                                <div className="text-[10px] uppercase text-white/20 font-black mb-3 ml-2 tracking-widest">Własna nazwa</div>
+                                <div className="text-[10px] text-white/20 font-black mb-3 ml-2 tracking-widest">Własna nazwa</div>
                                 <div className="flex gap-3">
                                     <input
                                         type="text"
