@@ -148,7 +148,7 @@ const TopBar = () => {
             <div className="flex justify-center flex-1 text-center min-w-0">
               <button
                 onClick={handleToggleLoginPanel}
-                className="relative flex items-center justify-center font-bold text-[11px] tracking-tight text-white transition-all duration-300 focus:outline-none outline-none px-1"
+                className="relative flex items-center justify-center font-bold text-[13px] tracking-tight text-white transition-all duration-300 focus:outline-none outline-none px-1"
               >
                 <span className="whitespace-nowrap">{loggedOutTitle}</span>
                 <div className="absolute left-full ml-0.5 flex items-center">
@@ -256,7 +256,7 @@ const TopBar = () => {
 
             </div>
             <div className="flex justify-center flex-1 min-w-0">
-              <span className="font-bold text-[11px] tracking-tight text-white truncate px-1">{loggedInTitle}</span>
+              <span className="font-bold text-[13px] tracking-tight text-white truncate px-1">{loggedInTitle}</span>
             </div>
             <div className="flex justify-end w-8">
               <div className="relative">
