@@ -37,9 +37,9 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
             return NextResponse.json({ success: false, message: 'Date is required' }, { status: 400 });
         }
 
-        // Normalize date to midnight UTC for storage
-        const normalizedDate = new Date(date);
-        normalizedDate.setUTCHours(0, 0, 0, 0);
+        // Normalize date to midnight UTC for storage (ensuring YYYY-MM-DD format)
+        const dateOnly = typeof date === 'string' ? date.substring(0, 10) : new Date(date).toISOString().substring(0, 10);
+        const normalizedDate = new Date(`${dateOnly}T00:00:00.000Z`);
 
         // Verify habit ownership
         const habit = await prisma.habit.findUnique({
