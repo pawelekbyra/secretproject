@@ -120,19 +120,16 @@ const TopBar = () => {
   };
 
   // Custom titles
-  const loggedOutTitle = lang === 'pl' ? "Nie masz psychy się zalogować" : "Too scared to log in?";
+  const loggedOutTitle = "Nie masz psychy się zalogować";
   const loggedInTitle = "Ting Tong";
 
   return (
     <>
       <div
-        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between text-foreground"
+        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between text-white bg-black"
         style={{
           height: 'var(--topbar-height)',
           paddingTop: 'var(--safe-area-top)',
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, transparent 100%)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
         }}
       >
         {!user ? (
@@ -141,7 +138,7 @@ const TopBar = () => {
             <div className="flex justify-start">
               <motion.button
                 whileTap={{ scale: 0.85 }}
-                className="p-2 ml-1 text-foreground/80 hover:text-foreground rounded-full hover:bg-foreground/5 outline-none"
+                className="p-2 ml-1 text-white/70 hover:text-white rounded-full hover:bg-white/10 transition-colors outline-none"
                 onClick={handleLoggedOutMenuClick}
                 aria-label={t('menuAriaLabel')}
               >
@@ -151,24 +148,24 @@ const TopBar = () => {
             <div className="flex justify-center flex-1 text-center">
               <button
                 onClick={handleToggleLoginPanel}
-                className="relative flex items-center justify-center gap-1 font-display font-semibold text-sm text-foreground/90 hover:text-foreground focus:outline-none whitespace-nowrap outline-none"
+                className="relative flex items-center justify-center gap-1.5 font-display font-black text-xs uppercase tracking-[0.1em] text-white/90 hover:text-white transition-all focus:outline-none whitespace-nowrap outline-none"
               >
-                <span className="tracking-tight">{loggedOutTitle}</span>
+                <span>{loggedOutTitle}</span>
                 <ChevronDown
-                  size={14}
-                  className={`transition-transform duration-300 ease-out text-foreground/50 ${isLoginPanelOpen ? 'rotate-180' : ''}`}
+                  size={12}
+                  className={`transition-transform duration-500 ease-out text-white/40 ${isLoginPanelOpen ? 'rotate-180 text-primary' : ''}`}
                 />
               </button>
             </div>
             <div className="flex justify-end items-center gap-1">
               {isDesktop && (
-                <Button variant="ghost" size="icon" onClick={handleShowPwaModal} aria-label={t('installPwaAriaLabel')}>
-                  <span className="text-sm font-semibold">{t('installAppText')}</span>
+                <Button variant="ghost" size="icon" onClick={handleShowPwaModal} aria-label={t('installPwaAriaLabel')} className="text-white/70 hover:text-white hover:bg-white/10">
+                  <span className="text-[10px] font-bold uppercase tracking-wider">{t('installAppText')}</span>
                 </Button>
               )}
               <motion.button
                  whileTap={{ scale: 0.85 }}
-                 className="p-2 mr-1 text-foreground/80 hover:text-foreground rounded-full hover:bg-foreground/5 outline-none"
+                 className="p-2 mr-1 text-white/70 hover:text-white rounded-full hover:bg-white/10 transition-colors outline-none"
                  onClick={handleBellClick}
                  aria-label={t('notificationAriaLabel')}
               >
@@ -182,14 +179,14 @@ const TopBar = () => {
             <div className="flex justify-start">
               <Popover open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <PopoverTrigger asChild>
-                    <Button variant="ghost" size="icon" aria-label={t('menuAriaLabel')} className="ml-1.5">
+                    <Button variant="ghost" size="icon" aria-label={t('menuAriaLabel')} className="ml-1.5 text-white/70 hover:text-white hover:bg-white/10">
                         <MenuIcon className="w-6 h-6" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent
                     align="start"
                     sideOffset={8}
-                    className="w-auto min-w-[180px] p-2 bg-surface-elevated/95 backdrop-blur-xl border-border/50 text-foreground shadow-2xl shadow-black/50 rounded-2xl"
+                    className="w-auto min-w-[200px] p-2 bg-black border border-white/10 text-white shadow-[0_20px_50px_rgba(0,0,0,0.8)] rounded-2xl backdrop-blur-2xl"
                   >
                       <div className="flex flex-col gap-2">
                           {/* Admin Button */}
@@ -263,19 +260,19 @@ const TopBar = () => {
 
             </div>
             <div className="flex justify-center flex-1">
-              <span className="font-display font-bold text-base tracking-tight text-foreground">{loggedInTitle}</span>
+              <span className="font-display font-black text-sm uppercase tracking-[0.15em] text-white">{loggedInTitle}</span>
             </div>
             <div className="flex justify-end">
               {isDesktop && (
-                <Button variant="ghost" size="icon" onClick={handleShowPwaModal} aria-label={t('installPwaAriaLabel')}>
-                  <span className="text-sm font-semibold">{t('installAppText')}</span>
+                <Button variant="ghost" size="icon" onClick={handleShowPwaModal} aria-label={t('installPwaAriaLabel')} className="text-white/70 hover:text-white hover:bg-white/10">
+                  <span className="text-[10px] font-bold uppercase tracking-widest">{t('installAppText')}</span>
                 </Button>
               )}
               <div className="relative">
-                <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="mr-1.5 relative">
+                <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="mr-1.5 relative text-white/70 hover:text-white hover:bg-white/10">
                   <BellIcon className="w-6 h-6" />
                   {unreadCount > 0 && (
-                    <span className="absolute top-1.5 right-2 block h-2 w-2 rounded-full bg-primary ring-2 ring-background animate-glow-pulse" />
+                    <span className="absolute top-2 right-2.5 block h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_hsl(var(--primary))] animate-pulse" />
                   )}
                 </Button>
               </div>

@@ -115,21 +115,19 @@ const Preloader: React.FC = () => {
                 transition={{ duration: 0.4, ease: 'easeOut' }}
               >
                 <div className="text-center w-full max-w-xs flex flex-col items-center">
-                  <h2 className="text-base font-display font-semibold text-foreground/80 mb-5 tracking-tight">{t('selectLang')}</h2>
-                  <div className="flex flex-col gap-3 w-full">
+                  <h2 className="text-[10px] font-display font-black text-white/40 mb-6 uppercase tracking-[0.2em]">{t('selectLang')}</h2>
+                  <div className="flex flex-col gap-3 w-full px-4">
                     <motion.button
                       onClick={() => handleLangSelect('pl')}
-                      className="bg-foreground/5 border border-border/40 hover:bg-foreground/10 hover:border-border/60 text-sm py-3.5 rounded-2xl font-medium text-foreground/90 backdrop-blur-sm"
-                      whileTap={{ scale: 0.97 }}
-                      whileHover={{ y: -1 }}
+                      className="bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-xs py-4 rounded-2xl font-display font-black text-white uppercase tracking-[0.1em] backdrop-blur-xl transition-all"
+                      whileTap={{ scale: 0.95 }}
                     >
                       {t('polish')}
                     </motion.button>
                     <motion.button
                       onClick={() => handleLangSelect('en')}
-                      className="bg-foreground/5 border border-border/40 hover:bg-foreground/10 hover:border-border/60 text-sm py-3.5 rounded-2xl font-medium text-foreground/90 backdrop-blur-sm"
-                      whileTap={{ scale: 0.97 }}
-                      whileHover={{ y: -1 }}
+                      className="bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-xs py-4 rounded-2xl font-display font-black text-white uppercase tracking-[0.1em] backdrop-blur-xl transition-all"
+                      whileTap={{ scale: 0.95 }}
                     >
                       {t('english')}
                     </motion.button>

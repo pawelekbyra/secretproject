@@ -106,33 +106,30 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   // Shared styles
   const iconSize = 24;
-  const buttonClass = "flex flex-col items-center gap-1.5 justify-center cursor-pointer group";
-  const labelClass = "text-[10px] leading-none text-center font-semibold text-foreground/70 group-hover:text-foreground/90 transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]";
-  const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 group-active:scale-90";
+  const buttonClass = "flex flex-col items-center gap-2 justify-center cursor-pointer group";
+  const labelClass = "text-[10px] leading-none text-center font-black uppercase tracking-widest text-white/60 group-hover:text-white transition-all drop-shadow-[0_2px_4px_rgba(0,0,0,1)]";
+  const iconWrapClass = "w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-active:scale-75 group-hover:scale-110 group-hover:neon-glow";
   const iconGlass = {
-    background: 'rgba(0, 0, 0, 0.25)',
-    backdropFilter: 'blur(16px)',
-    WebkitBackdropFilter: 'blur(16px)',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+    background: 'rgba(0, 0, 0, 0.4)',
+    backdropFilter: 'blur(24px) saturate(160%)',
+    WebkitBackdropFilter: 'blur(24px) saturate(160%)',
+    border: '1px solid rgba(255, 255, 255, 0.12)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
   };
 
   // Determine avatar border color
-  // In Sidebar, this is the Author's avatar.
-  // Requirement: Author = White border with white glow.
-  const avatarBorderColor = 'border-white';
+  const avatarBorderColor = 'border-white ring-4 ring-white/10 shadow-[0_0_20px_rgba(255,255,255,0.2)]';
 
   return (
     <aside
-      className="absolute right-0 flex flex-col items-center gap-[12px] z-20 pointer-events-auto"
+      className="absolute right-0 flex flex-col items-center gap-[18px] z-20 pointer-events-auto px-4"
       style={{
         top: 'calc((var(--app-height) - var(--topbar-height) - var(--bottombar-height)) / 2 + var(--topbar-height))',
         transform: 'translateY(-50%)',
-        textShadow: '0 0 4px rgba(0, 0, 0, 0.8)',
       }}
     >
       {/* Avatar / Author Profile */}
-      <div className="relative w-12 h-12 mb-2">
+      <div className="relative w-14 h-14 mb-4">
         <button
             onClick={handleOpenAuthorProfile}
             className={cn(
