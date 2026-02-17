@@ -126,7 +126,7 @@ const TopBar = () => {
   return (
     <>
       <div
-        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10 px-2"
+        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10 px-1"
         style={{
           height: 'var(--topbar-height)',
           paddingTop: 'var(--safe-area-top)',
@@ -138,7 +138,7 @@ const TopBar = () => {
             <div className="flex justify-start">
               <motion.button
                 whileTap={{ scale: 0.9 }}
-                className="p-1 ml-1.5 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
+                className="p-1 ml-0.5 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
                 onClick={handleLoggedOutMenuClick}
                 aria-label={t('menuAriaLabel')}
               >
@@ -162,7 +162,7 @@ const TopBar = () => {
             <div className="flex justify-end items-center gap-1">
               <motion.button
                  whileTap={{ scale: 0.9 }}
-                 className="p-1 mr-1.5 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
+                 className="p-1 mr-0.5 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
                  onClick={handleBellClick}
                  aria-label={t('notificationAriaLabel')}
               >
@@ -176,7 +176,7 @@ const TopBar = () => {
             <div className="flex justify-start">
               <Popover open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <PopoverTrigger asChild>
-                    <Button variant="ghost" size="icon" aria-label={t('menuAriaLabel')} className="ml-1.5">
+                    <Button variant="ghost" size="icon" aria-label={t('menuAriaLabel')} className="ml-0.5">
                         <MenuIcon className="w-6 h-6" />
                     </Button>
                   </PopoverTrigger>
@@ -260,7 +260,7 @@ const TopBar = () => {
             </div>
             <div className="flex justify-end">
               <div className="relative">
-                <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="mr-1.5 relative">
+                <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="mr-0.5 relative">
                   <BellIcon className="w-6 h-6" />
                   {unreadCount > 0 && (
                     <span className="absolute top-1 right-2 block h-2 w-2 rounded-full bg-pink-500 ring-2 ring-black" />
