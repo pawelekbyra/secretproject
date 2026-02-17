@@ -70,14 +70,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 px-4 pb-5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3 px-5 pb-6">
       <Input
         type="text"
         name="login"
         placeholder="Email"
         required
         autoComplete="username"
-        className="bg-white border-2 border-black text-black placeholder:text-gray-500 font-mono focus:ring-2 focus:ring-pink-500"
+        className="h-11 bg-foreground/5 border border-border/40 text-foreground placeholder:text-muted-foreground rounded-xl px-4 text-sm focus:border-primary/50 focus:bg-foreground/8 focus:ring-1 focus:ring-primary/20"
       />
       <Input
         type="password"
@@ -85,21 +85,21 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         placeholder={t('passwordPlaceholder')}
         required
         autoComplete="current-password"
-        className="bg-white border-2 border-black text-black placeholder:text-gray-500 font-mono focus:ring-2 focus:ring-pink-500"
+        className="h-11 bg-foreground/5 border border-border/40 text-foreground placeholder:text-muted-foreground rounded-xl px-4 text-sm focus:border-primary/50 focus:bg-foreground/8 focus:ring-1 focus:ring-primary/20"
       />
 
       <Button
         type="submit"
         variant="default"
         disabled={isLoading}
-        className="font-bold uppercase tracking-wider bg-pink-600 hover:bg-pink-700 flex items-center justify-center gap-2"
+        className="h-11 font-bold uppercase tracking-widest text-xs bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-[0.98]"
       >
         {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
         {isLoading ? t('loggingIn') : 'ENTER'}
       </Button>
 
       {errorMessage && (
-        <p className="text-red-500 text-sm mt-2 text-center">{errorMessage}</p>
+        <p className="text-destructive text-sm mt-1 text-center font-medium">{errorMessage}</p>
       )}
     </form>
   );

@@ -64,9 +64,9 @@ const Preloader: React.FC = () => {
     <AnimatePresence>
       {!isLangSelected && (
         <motion.div
-          className="absolute inset-0 bg-black z-[10000] overflow-hidden"
+          className="absolute inset-0 bg-background z-[10000] overflow-hidden"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.3, delay: 0.2 } }}
+          exit={{ opacity: 0, scale: 1.02, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }}
         >
           {/* --- UKRYTY PREFETCHER --- */}
           {/* Renderujemy LocalVideoPlayer dla pierwszego filmu w trybie 'shouldLoad'.
@@ -114,20 +114,22 @@ const Preloader: React.FC = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4, ease: 'easeOut' }}
               >
-                <div className="text-center w-full max-w-sm flex flex-col items-center">
-                  <h2 className="text-lg font-semibold text-white mb-4">{t('selectLang')}</h2>
+                <div className="text-center w-full max-w-xs flex flex-col items-center">
+                  <h2 className="text-base font-display font-semibold text-foreground/80 mb-5 tracking-tight">{t('selectLang')}</h2>
                   <div className="flex flex-col gap-3 w-full">
                     <motion.button
                       onClick={() => handleLangSelect('pl')}
-                      className="bg-white/5 border border-white/20 hover:bg-white/10 text-sm py-3 rounded-md transition-colors"
-                      whileTap={{ scale: 0.95 }}
+                      className="bg-foreground/5 border border-border/40 hover:bg-foreground/10 hover:border-border/60 text-sm py-3.5 rounded-2xl font-medium text-foreground/90 backdrop-blur-sm"
+                      whileTap={{ scale: 0.97 }}
+                      whileHover={{ y: -1 }}
                     >
                       {t('polish')}
                     </motion.button>
                     <motion.button
                       onClick={() => handleLangSelect('en')}
-                      className="bg-white/5 border border-white/20 hover:bg-white/10 text-sm py-3 rounded-md transition-colors"
-                      whileTap={{ scale: 0.95 }}
+                      className="bg-foreground/5 border border-border/40 hover:bg-foreground/10 hover:border-border/60 text-sm py-3.5 rounded-2xl font-medium text-foreground/90 backdrop-blur-sm"
+                      whileTap={{ scale: 0.97 }}
+                      whileHover={{ y: -1 }}
                     >
                       {t('english')}
                     </motion.button>
