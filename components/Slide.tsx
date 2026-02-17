@@ -82,10 +82,10 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
         )}
         onClick={handleContainerClick}
       >
-        {/* Top gradient - subtle fade for TopBar readability */}
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/40 via-black/20 to-transparent pointer-events-none" />
-        {/* Bottom gradient - deeper for text readability */}
-        <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
+        {/* Top gradient - sharper for TopBar integration */}
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black via-black/40 to-transparent pointer-events-none" />
+        {/* Bottom gradient - deep shadow for text and controls */}
+        <div className="absolute inset-x-0 bottom-0 h-[450px] bg-gradient-to-t from-black via-black/20 to-transparent pointer-events-none opacity-90" />
 
         <AnimatePresence>
             {!isLocked && showPlaybackIcon && (
@@ -115,20 +115,20 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
         </AnimatePresence>
 
         {/* UI Controls Container */}
-        <div className="relative z-20 pointer-events-none w-full max-w-[calc(100%-64px)] flex flex-col items-start text-left mb-2 pb-[calc(env(safe-area-inset-bottom)+10px)]">
-            <div className="flex items-center gap-2.5 mb-2 pointer-events-auto max-w-full">
+        <div className="relative z-20 pointer-events-none w-full max-w-[calc(100%-80px)] flex flex-col items-start text-left mb-4 pb-[calc(env(safe-area-inset-bottom)+10px)] ml-2">
+            <div className="flex items-center gap-3 mb-3 pointer-events-auto max-w-full">
                 <Image
                     src={slide.avatar || DEFAULT_AVATAR_URL}
                     alt={slide.username || 'User'}
-                    width={36}
-                    height={36}
-                    className="rounded-full border-[1.5px] border-foreground/80 shadow-lg shadow-black/40 shrink-0"
+                    width={40}
+                    height={40}
+                    className="rounded-full border-2 border-white shadow-[0_0_15px_rgba(255,255,255,0.3)] shrink-0"
                 />
-                <p className="font-display font-bold text-[15px] text-foreground drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] truncate min-w-0">{slide.username}</p>
+                <p className="font-display font-black text-base text-white tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] truncate min-w-0 italic uppercase">{slide.username}</p>
             </div>
 
-            {slide.data && 'title' in slide.data && <h2 className="text-base font-semibold text-foreground drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] mb-0.5 truncate w-full">{slide.data.title}</h2>}
-            {slide.data && 'description' in slide.data && <p className="text-sm text-foreground/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] truncate w-full">{slide.data.description}</p>}
+            {slide.data && 'title' in slide.data && <h2 className="text-lg font-black text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] mb-1 truncate w-full tracking-tighter uppercase">{slide.data.title}</h2>}
+            {slide.data && 'description' in slide.data && <p className="text-sm font-medium text-white/90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)] truncate w-full leading-relaxed">{slide.data.description}</p>}
         </div>
 
         <Sidebar

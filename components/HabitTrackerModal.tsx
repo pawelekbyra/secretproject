@@ -216,25 +216,25 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
 
     return (
         <motion.div
-            className="fixed inset-0 z-[100] bg-black flex flex-col"
+            className="fixed inset-0 z-[100] bg-black flex flex-col font-sans"
             initial={{ opacity: 0, y: '100%' }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            transition={{ type: 'spring', damping: 28, stiffness: 220 }}
         >
             {/* Header */}
-            <div className="flex-shrink-0 flex items-center justify-between px-6 pt-12 pb-6 border-b border-white/10">
-                <div className="flex items-center gap-3">
+            <div className="flex-shrink-0 flex items-center justify-between px-6 pt-14 pb-6 border-b border-white/5">
+                <div className="flex items-center gap-4">
                     {selectedHabitId && (
-                        <button onClick={() => setSelectedHabitId(null)} className="p-2 -ml-2 hover:bg-white/10 rounded-full transition-colors">
+                        <button onClick={() => setSelectedHabitId(null)} className="w-10 h-10 flex items-center justify-center -ml-2 hover:bg-white/5 rounded-full transition-all active:scale-90">
                             <ChevronLeft size={24} />
                         </button>
                     )}
-                    <h1 className="text-2xl font-black tracking-tighter uppercase italic">
+                    <h1 className="text-2xl font-display font-black tracking-tighter uppercase italic text-white">
                         {selectedHabitId ? selectedHabit?.name : (lang === 'pl' ? 'Twoje Nawyki' : 'Your Habits')}
                     </h1>
                 </div>
-                <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors">
+                <button onClick={onClose} className="w-10 h-10 flex items-center justify-center hover:bg-white/5 rounded-full transition-all active:scale-90">
                     <X size={28} />
                 </button>
             </div>
@@ -244,37 +244,37 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                 {!selectedHabitId ? (
                     <div className="flex flex-col gap-6">
                         {/* Summary Card */}
-                        <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden">
+                        <div className="bg-gradient-to-br from-primary to-purple-800 rounded-[2rem] p-7 text-white shadow-2xl relative overflow-hidden group">
                             <div className="relative z-10">
-                                <h2 className="text-lg font-bold mb-1">Cześć Wojowniku! 🚀</h2>
-                                <p className="text-sm opacity-80 mb-4">Dzisiaj jest świetny dzień, aby stać się lepszą wersją siebie.</p>
-                                <div className="flex gap-4">
+                                <h2 className="text-xl font-display font-black mb-1 uppercase tracking-tighter italic">Cześć Wojowniku! 🚀</h2>
+                                <p className="text-xs font-medium opacity-80 mb-6">Dzisiaj jest świetny dzień, aby stać się lepszą wersją siebie.</p>
+                                <div className="flex gap-6">
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] uppercase font-bold opacity-60">Aktywne</span>
-                                        <span className="text-2xl font-black">{habits?.length || 0}</span>
+                                        <span className="text-[10px] uppercase font-black tracking-widest opacity-60">Aktywne</span>
+                                        <span className="text-3xl font-display font-black">{habits?.length || 0}</span>
                                     </div>
                                     <div className="w-[1px] bg-white/20" />
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] uppercase font-bold opacity-60">Sukcesy</span>
-                                        <span className="text-2xl font-black text-green-300">
+                                        <span className="text-[10px] uppercase font-black tracking-widest opacity-60">Sukcesy</span>
+                                        <span className="text-3xl font-display font-black text-green-300">
                                             {habits?.reduce((acc, h) => acc + h.logs.filter(l => l.isSuccess).length, 0) || 0}
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <Trophy className="absolute right-[-10px] bottom-[-10px] w-32 h-32 opacity-10 rotate-12" />
+                            <Trophy className="absolute right-[-20px] bottom-[-20px] w-40 h-40 opacity-10 rotate-12 group-hover:scale-110 transition-transform duration-700" />
                         </div>
 
                         {/* Habits List */}
                         <div className="grid grid-cols-1 gap-4">
                             {isLoading ? (
-                                <div className="text-center py-10 text-white/40">{t('loading')}</div>
+                                <div className="text-center py-10 text-white/40 font-display font-black uppercase tracking-widest text-[10px]">{t('loading')}</div>
                             ) : habits?.length === 0 ? (
                                 <div className="text-center py-20 flex flex-col items-center gap-4">
                                     <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center text-white/20">
                                         <Target size={32} />
                                     </div>
-                                    <p className="text-white/40 italic">Brak nawyków. Dodaj swój pierwszy!</p>
+                                    <p className="text-white/40 italic font-medium">Brak nawyków. Dodaj swój pierwszy!</p>
                                 </div>
                             ) : (
                                 habits?.map(habit => (
@@ -282,27 +282,27 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                                         key={habit.id}
                                         whileTap={{ scale: 0.98 }}
                                         onClick={() => setSelectedHabitId(habit.id)}
-                                        className="bg-zinc-900/50 border border-white/5 p-4 rounded-2xl flex items-center justify-between group hover:bg-zinc-800 transition-colors cursor-pointer"
+                                        className="bg-white/[0.03] border border-white/5 p-5 rounded-3xl flex items-center justify-between group hover:bg-white/[0.06] transition-all cursor-pointer active:bg-white/[0.08]"
                                     >
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-2xl">
+                                        <div className="flex items-center gap-5">
+                                            <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition-transform">
                                                 {habit.icon}
                                             </div>
                                             <div>
-                                                <h3 className="font-bold text-white">{habit.name}</h3>
-                                                <p className="text-[10px] text-white/40 uppercase tracking-widest">
+                                                <h3 className="font-display font-black text-lg text-white uppercase tracking-tight">{habit.name}</h3>
+                                                <p className="text-[10px] text-white/40 uppercase tracking-[0.15em] font-black">
                                                     {habit.type === 'good' ? 'Dobry nawyk' : 'Zły nawyk'}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-4">
                                             <div className="flex flex-col items-end">
-                                                <div className="flex items-center gap-1 text-orange-500 font-bold">
-                                                    <Flame size={14} />
+                                                <div className="flex items-center gap-1.5 text-primary font-display font-black text-xl italic">
+                                                    <Flame size={18} className="fill-primary" />
                                                     <span>{calculateStreak(habit)}</span>
                                                 </div>
                                             </div>
-                                            <ChevronRight className="text-white/20 group-hover:text-white transition-colors" />
+                                            <ChevronRight className="text-white/20 group-hover:text-white transition-colors group-hover:translate-x-1 duration-300" />
                                         </div>
                                     </motion.div>
                                 ))

@@ -70,29 +70,31 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 px-5 pb-6">
-      <Input
-        type="text"
-        name="login"
-        placeholder="Email"
-        required
-        autoComplete="username"
-        className="h-11 bg-foreground/5 border border-border/40 text-foreground placeholder:text-muted-foreground rounded-xl px-4 text-sm focus:border-primary/50 focus:bg-foreground/8 focus:ring-1 focus:ring-primary/20"
-      />
-      <Input
-        type="password"
-        name="password"
-        placeholder={t('passwordPlaceholder')}
-        required
-        autoComplete="current-password"
-        className="h-11 bg-foreground/5 border border-border/40 text-foreground placeholder:text-muted-foreground rounded-xl px-4 text-sm focus:border-primary/50 focus:bg-foreground/8 focus:ring-1 focus:ring-primary/20"
-      />
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 px-6 pb-8">
+      <div className="flex flex-col gap-3">
+          <Input
+            type="text"
+            name="login"
+            placeholder="Email"
+            required
+            autoComplete="username"
+            className="h-12 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-2xl px-5 text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all"
+          />
+          <Input
+            type="password"
+            name="password"
+            placeholder={t('passwordPlaceholder')}
+            required
+            autoComplete="current-password"
+            className="h-12 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-2xl px-5 text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all"
+          />
+      </div>
 
       <Button
         type="submit"
         variant="default"
         disabled={isLoading}
-        className="h-11 font-bold uppercase tracking-widest text-xs bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-[0.98]"
+        className="h-12 font-display font-black uppercase tracking-[0.2em] text-xs bg-primary hover:bg-primary/90 text-white rounded-2xl flex items-center justify-center gap-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)] shadow-primary/20 active:scale-[0.95] transition-all"
       >
         {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
         {isLoading ? t('loggingIn') : 'ENTER'}

@@ -4,16 +4,17 @@
 
 @layer base {
   :root {
-    /* Glass UI */
-    --glass-bg: rgba(255, 255, 255, 0.06);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-highlight: rgba(255, 255, 255, 0.12);
+    /* Glass UI - Enhanced */
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-highlight: rgba(255, 255, 255, 0.15);
+    --glass-bg-strong: rgba(0, 0, 0, 0.6);
 
     /* App Layout */
     --app-height: 100vh;
-    --transition-speed: 0.35s;
+    --transition-speed: 0.4s;
     --transition-timing: cubic-bezier(0.16, 1, 0.3, 1);
-    --topbar-base-height: 44px;
+    --topbar-base-height: 48px;
     --bottombar-base-height: 110px;
     --sidebar-width: 90px;
     --safe-area-top: env(safe-area-inset-top);
@@ -22,39 +23,39 @@
     --bottombar-height: calc(var(--bottombar-base-height) + var(--safe-area-bottom));
 
     /* Surface Colors */
-    --surface: 0 0% 7%;
-    --surface-elevated: 0 0% 11%;
+    --surface: 0 0% 3%;
+    --surface-elevated: 0 0% 6%;
 
     /* Shadcn Design Tokens */
     --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
+    --foreground: 0 0% 100%;
 
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 3%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 340 82% 52%;
+    --primary: 326 100% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 0 0% 8%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 56%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 340 82% 52%;
+    --accent: 326 100% 60%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 14%;
-    --input: 0 0% 14%;
-    --ring: 340 82% 52%;
+    --border: 0 0% 12%;
+    --input: 0 0% 12%;
+    --ring: 326 100% 60%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
   }
 }
 
@@ -99,24 +100,42 @@
 
   /* Smooth transitions for interactive elements */
   button, a, input, textarea, select {
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.25s var(--transition-timing);
   }
 
   /* Focus ring style */
   :focus-visible {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
-    border-radius: 4px;
+    border-radius: var(--radius);
   }
 }
 
 @layer components {
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-border);
+  }
+
+  .glass-strong {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid var(--glass-border);
+  }
+
+  .neon-glow {
+    box-shadow: 0 0 20px -5px hsl(var(--primary) / 0.5);
+  }
+
   .secret-overlay {
-    @apply absolute left-0 w-full bg-black/40 flex flex-col items-center justify-center text-center p-5;
+    @apply absolute left-0 w-full bg-black/60 flex flex-col items-center justify-center text-center p-8;
     top: var(--topbar-height);
-  height: calc(100% - var(--topbar-height) - var(--bottombar-height));
-    backdrop-filter: blur(12px) saturate(120%);
-    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    height: calc(100% - var(--topbar-height) - var(--bottombar-height));
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
     z-index: 20;
   }
   .secret-overlay .secret-icon {
@@ -124,12 +143,11 @@
     filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
   }
   .secret-overlay .secret-title {
-    @apply text-2xl font-bold text-white mb-1;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    @apply text-2xl font-black text-white mb-2 font-display italic uppercase tracking-tighter;
+    text-shadow: 0 0 20px rgba(255,255,255,0.3);
   }
   .secret-overlay .secret-subtitle {
-    @apply text-base text-white/80;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    @apply text-sm text-white/70 font-medium;
   }
   .videoPlayer.secret-active {
     filter: blur(12px) saturate(120%);
