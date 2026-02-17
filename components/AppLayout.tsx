@@ -121,7 +121,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      <PWAInstallPrompt />
+      {/* <PWAInstallPrompt /> */}
       <ToastContainer />
     </div>
   );

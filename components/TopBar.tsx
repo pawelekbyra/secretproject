@@ -160,11 +160,6 @@ const TopBar = () => {
               </button>
             </div>
             <div className="flex justify-end items-center gap-1">
-              {isDesktop && (
-                <Button variant="ghost" size="icon" onClick={handleShowPwaModal} aria-label={t('installPwaAriaLabel')}>
-                  <span className="text-sm font-semibold">{t('installAppText')}</span>
-                </Button>
-              )}
               <motion.button
                  whileTap={{ scale: 0.9 }}
                  className="p-1 mr-1.5 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
@@ -264,11 +259,6 @@ const TopBar = () => {
               <span className="font-semibold text-lg text-white">{loggedInTitle}</span>
             </div>
             <div className="flex justify-end">
-              {isDesktop && (
-                <Button variant="ghost" size="icon" onClick={handleShowPwaModal} aria-label={t('installPwaAriaLabel')}>
-                  <span className="text-sm font-semibold">{t('installAppText')}</span>
-                </Button>
-              )}
               <div className="relative">
                 <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="mr-1.5 relative">
                   <BellIcon className="w-6 h-6" />
