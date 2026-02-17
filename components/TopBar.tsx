@@ -129,7 +129,7 @@ const TopBar = () => {
         className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10 px-1"
         style={{
           height: 'var(--topbar-height)',
-          paddingTop: 'max(12px, var(--safe-area-top))',
+          paddingTop: 'max(16px, var(--safe-area-top))',
         }}
       >
         {!user ? (

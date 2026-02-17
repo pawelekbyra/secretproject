@@ -57,10 +57,10 @@ const DesktopDeviceFrame: React.FC<DesktopDeviceFrameProps> = ({ children }) => 
           <div
             className="
               relative bg-black
-              h-[94vh] aspect-[9/19.5] w-auto
+              h-[94vh] aspect-[9/19] w-auto
               min-w-[320px]
               max-w-[calc(100vw-2rem)]
-              rounded-[1.5rem]
+              rounded-[2rem]
               border-[3px] border-zinc-800
               shadow-2xl shadow-black/80
               overflow-hidden
@@ -68,7 +68,7 @@ const DesktopDeviceFrame: React.FC<DesktopDeviceFrameProps> = ({ children }) => 
             "
           >
             {/* Ekran */}
-            <div className="w-full h-full bg-black overflow-hidden relative rounded-[1.2rem] select-none">
+            <div className="w-full h-full bg-black overflow-hidden relative rounded-[1.6rem] select-none">
                {children}
             </div>
           </div>
