@@ -12,7 +12,7 @@ import MenuIcon from './icons/MenuIcon';
 import BellIcon from './icons/BellIcon';
 import PwaDesktopModal from './PwaDesktopModal';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { User, LogOut, ChevronDown, Settings } from 'lucide-react';
+import { User, LogOut, ChevronDown, Settings, LayoutGrid, Wallet, CheckCircle } from 'lucide-react';
 import { usePushSubscription } from '@/hooks/usePushSubscription';
 import { usePathname } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
@@ -26,6 +26,7 @@ const TopBar = () => {
   const [showPwaModal, setShowPwaModal] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAppsExpanded, setIsAppsExpanded] = useState(true);
   const pathname = usePathname();
 
   // Hook for push subscription
@@ -213,6 +214,46 @@ const TopBar = () => {
                               <LogOut size={20} className="text-red-400" />
                               <span className="text-sm font-medium whitespace-nowrap">{t('logout')}</span>
                           </button>
+
+                          {/* Apki Section */}
+                          <div className="mt-2 pt-2 border-t border-zinc-800 flex flex-col gap-1">
+                              <button
+                                onClick={() => setIsAppsExpanded(!isAppsExpanded)}
+                                className="px-3 py-2 flex items-center justify-between text-zinc-500 hover:text-white transition-colors"
+                              >
+                                  <div className="flex items-center gap-2">
+                                      <LayoutGrid size={14} />
+                                      <span className="text-[10px] font-bold uppercase tracking-wider">{t('apps') || 'Apki'}</span>
+                                  </div>
+                                  <ChevronDown size={14} className={cn("transition-transform", isAppsExpanded && "rotate-180")} />
+                              </button>
+
+                              <AnimatePresence>
+                                  {isAppsExpanded && (
+                                      <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        className="overflow-hidden flex flex-col gap-1"
+                                      >
+                                          <button
+                                            onClick={() => { setActiveModal('financial'); setIsMenuOpen(false); }}
+                                            className="flex flex-row items-center gap-3 p-3 bg-zinc-800/50 hover:bg-zinc-700 rounded-lg transition-colors w-full"
+                                          >
+                                              <Wallet size={18} className="text-emerald-400" />
+                                              <span className="text-sm font-medium whitespace-nowrap">{t('financialJournal') || 'Dziennik Finansowy'}</span>
+                                          </button>
+                                          <button
+                                            onClick={() => { setActiveModal('habits'); setIsMenuOpen(false); }}
+                                            className="flex flex-row items-center gap-3 p-3 bg-zinc-800/50 hover:bg-zinc-700 rounded-lg transition-colors w-full"
+                                          >
+                                              <CheckCircle size={18} className="text-orange-400" />
+                                              <span className="text-sm font-medium whitespace-nowrap">{t('habits') || 'Nawyki'}</span>
+                                          </button>
+                                      </motion.div>
+                                  )}
+                              </AnimatePresence>
+                          </div>
                       </div>
                   </PopoverContent>
               </Popover>

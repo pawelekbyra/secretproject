@@ -167,7 +167,17 @@ const translations: Record<string, Record<string, string>> = {
         newest: 'Najnowsze',
         top: 'Najlepsze',
         hideReplies: 'Ukryj odpowiedzi',
-        showReplies: 'Zobacz {count} odpowiedzi'
+        showReplies: 'Zobacz {count} odpowiedzi',
+        apps: 'Apki',
+        financialJournal: 'Dziennik Finansowy',
+        habits: 'Nawyki',
+        mon: 'Pn',
+        tue: 'Wt',
+        wed: 'Śr',
+        thu: 'Cz',
+        fri: 'Pt',
+        sat: 'So',
+        sun: 'Nd'
     },
     en: {
         loggedOutText: "Ting Tong",
@@ -328,7 +338,17 @@ const translations: Record<string, Record<string, string>> = {
         newest: 'Newest',
         top: 'Top',
         hideReplies: 'Hide replies',
-        showReplies: 'View {count} replies'
+        showReplies: 'View {count} replies',
+        apps: 'Apps',
+        financialJournal: 'Financial Journal',
+        habits: 'Habits',
+        mon: 'Mo',
+        tue: 'Tu',
+        wed: 'We',
+        thu: 'Th',
+        fri: 'Fr',
+        sat: 'Sa',
+        sun: 'Su'
     }
 };
 
