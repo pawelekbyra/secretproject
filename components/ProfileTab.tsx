@@ -173,30 +173,29 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
       <form action={handleSubmit} id="profileForm" className="space-y-4">
 
         {/* Avatar Section */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col items-center text-center">
+        <div className="bg-foreground/[0.03] border border-border/30 rounded-2xl p-6 flex flex-col items-center text-center">
             <div className="relative w-24 h-24 mb-4 group cursor-pointer" onClick={handleAvatarEditClick}>
-                <div className="w-full h-full rounded-full overflow-hidden shadow-lg bg-gray-800 flex items-center justify-center relative">
+                <div className="w-full h-full rounded-full overflow-hidden shadow-lg shadow-black/30 bg-secondary flex items-center justify-center relative ring-2 ring-border/30 ring-offset-2 ring-offset-background">
                     <Image
                       src={currentAvatar}
                       alt={t('avatarAlt')}
                       width={96}
                       height={96}
-                      className={`w-full h-full object-cover rounded-full border-2 ${profile.role === 'patron' ? 'border-yellow-500' : 'border-white'}`}
+                      className={`w-full h-full object-cover rounded-full ${profile.role === 'patron' ? 'ring-2 ring-yellow-500/50' : ''}`}
                       id="userAvatar"
                       unoptimized={!!previewUrl}
                     />
 
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                        <Camera className="text-white w-8 h-8" />
+                    <div className="absolute inset-0 bg-background/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-sm">
+                        <Camera className="text-foreground w-7 h-7" />
                     </div>
                 </div>
-                {/* Zmieniono kolor ramki (border) z #2d2d2d na white */}
                 <button
                   type="button"
-                  className="absolute bottom-0 right-0 w-8 h-8 bg-emerald-600 border-2 border-white rounded-full text-white flex items-center justify-center hover:bg-emerald-500 transition-colors shadow-lg"
+                  className="absolute bottom-0 right-0 w-7 h-7 bg-primary border-2 border-background rounded-full text-primary-foreground flex items-center justify-center hover:bg-primary/90 shadow-md shadow-primary/20"
                   title={t('changeAvatarTitle')}
                 >
-                   <Camera size={16} />
+                   <Camera size={14} />
                 </button>
 
                 <input
@@ -210,10 +209,10 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
             </div>
 
             <div className="flex flex-col items-center gap-1">
-                <h3 className="text-xl font-bold text-white" id="displayName">{profile.displayName}</h3>
+                <h3 className="text-lg font-display font-bold text-foreground" id="displayName">{profile.displayName}</h3>
                 <UserBadge role={profile.role} className="mb-1" />
-                {(profile as any).bio && <p className="text-xs text-white/70 max-w-[240px] text-center">{(profile as any).bio}</p>}
-                <p className="text-sm text-white/50" id="userEmail">{profile.email}</p>
+                {(profile as any).bio && <p className="text-xs text-muted-foreground max-w-[240px] text-center leading-relaxed">{(profile as any).bio}</p>}
+                <p className="text-sm text-muted-foreground" id="userEmail">{profile.email}</p>
             </div>
 
             {/* Avatar Section Feedback */}
