@@ -126,7 +126,7 @@ const TopBar = () => {
   return (
     <>
       <div
-        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10"
+        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10 px-2"
         style={{
           height: 'var(--topbar-height)',
           paddingTop: 'var(--safe-area-top)',
@@ -145,12 +145,12 @@ const TopBar = () => {
                 <MenuIcon className="w-6 h-6" />
               </motion.button>
             </div>
-            <div className="flex justify-center flex-1 text-center">
+            <div className="flex justify-center flex-1 text-center min-w-0">
               <button
                 onClick={handleToggleLoginPanel}
-                className="relative flex items-center justify-center font-semibold text-sm text-white transition-all duration-300 focus:outline-none whitespace-nowrap outline-none"
+                className="relative flex items-center justify-center font-bold text-[13px] uppercase tracking-tight text-white transition-all duration-300 focus:outline-none whitespace-nowrap outline-none px-1"
               >
-                <span>{loggedOutTitle}</span>
+                <span className="truncate">{loggedOutTitle}</span>
                 <div className="absolute left-full ml-0.5 flex items-center">
                   <ChevronDown
                     size={16}
