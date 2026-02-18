@@ -81,22 +81,23 @@ const Preloader: React.FC = () => {
           )}
           {/* ------------------------- */}
 
-          <div className="flex-1 flex items-center justify-center w-full mt-10">
+          {/* LOGO - Trully centered vertically */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <motion.div
-              className="w-full max-w-[480px] aspect-square flex-shrink-0 relative px-2"
+              className="w-full max-w-[460px] aspect-square relative px-4"
               animate={{
                 opacity: 1,
-                scale: [0.95, 1],
+                scale: [0.98, 1],
               }}
-              transition={{ duration: 1.2, ease: 'easeOut' }}
+              transition={{ duration: 1.5, ease: 'easeOut' }}
             >
               <motion.div
                 className="w-full h-full relative"
                 animate={{
                   scale: [1, 1.02, 1],
-                  filter: ["brightness(1)", "brightness(1.1)", "brightness(1)"]
+                  filter: ["brightness(1)", "brightness(1.15)", "brightness(1)"]
                 }}
-                transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
+                transition={{ duration: 5, ease: "easeInOut", repeat: Infinity }}
               >
                 <Image
                   src="/zajebiscie5.jpg"
@@ -109,23 +110,26 @@ const Preloader: React.FC = () => {
             </motion.div>
           </div>
 
+          {/* LANGUAGE PANEL - Refined and Bottom-aligned */}
           <AnimatePresence>
             {showLangButtons && (
               <motion.div
-                className="w-full max-w-[400px] px-8 pb-[calc(env(safe-area-inset-bottom)+40px)] flex flex-col items-center z-10"
-                initial={{ opacity: 0, y: 40 }}
+                className="mt-auto w-full max-w-[320px] px-6 pb-[calc(env(safe-area-inset-bottom)+50px)] flex flex-col items-center z-10"
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 40 }}
-                transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                exit={{ opacity: 0, y: 30 }}
+                transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
-                <h2 className="text-sm font-medium text-zinc-500 uppercase tracking-[0.2em] mb-6">{t('selectLang')}</h2>
-                <div className="flex gap-4 w-full">
+                <div className="w-12 h-[1px] bg-primary/30 mb-8" />
+                <h2 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.4em] mb-8">{t('selectLang')}</h2>
+
+                <div className="flex flex-col gap-4 w-full">
                   <motion.button
                     onClick={() => handleLangSelect('pl')}
                     className={cn(
-                        "flex-1 bg-white/5 backdrop-blur-xl border border-primary/30 text-white font-bold py-5 rounded-2xl transition-all",
-                        "shadow-[0_0_25px_-5px_hsl(var(--primary)/0.2)]",
-                        "hover:border-primary/60 hover:bg-white/10 active:scale-[0.97]"
+                        "w-full bg-gradient-to-r from-zinc-900/50 to-zinc-900/30 backdrop-blur-2xl border border-white/10 text-white font-black py-4 rounded-full transition-all tracking-[0.1em]",
+                        "shadow-[0_4px_20px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)]",
+                        "hover:border-primary/40 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)] active:scale-[0.96]"
                     )}
                   >
                     {t('polish')}
@@ -133,9 +137,9 @@ const Preloader: React.FC = () => {
                   <motion.button
                     onClick={() => handleLangSelect('en')}
                     className={cn(
-                        "flex-1 bg-white/5 backdrop-blur-xl border border-primary/30 text-white font-bold py-5 rounded-2xl transition-all",
-                        "shadow-[0_0_25px_-5px_hsl(var(--primary)/0.2)]",
-                        "hover:border-primary/60 hover:bg-white/10 active:scale-[0.97]"
+                        "w-full bg-gradient-to-r from-zinc-900/50 to-zinc-900/30 backdrop-blur-2xl border border-white/10 text-white font-black py-4 rounded-full transition-all tracking-[0.1em]",
+                        "shadow-[0_4px_20px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)]",
+                        "hover:border-primary/40 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)] active:scale-[0.96]"
                     )}
                   >
                     {t('english')}
