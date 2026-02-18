@@ -16,8 +16,8 @@
     --main-ui-bg-color: #696969;
     --transition-speed: 0.4s;
     --transition-timing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --topbar-base-height: 36px;
-    --bottombar-base-height: 100px; /* Zwiększono wysokość bazową, aby pomieścić ikonki */
+    --topbar-base-height: 44px;
+    --bottombar-base-height: 56px;
     --sidebar-width: 90px;
     --safe-area-top: env(safe-area-inset-top);
     --safe-area-bottom: env(safe-area-inset-bottom);

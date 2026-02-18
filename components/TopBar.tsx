@@ -126,7 +126,7 @@ const TopBar = () => {
   return (
     <>
       <div
-        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10 px-6"
+        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10 px-4"
         style={{
           height: 'var(--topbar-height)',
           paddingTop: 'var(--safe-area-top)',
@@ -138,22 +138,22 @@ const TopBar = () => {
             <div className="flex justify-start w-8">
               <motion.button
                 whileTap={{ scale: 0.9 }}
-                className="p-1 -ml-2 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
+                className="p-1.5 -ml-1 text-white hover:text-white transition-colors active:bg-white/10 rounded-lg outline-none"
                 onClick={handleLoggedOutMenuClick}
                 aria-label={t('menuAriaLabel')}
               >
-                <MenuIcon className="w-5 h-5" />
+                <MenuIcon className="w-6 h-6" />
               </motion.button>
             </div>
             <div className="flex justify-center flex-1 text-center min-w-0">
               <button
                 onClick={handleToggleLoginPanel}
-                className="relative flex items-center justify-center font-bold text-[13px] tracking-tight text-white transition-all duration-300 focus:outline-none outline-none px-1"
+                className="relative flex items-center justify-center font-bold text-[15px] tracking-tight text-white transition-all duration-300 focus:outline-none outline-none px-1"
               >
                 <span className="whitespace-nowrap">{loggedOutTitle}</span>
-                <div className="absolute left-full ml-0.5 flex items-center">
+                <div className="absolute left-full ml-1 flex items-center">
                   <ChevronDown
-                    size={14}
+                    size={16}
                     className={`transition-transform duration-200 ${isLoginPanelOpen ? 'rotate-180' : ''}`}
                   />
                 </div>
@@ -162,11 +162,11 @@ const TopBar = () => {
             <div className="flex justify-end items-center w-8">
               <motion.button
                  whileTap={{ scale: 0.9 }}
-                 className="p-1 -mr-2 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
+                 className="p-1.5 -mr-1 text-white hover:text-white transition-colors active:bg-white/10 rounded-lg outline-none"
                  onClick={handleBellClick}
                  aria-label={t('notificationAriaLabel')}
               >
-                <BellIcon className="w-5 h-5" />
+                <BellIcon className="w-6 h-6" />
               </motion.button>
             </div>
           </>
@@ -176,8 +176,8 @@ const TopBar = () => {
             <div className="flex justify-start w-8">
               <Popover open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <PopoverTrigger asChild>
-                    <Button variant="ghost" size="icon" aria-label={t('menuAriaLabel')} className="-ml-1">
-                        <MenuIcon className="w-6 h-6" />
+                    <Button variant="ghost" size="icon" aria-label={t('menuAriaLabel')} className="-ml-0.5">
+                        <MenuIcon className="w-7 h-7" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent
@@ -256,12 +256,12 @@ const TopBar = () => {
 
             </div>
             <div className="flex justify-center flex-1 min-w-0">
-              <span className="font-bold text-[13px] tracking-tight text-white truncate px-1">{loggedInTitle}</span>
+              <span className="font-bold text-[15px] tracking-tight text-white truncate px-1">{loggedInTitle}</span>
             </div>
             <div className="flex justify-end w-8">
               <div className="relative">
-                <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="-mr-2 relative">
-                  <BellIcon className="w-5 h-5" />
+                <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="-mr-0.5 relative">
+                  <BellIcon className="w-6 h-6" />
                   {unreadCount > 0 && (
                     <span className="absolute top-1 right-2 block h-2 w-2 rounded-full bg-pink-500 ring-2 ring-black shadow-[0_0_8px_rgba(236,72,153,0.6)]" />
                   )}
@@ -276,7 +276,7 @@ const TopBar = () => {
       <AnimatePresence>
         {isLoginPanelOpen && (
           <motion.div
-            className="absolute left-0 w-full z-[50] bg-black/80 backdrop-blur-md pt-0 border-b border-white/5"
+            className="absolute left-0 w-full z-[50] bg-black/85 backdrop-blur-xl pt-0 border-b border-white/10"
             style={{ top: 'var(--topbar-height)' }}
             initial={{ y: '-100%' }}
             animate={{ y: '0%', transition: { type: 'spring', stiffness: 200, damping: 30 } }}

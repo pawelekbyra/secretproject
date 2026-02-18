@@ -354,26 +354,26 @@ const TippingModal = () => {
             animate={{ x: '0%' }}
             exit={{ x: tippingModalOptions.fromLeft ? '-100%' : '100%' }}
             transition={{ type: "spring", stiffness: 200, damping: 30 }}
-            className="relative w-[95%] max-w-[420px] max-h-[85vh] flex flex-col rounded-[2.5rem] app-modal-glass shadow-2xl pointer-events-auto border border-white/20 overflow-visible"
+            className="relative w-[92%] max-w-[400px] max-h-[85vh] flex flex-col rounded-[2rem] app-modal-glass shadow-2xl shadow-black/50 pointer-events-auto border border-white/[0.12] overflow-visible"
           >
 
         <div className="app-handle" />
 
-        <div className="relative h-12 flex items-center justify-center px-6 text-center shrink-0 z-10 border-b border-white/5">
-            <h2 className="text-xl font-bold text-white tracking-tight">
+        <div className="relative h-14 flex items-center justify-center px-6 text-center shrink-0 z-10 border-b border-white/10">
+            <h2 className="text-lg font-bold text-white tracking-wide uppercase">
                 {modalTitle}
             </h2>
             <button
                 onClick={closeTippingModal}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-full transition-colors z-50"
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-all duration-200 z-50"
             >
-                <X size={22} strokeWidth={2.5} />
+                <X size={18} strokeWidth={2.5} />
             </button>
         </div>
 
-        <div className="h-1 w-full bg-white/5 relative overflow-hidden z-10">
+        <div className="h-0.5 w-full bg-white/5 relative overflow-hidden z-10">
             <motion.div
-                className="h-full bg-pink-600 shadow-[0_0_8px_rgba(219,39,119,0.5)]"
+                className="h-full bg-gradient-to-r from-pink-600 to-pink-400 shadow-[0_0_12px_rgba(219,39,119,0.6)]"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -381,7 +381,7 @@ const TippingModal = () => {
         </div>
 
         <div className={cn(
-            "flex-1 overflow-y-auto px-6 pt-7 pb-0 flex flex-col relative z-10 text-white rounded-b-[2.5rem] custom-scrollbar",
+            "flex-1 overflow-y-auto px-6 pt-6 pb-0 flex flex-col relative z-10 text-white rounded-b-[2rem] custom-scrollbar",
             isCurrencyDropdownOpen && "z-30"
         )}>
             <AnimatePresence mode="wait" initial={false}>
@@ -396,48 +396,49 @@ const TippingModal = () => {
                         className="space-y-4"
                     >
                         <div className="text-left">
-                            <p className="text-base font-semibold text-white/90 tracking-wide">Komu chcesz wysłać napiwek?</p>
+                            <p className="text-base font-bold text-white tracking-wide">Komu chcesz wysłać napiwek?</p>
+                            <p className="text-xs text-white/40 mt-1 font-medium">Wybierz odbiorcę</p>
                         </div>
-                        <div className="space-y-3 pt-1">
+                        <div className="space-y-3 pt-2">
                             <div
                                 className={cn(
-                                    "flex items-center justify-start h-12 px-4 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
+                                    "flex items-center justify-start h-14 px-5 gap-4 rounded-2xl cursor-pointer transition-all duration-300 group border",
                                     formData.recipient === 'Paweł'
-                                        ? "bg-white/10 border-pink-600 shadow-[0_0_15px_rgba(219,39,119,0.2)]"
-                                        : "bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10"
+                                        ? "bg-pink-600/10 border-pink-500/60 shadow-[0_0_20px_rgba(219,39,119,0.15)]"
+                                        : "bg-white/[0.03] border-white/[0.06] hover:border-white/15 hover:bg-white/[0.06]"
                                 )}
                                 onClick={() => setFormData(prev => ({ ...prev, recipient: 'Paweł' }))}
                             >
                                 <div className={cn(
                                     "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 shrink-0",
                                     formData.recipient === 'Paweł'
-                                        ? "border-pink-600"
-                                        : "border-white/30 group-hover:border-white"
+                                        ? "border-pink-500 bg-pink-600/20"
+                                        : "border-white/20 group-hover:border-white/50"
                                 )}>
-                                    {formData.recipient === 'Paweł' && <div className="w-2.5 h-2.5 bg-pink-600 rounded-full" />}
+                                    {formData.recipient === 'Paweł' && <div className="w-2.5 h-2.5 bg-pink-500 rounded-full shadow-[0_0_6px_rgba(219,39,119,0.8)]" />}
                                 </div>
-                                <span className={cn("text-base font-semibold transition-colors", formData.recipient === 'Paweł' ? "text-white" : "text-white/70 group-hover:text-white")}>
-                                    Pawłowi Polutkowi
+                                <span className={cn("text-[15px] font-semibold transition-colors", formData.recipient === 'Paweł' ? "text-white" : "text-white/60 group-hover:text-white/90")}>
+                                    Pawlowi Polutkowi
                                 </span>
                             </div>
                             <div
                                 className={cn(
-                                    "flex items-center justify-start h-12 px-4 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
+                                    "flex items-center justify-start h-14 px-5 gap-4 rounded-2xl cursor-pointer transition-all duration-300 group border",
                                     formData.recipient === 'Nikt'
-                                        ? "bg-white/10 border-white shadow-lg"
-                                        : "bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10"
+                                        ? "bg-white/10 border-white/30"
+                                        : "bg-white/[0.03] border-white/[0.06] hover:border-white/15 hover:bg-white/[0.06]"
                                 )}
                                 onClick={() => setFormData(prev => ({ ...prev, recipient: 'Nikt' }))}
                             >
                                 <div className={cn(
                                     "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 shrink-0",
                                     formData.recipient === 'Nikt'
-                                        ? "border-white"
-                                        : "border-white/30 group-hover:border-white"
+                                        ? "border-white/80"
+                                        : "border-white/20 group-hover:border-white/50"
                                 )}>
                                     {formData.recipient === 'Nikt' && <div className="w-2.5 h-2.5 bg-white rounded-full" />}
                                 </div>
-                                <span className={cn("text-base font-semibold transition-colors", formData.recipient === 'Nikt' ? "text-white" : "text-white/70 group-hover:text-white")}>
+                                <span className={cn("text-[15px] font-semibold transition-colors", formData.recipient === 'Nikt' ? "text-white" : "text-white/60 group-hover:text-white/90")}>
                                     Nikomu
                                 </span>
                             </div>
@@ -456,28 +457,29 @@ const TippingModal = () => {
                         className="space-y-4"
                     >
                         <div className="text-left">
-                            <p className="text-base font-semibold text-white/90 tracking-wide">Czy chcesz utworzyć konto Patrona?</p>
+                            <p className="text-base font-bold text-white tracking-wide">Czy chcesz utworzyć konto Patrona?</p>
+                            <p className="text-xs text-white/40 mt-1 font-medium">Odblokujesz ekskluzywne treści</p>
                         </div>
                         <div className="space-y-3">
                             {!isLoggedIn && (
                                 <div
                                     className={cn(
-                                        "flex items-center justify-start h-12 px-4 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
+                                        "flex items-center justify-start h-14 px-5 gap-4 rounded-2xl cursor-pointer transition-all duration-300 group border",
                                         formData.create_account
-                                            ? "bg-white/10 border-pink-600 shadow-[0_0_15px_rgba(219,39,119,0.2)]"
-                                            : "bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10"
+                                            ? "bg-pink-600/10 border-pink-500/60 shadow-[0_0_20px_rgba(219,39,119,0.15)]"
+                                            : "bg-white/[0.03] border-white/[0.06] hover:border-white/15 hover:bg-white/[0.06]"
                                     )}
                                     onClick={() => setFormData(prev => ({ ...prev, create_account: !prev.create_account }))}
                                 >
                                     <div className={cn(
                                         "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 shrink-0",
                                         formData.create_account
-                                            ? "border-pink-600"
-                                            : "border-white/30 group-hover:border-white"
+                                            ? "border-pink-500 bg-pink-600/20"
+                                            : "border-white/20 group-hover:border-white/50"
                                     )}>
-                                        {formData.create_account && <div className="w-2.5 h-2.5 bg-pink-600 rounded-full" />}
+                                        {formData.create_account && <div className="w-2.5 h-2.5 bg-pink-500 rounded-full shadow-[0_0_6px_rgba(219,39,119,0.8)]" />}
                                     </div>
-                                    <span className={cn("text-base font-semibold transition-colors", formData.create_account ? "text-white" : "text-white/70 group-hover:text-white")}>
+                                    <span className={cn("text-[15px] font-semibold transition-colors", formData.create_account ? "text-white" : "text-white/60 group-hover:text-white/90")}>
                                         No jacha!
                                     </span>
                                 </div>
@@ -535,7 +537,8 @@ const TippingModal = () => {
                         ) : (
                             <>
                                 <div>
-                                    <h3 className="text-base font-semibold text-white/90">Wybierz lub wpisz kwotę napiwku</h3>
+                                    <h3 className="text-base font-bold text-white tracking-wide">Wybierz lub wpisz kwotę napiwku</h3>
+                                    <p className="text-xs text-white/40 mt-1 font-medium">Kwota w wybranej walucie</p>
                                 </div>
                                 <div className="grid grid-cols-3 gap-3">
                                     {suggestedAmounts.map(amount => (
@@ -546,10 +549,10 @@ const TippingModal = () => {
                                                 setValidationError(null);
                                             }}
                                             className={cn(
-                                                "h-11 flex items-center justify-center rounded-xl font-bold transition-all border relative overflow-hidden group text-lg",
+                                                "h-12 flex items-center justify-center rounded-2xl font-bold transition-all border relative overflow-hidden group text-lg",
                                                 formData.amount === amount
-                                                    ? "bg-pink-600 border-pink-600 text-white shadow-lg shadow-pink-600/20"
-                                                    : "bg-white/5 border-white/5 text-white/80 hover:bg-white/10 hover:text-white"
+                                                    ? "bg-pink-600 border-pink-500 text-white shadow-lg shadow-pink-600/25"
+                                                    : "bg-white/[0.03] border-white/[0.06] text-white/70 hover:bg-white/[0.06] hover:text-white"
                                             )}
                                         >
                                             {amount} {formData.currency}
@@ -679,13 +682,13 @@ const TippingModal = () => {
         </div>
 
         {!showTerms && currentStep !== 3 && (
-             <div className={cn("px-6 pb-7 pt-4 flex flex-col gap-4 bg-transparent z-20 relative rounded-b-3xl", isCurrencyDropdownOpen && "z-10")}>
+             <div className={cn("px-6 pb-6 pt-4 flex flex-col gap-3 bg-transparent z-20 relative rounded-b-3xl", isCurrencyDropdownOpen && "z-10")}>
                 <div className="flex gap-3 w-full">
                     {currentStep > 0 && (
                         <Button
                             variant="glass"
                             onClick={handleBack}
-                            className="flex-1 h-12"
+                            className="flex-1 h-12 rounded-2xl"
                         >
                             Wstecz
                         </Button>
@@ -693,7 +696,7 @@ const TippingModal = () => {
                     <Button
                         onClick={handleNext}
                         disabled={isProcessing}
-                        className="flex-1 h-12 bg-pink-600 hover:bg-pink-700 shadow-lg shadow-pink-600/20"
+                        className="flex-1 h-12 bg-pink-600 hover:bg-pink-700 shadow-lg shadow-pink-600/25 rounded-2xl tracking-wider"
                     >
                         {isProcessing ? (
                             <div className="flex items-center gap-2">
@@ -713,7 +716,7 @@ const TippingModal = () => {
             </div>
         )}
 
-        <div className="pb-7 pt-4 flex items-center justify-center z-10 border-t border-white/5 rounded-b-[2.5rem] min-h-[60px]">
+        <div className="pb-5 pt-3 flex items-center justify-center z-10 border-t border-white/[0.06] rounded-b-[2.5rem] min-h-[52px]">
              {showTerms ? (
                   <Button
                     variant="glass"

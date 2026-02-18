@@ -70,13 +70,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 px-4 pb-5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3 px-5 pb-6">
       <Input
         type="text"
         name="login"
         placeholder="Email"
         required
         autoComplete="username"
+        className="h-12 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20"
       />
       <Input
         type="password"
@@ -84,20 +85,21 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         placeholder={t('passwordPlaceholder')}
         required
         autoComplete="current-password"
+        className="h-12 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20"
       />
 
       <Button
         type="submit"
         variant="default"
         disabled={isLoading}
-        className="mt-2 flex items-center justify-center gap-2"
+        className="mt-1 h-12 flex items-center justify-center gap-2 bg-pink-600 hover:bg-pink-700 text-white font-bold tracking-wider shadow-lg shadow-pink-600/20 rounded-xl"
       >
-        {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+        {isLoading && <Loader2 className="h-5 w-5 animate-spin" />}
         {isLoading ? t('loggingIn') : 'ENTER'}
       </Button>
 
       {errorMessage && (
-        <p className="text-red-500 text-sm mt-2 text-center">{errorMessage}</p>
+        <p className="text-red-400 text-sm mt-1 text-center font-medium">{errorMessage}</p>
       )}
     </form>
   );
