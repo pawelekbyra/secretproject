@@ -174,8 +174,8 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
             whileTap={{ scale: 0.98 }}
             onClick={() => setSelectedHabitId(habit.id)}
             className={cn(
-                "relative overflow-hidden bg-zinc-900/40 border p-4 rounded-2xl flex items-center justify-between group transition-all cursor-pointer",
-                habit.type === 'good' ? "border-emerald-500/10 hover:border-emerald-500/30" : "border-rose-500/10 hover:border-rose-500/30"
+                "relative overflow-hidden bg-white/[0.03] backdrop-blur-md border p-4 rounded-3xl flex items-center justify-between group transition-all cursor-pointer",
+                habit.type === 'good' ? "border-emerald-500/20 hover:border-emerald-500/40" : "border-rose-500/20 hover:border-rose-500/40"
             )}
         >
             <div className="flex items-center gap-4 z-10">
@@ -315,14 +315,14 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
 
     return (
         <motion.div
-            className="fixed inset-0 z-[100] bg-black flex flex-col"
+            className="fixed inset-0 z-[100] app-modal-glass flex flex-col"
             initial={{ opacity: 0, scale: 1.1 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
         >
             {/* Header */}
-            <div className="flex-shrink-0 flex items-center justify-between px-6 pt-14 pb-6 border-b border-white/5">
+            <div className="flex-shrink-0 flex items-center justify-between px-6 pt-12 pb-6 border-b border-white/10 bg-black/20">
                 <div className="flex items-center gap-4">
                     {selectedHabitId && (
                         <button onClick={() => setSelectedHabitId(null)} className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl transition-colors">
@@ -354,7 +354,7 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                     <div className="flex flex-col gap-8 pb-10">
                         {/* Summary Dashboard */}
                         <div className="grid grid-cols-1 gap-4">
-                            <div className="bg-gradient-to-br from-indigo-600 via-purple-700 to-pink-600 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden">
+                            <div className="bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden border border-white/20">
                                 <div className="relative z-10">
                                     <div className="flex items-center gap-2 mb-2">
                                         <Star size={16} className="fill-yellow-300 text-yellow-300" />
@@ -474,14 +474,15 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                         onClick={() => setIsAddingHabit(false)}
                     >
                         <motion.div
-                            className="w-full max-w-md bg-zinc-900 border border-white/10 rounded-[2.5rem] p-8 shadow-2xl overflow-hidden relative"
+                            className="w-full max-w-md app-modal-glass border border-white/20 rounded-[3rem] p-8 shadow-2xl overflow-hidden relative"
                             initial={{ y: '100%' }}
                             animate={{ y: 0 }}
                             exit={{ y: '100%' }}
                             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <h2 className="text-2xl font-black italic mb-8 tracking-tighter">Nowy cel</h2>
+                            <div className="app-handle !mt-0 !mb-6" />
+                            <h2 className="text-2xl font-black italic mb-8 tracking-tighter text-center">Nowy cel</h2>
 
                             {/* Type Toggle */}
                             <div className="flex p-1 bg-black rounded-2xl mb-8 border border-white/5">

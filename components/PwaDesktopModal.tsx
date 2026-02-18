@@ -26,19 +26,19 @@ const PwaDesktopModal: React.FC<PwaDesktopModalProps> = ({ isOpen, onClose }) =>
           onClick={onClose}
         >
           <motion.div
-            className="bg-zinc-800 text-white rounded-lg p-8 shadow-xl max-w-sm w-full"
+            className="app-modal-glass text-white rounded-[2.5rem] p-10 shadow-2xl max-w-sm w-full border border-white/20 overflow-hidden"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.3 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-end mb-4">
-              <Button variant="ghost" size="icon" onClick={onClose}>
+            <div className="flex justify-end mb-2">
+              <Button variant="ghost" size="icon" onClick={onClose} className="hover:bg-white/10 rounded-full">
                 <X className="h-5 w-5" />
               </Button>
             </div>
-            <h3 className="text-2xl font-bold mb-4">{t('pwaModalTitle')}</h3>
+            <h3 className="text-2xl font-bold mb-4 tracking-tight">{t('pwaModalTitle')}</h3>
             <p className="mb-6">
               {t('pwaModalBody')}
             </p>

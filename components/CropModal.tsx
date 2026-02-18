@@ -168,14 +168,14 @@ const CropModal: React.FC<CropModalProps> = ({ isOpen, onClose, imageSrc, onCrop
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="bg-[rgba(20,20,20,0.95)] rounded-2xl p-6 w-full max-w-md border border-white/10"
+            className="app-modal-glass rounded-[2rem] p-8 w-full max-w-md border border-white/20 shadow-2xl overflow-hidden"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-semibold text-white">{t('cropAvatarTitle')}</h3>
+              <h3 className="text-xl font-bold text-white tracking-tight">{t('cropAvatarTitle')}</h3>
               <Button variant="ghost" size="icon" onClick={onClose} disabled={isSaving} aria-label={t('closeCropModalAriaLabel')}>
                 <X className="h-5 w-5" />
               </Button>
@@ -214,7 +214,7 @@ const CropModal: React.FC<CropModalProps> = ({ isOpen, onClose, imageSrc, onCrop
               <Button variant="outline" size="icon" onClick={() => setScale(s => s * 1.1)} disabled={isSaving} aria-label={t('zoomInAriaLabel')}><ZoomIn className="h-5 w-5" /></Button>
             </div>
 
-            <Button onClick={handleSave} className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold" disabled={isSaving} aria-label={t('saveAvatarAriaLabel')}>
+            <Button onClick={handleSave} className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold h-12 rounded-xl transition-all active:scale-[0.98]" disabled={isSaving} aria-label={t('saveAvatarAriaLabel')}>
               {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Check className="mr-2 h-4 w-4" />}
               {isSaving ? t('saving') : t('saveAvatarButton')}
             </Button>
