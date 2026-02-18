@@ -15,7 +15,7 @@ export default function UserBadge({ role = 'user', className }: UserBadgeProps) 
       case 'admin':
         return {
           text: 'Admin',
-          styles: 'bg-primary/15 text-primary border border-primary/30 neon-text-pink'
+          styles: 'bg-primary/15 text-primary border border-primary/30 neon-text-primary'
         };
       case 'patron':
         return {
