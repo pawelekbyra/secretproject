@@ -81,7 +81,7 @@ const DeleteTab: React.FC<DeleteTabProps> = ({ onClose }) => {
               name="confirm_text"
               value={confirmation}
               onChange={(e) => setConfirmation(e.target.value)}
-              className="bg-black/20 border-white/10 text-white focus:border-red-500/50 focus:bg-black/40 transition-all"
+              className="focus-visible:border-red-500/50 focus-visible:ring-red-500/20 focus-visible:shadow-[0_0_15px_-3px_rgba(239,68,68,0.3)]"
             />
             <p className="text-xs text-white/50 mt-1 ml-1">
               {t('deleteAccountInfo')}
@@ -92,7 +92,8 @@ const DeleteTab: React.FC<DeleteTabProps> = ({ onClose }) => {
               <Button
                 type="submit"
                 variant="destructive"
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-6 rounded-xl shadow-lg shadow-red-900/20 active:scale-[0.98] transition-all"
+                size="lg"
+                className="w-full"
                 disabled={confirmation !== DELETE_CONFIRM_TEXT || isSaving}
               >
                 {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}

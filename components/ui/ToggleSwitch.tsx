@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface ToggleSwitchProps {
   isActive: boolean;
@@ -12,15 +13,19 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ isActive, onToggle }) => {
   return (
     <div
       onClick={onToggle}
-      className={`relative w-[50px] h-[24px] rounded-full cursor-pointer transition-colors duration-300 ${isActive ? 'bg-pink-600' : 'bg-gray-700'}`}
+      className={cn(
+        "relative w-[50px] h-[26px] rounded-full cursor-pointer transition-all duration-500 flex items-center p-[3px]",
+        isActive
+          ? "bg-primary shadow-[0_0_15px_-3px_hsl(var(--primary))]"
+          : "bg-white/10 border border-white/5"
+      )}
     >
       <motion.div
-        className="absolute top-[1px] left-[1px] w-[22px] h-[22px] bg-white rounded-full shadow-md"
-        layout
-        transition={{ type: 'spring', stiffness: 700, damping: 30 }}
-        style={{
-          x: isActive ? '26px' : '0px',
+        className="w-[20px] h-[20px] bg-white rounded-full shadow-xl"
+        animate={{
+          x: isActive ? 24 : 0,
         }}
+        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
       />
     </div>
   );

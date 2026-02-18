@@ -13,6 +13,8 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday
 import { pl, enUS } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/context/ToastContext';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 interface Habit {
     id: string;
@@ -174,8 +176,10 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
             whileTap={{ scale: 0.98 }}
             onClick={() => setSelectedHabitId(habit.id)}
             className={cn(
-                "relative overflow-hidden bg-white/[0.03] backdrop-blur-md border p-4 rounded-3xl flex items-center justify-between group transition-all cursor-pointer",
-                habit.type === 'good' ? "border-emerald-500/20 hover:border-emerald-500/40" : "border-rose-500/20 hover:border-rose-500/40"
+                "relative overflow-hidden bg-white/5 backdrop-blur-xl border p-4 rounded-3xl flex items-center justify-between group transition-all cursor-pointer shadow-xl",
+                habit.type === 'good'
+                    ? "border-emerald-500/20 hover:border-emerald-500/50 hover:shadow-emerald-500/10"
+                    : "border-rose-500/20 hover:border-rose-500/50 hover:shadow-rose-500/10"
             )}
         >
             <div className="flex items-center gap-4 z-10">
@@ -521,26 +525,28 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                             </div>
 
                             <div className="relative">
-                                <div className="text-[10px] text-white/20 font-black mb-3 ml-2 tracking-widest">Własna nazwa</div>
+                                <div className="text-[10px] text-white/20 font-black mb-3 ml-2 tracking-widest uppercase">Własna nazwa</div>
                                 <div className="flex gap-3">
-                                    <input
+                                    <Input
                                         type="text"
                                         value={customHabitName}
                                         onChange={(e) => setCustomHabitName(e.target.value)}
                                         placeholder="Np. Zimny prysznic..."
-                                        className="flex-1 bg-black border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-indigo-500 transition-colors font-medium"
+                                        className="flex-1 h-14 rounded-2xl"
                                     />
-                                    <button
+                                    <Button
+                                        size="icon"
                                         onClick={() => addHabitMutation.mutate({ name: customHabitName, icon: newHabitType === 'good' ? '✨' : '🚫', type: newHabitType })}
                                         disabled={!customHabitName || addHabitMutation.isPending}
                                         className={cn(
-                                            "w-14 h-14 rounded-2xl flex items-center justify-center text-white transition-all shadow-xl",
-                                            newHabitType === 'good' ? "bg-emerald-500 shadow-emerald-500/20" : "bg-rose-500 shadow-rose-500/20",
-                                            (!customHabitName || addHabitMutation.isPending) && "opacity-50 grayscale"
+                                            "w-14 h-14 rounded-2xl transition-all shadow-xl",
+                                            newHabitType === 'good'
+                                                ? "bg-emerald-500 hover:bg-emerald-600 shadow-emerald-500/20"
+                                                : "bg-rose-500 hover:bg-rose-600 shadow-rose-500/20"
                                         )}
                                     >
                                         <Plus size={32} strokeWidth={3} />
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         </motion.div>

@@ -190,7 +190,6 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                         <Camera className="text-white w-8 h-8" />
                     </div>
                 </div>
-                {/* Zmieniono kolor ramki (border) z #2d2d2d na white */}
                 <button
                   type="button"
                   className="absolute bottom-0 right-0 w-8 h-8 bg-emerald-600 border-2 border-white rounded-full text-white flex items-center justify-center hover:bg-emerald-500 transition-colors shadow-lg"
@@ -240,7 +239,6 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                 name="displayName"
                 defaultValue={profile.displayName || ''}
                 placeholder={t('displayNamePlaceholder') || 'Your Name'}
-                className="bg-black/20 border-white/10 text-white focus:border-pink-500/50 focus:bg-black/40 transition-all"
               />
             </div>
 
@@ -251,7 +249,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                 defaultValue={(profile as any).bio || ''}
                 placeholder={t('bioPlaceholder') || 'Napisz coś o sobie...'}
                 rows={3}
-                className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-sm text-white focus:border-pink-500/50 focus:bg-black/40 focus:outline-none transition-all resize-none placeholder:text-white/30"
+                className="w-full bg-zinc-950/50 border border-white/10 rounded-xl p-3 text-sm text-white focus:border-primary/50 focus:outline-none transition-all resize-none placeholder:text-zinc-500 shadow-inner"
               />
             </div>
 
@@ -262,7 +260,6 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                 name="email"
                 defaultValue={profile.email}
                 placeholder={t('emailPlaceholder')}
-                className="bg-black/20 border-white/10 text-white focus:border-pink-500/50 focus:bg-black/40 transition-all"
               />
             </div>
 
@@ -341,7 +338,9 @@ function SaveButton({ t }: { t: any }) {
   return (
     <Button
         type="submit"
-        className="w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-semibold py-6 rounded-xl shadow-lg shadow-pink-900/20 active:scale-[0.98] transition-all"
+        variant="default"
+        size="lg"
+        className="w-full"
         disabled={pending}
     >
       {pending ? (

@@ -11,6 +11,8 @@ import { X, ChevronDown, Check, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import StatusMessage from '@/components/ui/StatusMessage';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
 
 // Inicjalizacja Stripe - Wywołana RAZ poza komponentem
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK!);
@@ -49,11 +51,9 @@ const CheckoutForm = ({ clientSecret, email, onClose, onBack }: { clientSecret: 
     const elements = useElements();
     const { addToast } = useToast();
     const [isProcessing, setIsProcessing] = useState(false);
-    const [isReady, setIsReady] = useState(false); // Nowy stan do śledzenia załadowania
+    const [isReady, setIsReady] = useState(false);
     const { t } = useTranslation();
 
-    // MEMOIZACJA OPCJI - Kluczowe dla stabilności
-    // loader: 'auto' sprawia, że Stripe pokazuje szkielet (skeleton) zamiast pustego miejsca
     const paymentElementOptions = useMemo(() => ({
         layout: 'tabs' as const,
         readOnly: isProcessing,
@@ -110,7 +110,6 @@ const CheckoutForm = ({ clientSecret, email, onClose, onBack }: { clientSecret: 
 
     return (
         <form onSubmit={handleSubmit} className="w-full">
-            {/* WRAPPER Z MIN-HEIGHT: Zapobiega skakaniu layoutu i znikaniu iframe przy animacjach */}
             <div className="mb-4 min-h-[260px] w-full relative z-10">
                 <PaymentElement
                     id="payment-element"
@@ -123,19 +122,19 @@ const CheckoutForm = ({ clientSecret, email, onClose, onBack }: { clientSecret: 
                 />
             </div>
             <div className="flex gap-3 w-full mt-4">
-                <button
+                <Button
                     type="button"
+                    variant="glass"
                     onClick={onBack}
                     disabled={isProcessing}
-                    className="flex-1 px-6 h-10 flex items-center justify-center rounded-xl font-bold text-white bg-[#2C2C2E] hover:bg-[#3A3A3C] transition-all text-sm uppercase tracking-wide border border-white/5 disabled:opacity-50"
+                    className="flex-1 h-11"
                 >
                     Wstecz
-                </button>
-                <button
+                </Button>
+                <Button
                     type="submit"
-                    // Blokujemy przycisk dopóki Stripe nie jest gotowy (isReady)
                     disabled={isProcessing || !stripe || !elements || !isReady}
-                    className="flex-1 h-10 rounded-xl font-bold text-white text-base bg-pink-600 hover:bg-pink-700 transition-all disabled:opacity-50 tracking-wider shadow-lg active:scale-[0.98] uppercase flex items-center justify-center gap-2"
+                    className="flex-1 h-11 bg-pink-600 hover:bg-pink-700 shadow-lg shadow-pink-600/20"
                 >
                     {isProcessing ? (
                         <div className="flex items-center justify-center gap-2">
@@ -144,7 +143,7 @@ const CheckoutForm = ({ clientSecret, email, onClose, onBack }: { clientSecret: 
                     ) : (
                         "Napiwkuj"
                     )}
-                </button>
+                </Button>
             </div>
         </form>
     );
@@ -186,7 +185,6 @@ const TippingModal = () => {
 
     // Reset stanu po zamknięciu
     if (!isTippingModalOpen) {
-        // Małe opóźnienie resetu, aby animacja wyjścia wyglądała płynnie
         const timeout = setTimeout(() => {
             setCurrentStep(0);
             setFormData(prev => ({ ...prev, create_account: false, terms_accepted: false, recipient: '' }));
@@ -258,7 +256,6 @@ const TippingModal = () => {
             return;
         }
 
-        // Optymalizacja: Nie twórz nowego Intent jeśli nic się nie zmieniło
         if (clientSecret && lastIntentConfig &&
             lastIntentConfig.amount === formData.amount &&
             lastIntentConfig.currency === formData.currency &&
@@ -289,7 +286,6 @@ const TippingModal = () => {
                     currency: formData.currency,
                     email: formData.email
                 });
-                // Inkrementacja klucza wymusi ponowne zamontowanie Elements z nowym sekretem
                 setPaymentStepKey(prev => prev + 1);
                 setCurrentStep(3);
             } else {
@@ -320,8 +316,6 @@ const TippingModal = () => {
   const currencies = ['PLN', 'EUR', 'USD', 'GBP'];
   const modalTitle = showTerms ? "Regulamin i Polityka" : "Bramka Napiwkowa";
 
-  // MEMOIZACJA OPCJI DLA ELEMENTS
-  // Ważne: loader: 'auto' tutaj też można dodać dla pewności
   const stripeOptions = useMemo(() => {
     if (!clientSecret) return undefined;
 
@@ -360,37 +354,34 @@ const TippingModal = () => {
             animate={{ x: '0%' }}
             exit={{ x: tippingModalOptions.fromLeft ? '-100%' : '100%' }}
             transition={{ type: "spring", stiffness: 200, damping: 30 }}
-            className="relative w-[90%] max-w-[420px] max-h-[85vh] flex flex-col rounded-[2.5rem] app-modal-glass shadow-2xl pointer-events-auto border border-white/20 overflow-visible"
+            className="relative w-[95%] max-w-[420px] max-h-[85vh] flex flex-col rounded-[2.5rem] app-modal-glass shadow-2xl pointer-events-auto border border-white/20 overflow-visible"
           >
 
         <div className="app-handle" />
 
-        {/* NAGŁÓWEK */}
-        <div className="relative h-10 flex items-center justify-center px-6 text-center shrink-0 z-10 border-b border-white/5">
+        <div className="relative h-12 flex items-center justify-center px-6 text-center shrink-0 z-10 border-b border-white/5">
             <h2 className="text-xl font-bold text-white tracking-tight">
                 {modalTitle}
             </h2>
             <button
                 onClick={closeTippingModal}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-full transition-colors z-50"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-full transition-colors z-50"
             >
                 <X size={22} strokeWidth={2.5} />
             </button>
         </div>
 
-        {/* PROGRESS BAR */}
         <div className="h-1 w-full bg-white/5 relative overflow-hidden z-10">
             <motion.div
-                className="h-full bg-pink-600"
+                className="h-full bg-pink-600 shadow-[0_0_8px_rgba(219,39,119,0.5)]"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
             />
         </div>
 
-        {/* TREŚĆ */}
         <div className={cn(
-            "flex-1 overflow-y-auto px-6 pt-6 pb-0 flex flex-col relative z-10 text-white rounded-b-[2.5rem] custom-scrollbar",
+            "flex-1 overflow-y-auto px-6 pt-7 pb-0 flex flex-col relative z-10 text-white rounded-b-[2.5rem] custom-scrollbar",
             isCurrencyDropdownOpen && "z-30"
         )}>
             <AnimatePresence mode="wait" initial={false}>
@@ -402,18 +393,18 @@ const TippingModal = () => {
                         animate="animate"
                         exit="exit"
                         transition={{ duration: 0.2 }}
-                        className="space-y-3"
+                        className="space-y-4"
                     >
                         <div className="text-left">
-                            <p className="text-base font-medium text-white/90 tracking-wide">Komu chcesz wysłać napiwek?</p>
+                            <p className="text-base font-semibold text-white/90 tracking-wide">Komu chcesz wysłać napiwek?</p>
                         </div>
                         <div className="space-y-3 pt-1">
                             <div
                                 className={cn(
-                                    "flex items-center justify-start h-10 px-3 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
+                                    "flex items-center justify-start h-12 px-4 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
                                     formData.recipient === 'Paweł'
-                                        ? "bg-[#2C2C2E] border-pink-600 shadow-[0_0_15px_rgba(219,39,119,0.15)]"
-                                        : "bg-[#2C2C2E] border-white/5 hover:border-white/20 hover:bg-[#3A3A3C]"
+                                        ? "bg-white/10 border-pink-600 shadow-[0_0_15px_rgba(219,39,119,0.2)]"
+                                        : "bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10"
                                 )}
                                 onClick={() => setFormData(prev => ({ ...prev, recipient: 'Paweł' }))}
                             >
@@ -431,10 +422,10 @@ const TippingModal = () => {
                             </div>
                             <div
                                 className={cn(
-                                    "flex items-center justify-start h-10 px-3 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
+                                    "flex items-center justify-start h-12 px-4 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
                                     formData.recipient === 'Nikt'
-                                        ? "bg-[#2C2C2E] border-white shadow-lg"
-                                        : "bg-[#2C2C2E] border-white/5 hover:border-white/20 hover:bg-[#3A3A3C]"
+                                        ? "bg-white/10 border-white shadow-lg"
+                                        : "bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10"
                                 )}
                                 onClick={() => setFormData(prev => ({ ...prev, recipient: 'Nikt' }))}
                             >
@@ -462,19 +453,19 @@ const TippingModal = () => {
                         animate="animate"
                         exit="exit"
                         transition={{ duration: 0.2 }}
-                        className="space-y-3"
+                        className="space-y-4"
                     >
                         <div className="text-left">
-                            <p className="text-base font-medium text-white/90 tracking-wide">Czy chcesz utworzyć konto Patrona?</p>
+                            <p className="text-base font-semibold text-white/90 tracking-wide">Czy chcesz utworzyć konto Patrona?</p>
                         </div>
                         <div className="space-y-3">
                             {!isLoggedIn && (
                                 <div
                                     className={cn(
-                                        "flex items-center justify-start h-10 px-3 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
+                                        "flex items-center justify-start h-12 px-4 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
                                         formData.create_account
-                                            ? "bg-[#2C2C2E] border-pink-600 shadow-[0_0_15px_rgba(219,39,119,0.15)]"
-                                            : "bg-[#2C2C2E] border-white/5 hover:border-white/20 hover:bg-[#3A3A3C]"
+                                            ? "bg-white/10 border-pink-600 shadow-[0_0_15px_rgba(219,39,119,0.2)]"
+                                            : "bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10"
                                     )}
                                     onClick={() => setFormData(prev => ({ ...prev, create_account: !prev.create_account }))}
                                 >
@@ -491,17 +482,17 @@ const TippingModal = () => {
                                     </span>
                                 </div>
                             )}
-                            <div className={cn("space-y-2 overflow-hidden transition-all duration-500", (formData.create_account) ? "max-h-[200px] opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-2")}>
+                            <div className={cn("space-y-3 overflow-hidden transition-all duration-500", (formData.create_account) ? "max-h-[200px] opacity-100 translate-y-0 pt-2" : "max-h-0 opacity-0 -translate-y-2")}>
                                 <div className="group relative">
-                                    <input
+                                    <Input
                                         type="email"
                                         placeholder="Twój adres email"
                                         value={formData.email}
                                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        className="relative w-full bg-black/30 border border-white/10 rounded-xl h-10 px-3 text-white placeholder:text-white/30 focus:outline-none focus:bg-black/50 focus:border-pink-600 transition-all font-medium text-base"
+                                        className="h-12 text-center text-lg"
                                     />
                                 </div>
-                                <p className="text-xs text-white/40 text-left px-2 font-medium">
+                                <p className="text-xs text-white/40 text-left px-2 font-medium leading-relaxed">
                                     Na podany adres e-mail otrzymasz dane do logowania.
                                 </p>
                             </div>
@@ -521,30 +512,30 @@ const TippingModal = () => {
                     >
                         {showTerms ? (
                              <div className="flex flex-col h-full overflow-hidden">
-                                <div className="flex-1 overflow-y-auto bg-black/20 border border-white/10 rounded-xl p-4 text-sm text-white/80 space-y-3 custom-scrollbar h-[50vh] max-h-[400px]">
-                                    <p className="font-bold text-white">1. Postanowienia ogólne</p>
+                                <div className="flex-1 overflow-y-auto bg-black/40 border border-white/10 rounded-2xl p-5 text-sm text-white/70 space-y-4 custom-scrollbar h-[50vh] max-h-[400px] leading-relaxed">
+                                    <p className="font-bold text-white text-base">1. Postanowienia ogólne</p>
                                     <p>Korzystając z Bramki Napiwkowej, użytkownik (&quot;Darczyńca&quot;) oświadcza, że zapoznał się z niniejszym regulaminem i w pełni go akceptuje. Wpłaty są dobrowolne i mają charakter darowizny na rzecz twórcy (&quot;Beneficjent&quot;).</p>
 
-                                    <p className="font-bold text-white">2. Płatności i Zwroty</p>
+                                    <p className="font-bold text-white text-base">2. Płatności i Zwroty</p>
                                     <p>Wszystkie transakcje są przetwarzane przez zewnętrznego operatora płatności Stripe. Serwis nie przechowywuje pełnych danych kart płatniczych. Z uwagi na charakter usługi (darowizna cyfrowa), wpłaty są bezzwrotne, chyba że przepisy prawa stanowią inaczej. Reklamacje dotyczące błędów technicznych należy zgłaszać w ciągu 14 dni.</p>
 
-                                    <p className="font-bold text-white">3. Prywatność i Dane Osobowe</p>
+                                    <p className="font-bold text-white text-base">3. Prywatność i Dane Osobowe</p>
                                     <p>Administratorem danych jest właściciel serwisu. Podany adres e-mail przetwarzany jest wyłącznie w celu:</p>
-                                    <ul className="list-disc pl-5 space-y-1">
+                                    <ul className="list-disc pl-5 space-y-2">
                                         <li>Przesłania potwierdzenia transakcji.</li>
                                         <li>Utworzenia konta Patrona (jeśli zaznaczono opcję).</li>
                                         <li>Kontaktu w sprawach technicznych.</li>
                                     </ul>
                                     <p>Dane nie są udostępniane podmiotom trzecim w celach marketingowych.</p>
 
-                                    <p className="font-bold text-white">4. Postanowienia końcowe</p>
+                                    <p className="font-bold text-white text-base">4. Postanowienia końcowe</p>
                                     <p>Regulamin może ulec zmianie. W sprawach nieuregulowanych decydują przepisy prawa polskiego.</p>
                                 </div>
                             </div>
                         ) : (
                             <>
                                 <div>
-                                    <h3 className="text-base font-medium text-white/90">Wybierz lub wpisz kwotę napiwku</h3>
+                                    <h3 className="text-base font-semibold text-white/90">Wybierz lub wpisz kwotę napiwku</h3>
                                 </div>
                                 <div className="grid grid-cols-3 gap-3">
                                     {suggestedAmounts.map(amount => (
@@ -555,10 +546,10 @@ const TippingModal = () => {
                                                 setValidationError(null);
                                             }}
                                             className={cn(
-                                                "h-10 flex items-center justify-center rounded-xl font-bold transition-all border relative overflow-hidden group text-lg",
+                                                "h-11 flex items-center justify-center rounded-xl font-bold transition-all border relative overflow-hidden group text-lg",
                                                 formData.amount === amount
-                                                    ? "bg-pink-600 border-pink-600 text-white shadow-lg"
-                                                    : "bg-[#2C2C2E] border-white/5 text-white/80 hover:bg-[#3A3A3C] hover:text-white"
+                                                    ? "bg-pink-600 border-pink-600 text-white shadow-lg shadow-pink-600/20"
+                                                    : "bg-white/5 border-white/5 text-white/80 hover:bg-white/10 hover:text-white"
                                             )}
                                         >
                                             {amount} {formData.currency}
@@ -566,7 +557,7 @@ const TippingModal = () => {
                                     ))}
                                 </div>
                                 <div
-                                    className={cn("flex items-stretch h-10 relative transition-all", isCurrencyDropdownOpen ? "z-50" : "z-30")}
+                                    className={cn("flex items-stretch h-12 relative transition-all", isCurrencyDropdownOpen ? "z-50" : "z-30")}
                                     ref={dropdownRef}
                                 >
                                     <div className="relative flex-1 h-full">
@@ -577,13 +568,13 @@ const TippingModal = () => {
                                                 setFormData({ ...formData, amount: Number(e.target.value) });
                                                 setValidationError(null);
                                             }}
-                                            className="w-full h-full bg-black/30 border border-white/10 text-center text-xl font-black text-white rounded-l-xl focus:outline-none focus:bg-black/50 focus:border-pink-600 transition-all z-10 relative"
+                                            className="w-full h-full bg-black/40 border border-white/10 text-center text-xl font-black text-white rounded-l-2xl focus:outline-none focus:bg-black/60 focus:border-pink-600 transition-all z-10 relative"
                                             placeholder="0"
                                         />
                                     </div>
                                     <div className="relative h-full w-[100px]">
                                         <div
-                                            className="h-full border border-l-0 border-white/10 bg-[#2C2C2E] hover:bg-[#3A3A3C] transition-colors relative shrink-0 cursor-pointer px-4 rounded-r-xl flex items-center justify-between"
+                                            className="h-full border border-l-0 border-white/10 bg-white/5 hover:bg-white/10 transition-colors relative shrink-0 cursor-pointer px-4 rounded-r-2xl flex items-center justify-between"
                                             onClick={() => setIsCurrencyDropdownOpen(true)}
                                         >
                                             <span className="font-bold text-base text-white select-none">{formData.currency}</span>
@@ -592,10 +583,10 @@ const TippingModal = () => {
                                         <AnimatePresence>
                                             {isCurrencyDropdownOpen && (
                                                 <motion.div
-                                                    initial={{ opacity: 1, scale: 1 }}
-                                                    animate={{ opacity: 1, scale: 1 }}
-                                                    exit={{ opacity: 1, scale: 1 }}
-                                                    className="absolute top-0 right-0 w-full bg-[#2C2C2E] border border-white/10 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden z-[9999]"
+                                                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                                                    className="absolute top-full right-0 w-full mt-2 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl overflow-hidden z-[9999]"
                                                 >
                                                     <div className="flex flex-col">
                                                         {currencies.map((currency) => (
@@ -606,7 +597,7 @@ const TippingModal = () => {
                                                                     setIsCurrencyDropdownOpen(false);
                                                                 }}
                                                                 className={cn(
-                                                                    "w-full flex items-center justify-between px-4 py-2 text-left font-bold transition-colors relative group text-white border-b border-white/5 last:border-0 h-10",
+                                                                    "w-full flex items-center justify-between px-4 py-3 text-left font-bold transition-colors relative group text-white border-b border-white/5 last:border-0",
                                                                     formData.currency === currency
                                                                         ? "bg-white/10"
                                                                         : "hover:bg-white/5"
@@ -614,7 +605,7 @@ const TippingModal = () => {
                                                             >
                                                                 <span className="text-base">{currency}</span>
                                                                 {formData.currency === currency && (
-                                                                    <Check size={20} className="text-pink-600" />
+                                                                    <Check size={18} className="text-pink-600" strokeWidth={3} />
                                                                 )}
                                                             </button>
                                                         ))}
@@ -632,15 +623,15 @@ const TippingModal = () => {
                                     }}
                                 >
                                     <div className={cn(
-                                        "w-5 h-5 rounded border flex items-center justify-center transition-all duration-200 shrink-0",
+                                        "w-5 h-5 rounded-md border flex items-center justify-center transition-all duration-200 shrink-0",
                                         formData.terms_accepted
-                                            ? "bg-pink-600 border-pink-600"
-                                            : "border-white/30 bg-transparent group-hover:border-white"
+                                            ? "bg-pink-600 border-pink-600 shadow-[0_0_8px_rgba(219,39,119,0.4)]"
+                                            : "border-white/20 bg-transparent group-hover:border-white/40"
                                     )}>
-                                        {formData.terms_accepted && <Check size={14} className="text-white" strokeWidth={3} />}
+                                        {formData.terms_accepted && <Check size={12} className="text-white" strokeWidth={4} />}
                                     </div>
-                                    <p className="text-sm font-medium text-white/50 group-hover:text-white transition-colors select-none text-left">
-                                        Akceptuję <span className="underline decoration-white/30 underline-offset-2 hover:text-white cursor-pointer" onClick={(e) => { e.stopPropagation(); setShowTerms(true); }}>Regulamin i Politykę Prywatności</span>
+                                    <p className="text-xs font-medium text-white/40 group-hover:text-white/60 transition-colors select-none text-left leading-relaxed">
+                                        Akceptuję <span className="underline decoration-white/20 underline-offset-4 hover:text-white cursor-pointer" onClick={(e) => { e.stopPropagation(); setShowTerms(true); }}>Regulamin i Politykę Prywatności</span>
                                     </p>
                                 </div>
                             </>
@@ -656,18 +647,16 @@ const TippingModal = () => {
                         animate="animate"
                         exit="exit"
                         transition={{ duration: 0.2 }}
-                        className="space-y-4 flex-1 relative z-10 w-full"
+                        className="space-y-5 flex-1 relative z-10 w-full"
                     >
                         <div className="text-center">
-                            <div className="inline-block bg-[#2C2C2E] border border-white/10 text-white px-4 py-1.5 rounded-full shadow-lg">
+                            <div className="inline-block bg-white/10 border border-white/10 text-white px-5 py-2 rounded-full shadow-lg backdrop-blur-md">
                                 <span className="text-xl font-black">{formData.amount.toFixed(2)} {formData.currency}</span>
                             </div>
                         </div>
 
-                        {/* BEZPIECZNE RENDEROWANIE ELEMENTS */}
                         {clientSecret && stripeOptions ? (
                             <Elements
-                                // Używamy złożonego klucza, aby wymusić remount tylko przy zmianie sekretu
                                 key={`${clientSecret}-${paymentStepKey}`}
                                 stripe={stripePromise}
                                 options={stripeOptions}
@@ -680,7 +669,6 @@ const TippingModal = () => {
                                 />
                             </Elements>
                         ) : (
-                             // Fallback podczas pobierania sekretu
                              <div className="flex items-center justify-center h-[260px]">
                                 <Loader2 className="animate-spin h-8 w-8 text-pink-600" />
                             </div>
@@ -691,29 +679,30 @@ const TippingModal = () => {
         </div>
 
         {!showTerms && currentStep !== 3 && (
-             <div className={cn("px-6 pb-6 pt-4 flex flex-col gap-3 bg-transparent z-20 relative rounded-b-3xl", isCurrencyDropdownOpen && "z-10")}>
+             <div className={cn("px-6 pb-7 pt-4 flex flex-col gap-4 bg-transparent z-20 relative rounded-b-3xl", isCurrencyDropdownOpen && "z-10")}>
                 <div className="flex gap-3 w-full">
                     {currentStep > 0 && (
-                        <button
+                        <Button
+                            variant="glass"
                             onClick={handleBack}
-                            className="flex-1 px-6 h-10 flex items-center justify-center rounded-xl font-bold text-white bg-[#2C2C2E] hover:bg-[#3A3A3C] transition-all text-sm uppercase tracking-wide border border-white/5"
+                            className="flex-1 h-12"
                         >
                             Wstecz
-                        </button>
+                        </Button>
                     )}
-                    <button
+                    <Button
                         onClick={handleNext}
                         disabled={isProcessing}
-                        className="group flex-1 h-10 flex items-center justify-center gap-2 rounded-xl font-bold uppercase tracking-wider text-white bg-pink-600 hover:bg-pink-700 transition-all disabled:opacity-50 shadow-lg active:scale-[0.98]"
+                        className="flex-1 h-12 bg-pink-600 hover:bg-pink-700 shadow-lg shadow-pink-600/20"
                     >
                         {isProcessing ? (
                             <div className="flex items-center gap-2">
                                 <Loader2 className="animate-spin h-5 w-5" />
                             </div>
                         ) : (
-                            "ENTER"
+                            "DALEJ"
                         )}
-                    </button>
+                    </Button>
                 </div>
                 <StatusMessage
                     type="error"
@@ -724,18 +713,19 @@ const TippingModal = () => {
             </div>
         )}
 
-        <div className="pb-6 pt-4 flex items-center justify-center z-10 border-t border-white/5 rounded-b-[2.5rem] min-h-[50px]">
+        <div className="pb-7 pt-4 flex items-center justify-center z-10 border-t border-white/5 rounded-b-[2.5rem] min-h-[60px]">
              {showTerms ? (
-                  <button
+                  <Button
+                    variant="glass"
                     onClick={() => setShowTerms(false)}
-                    className="w-auto px-4 py-2 rounded-lg font-bold text-white bg-[#3A3A3C] hover:bg-[#4A4A4C] transition-all text-xs uppercase tracking-wide"
+                    className="h-10 px-6 uppercase tracking-widest text-[10px]"
                   >
                     Wróć
-                  </button>
+                  </Button>
              ) : (
-                 <div className="flex items-center gap-0 opacity-40 hover:opacity-100 transition-all duration-300">
-                      <span className="text-[10px] text-white font-bold uppercase tracking-widest">Powered by</span>
-                      <div className="relative flex items-center -mt-px -ml-2">
+                 <div className="flex items-center gap-0 opacity-20 hover:opacity-100 transition-all duration-500">
+                      <span className="text-[10px] text-white font-bold uppercase tracking-[0.2em]">Powered by</span>
+                      <div className="relative flex items-center -mt-px -ml-2 scale-90">
                           <StripeLogo />
                       </div>
                  </div>

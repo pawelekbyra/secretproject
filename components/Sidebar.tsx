@@ -107,13 +107,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Shared styles
   const iconSize = 26;
   const buttonClass = "flex flex-col items-center gap-1 justify-center cursor-pointer group";
-  const labelClass = "text-[10px] leading-none text-center font-medium text-white/80 group-hover:text-white transition-colors";
-  const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200";
-  const iconGlass = {
-    background: 'var(--glass-bg)',
-    backdropFilter: 'blur(12px)',
-    border: '1px solid var(--glass-border)'
-  };
+  const labelClass = "text-[10px] leading-none text-center font-medium text-white/80 group-hover:text-white transition-colors drop-shadow-sm";
+  const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 app-glass border-white/10 hover:border-white/20 active:scale-95";
 
   // Determine avatar border color
   // In Sidebar, this is the Author's avatar.
@@ -134,7 +129,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         <button
             onClick={handleOpenAuthorProfile}
             className={cn(
-                "w-full h-full flex items-center justify-center text-white bg-gray-600 rounded-full overflow-hidden border-2 shadow-[0_0_15px_rgba(255,255,255,0.5)]",
+                "w-full h-full flex items-center justify-center text-white bg-gray-600 rounded-full overflow-hidden border-2 shadow-[0_0_15px_rgba(255,255,255,0.5)] active:scale-95 transition-transform",
                 avatarBorderColor
             )}
         >
@@ -146,7 +141,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         </button>
          {showPlusIcon && (
              <div
-                className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-5 h-5 rounded-full flex items-center justify-center text-white border-2 border-white pointer-events-none bg-primary"
+                className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-5 h-5 rounded-full flex items-center justify-center text-white border-2 border-white pointer-events-none bg-primary shadow-[0_0_8px_var(--primary-glow)]"
               >
                 <Plus size={14} strokeWidth={4} />
               </div>
@@ -161,11 +156,11 @@ const Sidebar: React.FC<SidebarProps> = ({
         data-slide-id={slideId}
         whileTap={{ scale: 0.85 }}
       >
-        <div className={iconWrapClass} style={iconGlass}>
+        <div className={iconWrapClass}>
           <Heart
             size={iconSize}
             strokeWidth={1.8}
-            className={`transition-colors duration-200 ${(isLiked && isLoggedIn) ? 'fill-[var(--accent-color,theme(colors.rose.500))] stroke-white' : 'fill-transparent stroke-white/90'}`}
+            className={`transition-all duration-200 ${(isLiked && isLoggedIn) ? 'fill-[var(--accent-color,theme(colors.rose.500))] stroke-white drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]' : 'fill-transparent stroke-white/90'}`}
           />
         </div>
         <span className={labelClass}>{formatCount(currentLikes)}</span>
@@ -179,7 +174,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         className={buttonClass}
         whileTap={{ scale: 0.85 }}
       >
-        <div className={iconWrapClass} style={iconGlass}>
+        <div className={iconWrapClass}>
           <MessageSquare size={iconSize} strokeWidth={1.8} className="stroke-white/90" />
         </div>
         <span className={labelClass}>{formatCount(currentCommentCount)}</span>
@@ -192,7 +187,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         className={buttonClass}
         whileTap={{ scale: 0.85 }}
       >
-        <div className={iconWrapClass} style={iconGlass}>
+        <div className={iconWrapClass}>
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.0" strokeLinecap="round" strokeLinejoin="round" width={iconSize} height={iconSize} className="stroke-white/90">
               <polyline points="15 14 20 9 15 4"></polyline>
               <path d="M4 20v-7a4 4 0 0 1 4-4h12"></path>
@@ -208,7 +203,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         className={buttonClass}
         whileTap={{ scale: 0.85 }}
       >
-        <div className={iconWrapClass} style={iconGlass}>
+        <div className={iconWrapClass}>
           <svg viewBox="0 0 24 24" className="text-white/90" style={{ width: iconSize, height: iconSize }} fill="none" stroke="currentColor" strokeWidth="1.8">
              <rect x="2" y="7" width="20" height="12" rx="2" ry="2" />
              <path d="M2 10h20" />
