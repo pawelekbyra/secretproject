@@ -33,12 +33,12 @@ const DesktopDeviceFrame: React.FC<DesktopDeviceFrameProps> = ({ children }) => 
   }, []);
 
   return (
-    <div className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-zinc-950">
+    <div className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-[#0a0000] bg-gradient-to-br from-[#1a0508] via-[#0a0000] to-[#0a0000]">
 
       {/* Ambient Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[100px] mix-blend-screen" />
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[100px] mix-blend-screen" />
       </div>
 
       <div className="relative z-10 flex items-center gap-12 xl:gap-24">
@@ -52,6 +52,9 @@ const DesktopDeviceFrame: React.FC<DesktopDeviceFrameProps> = ({ children }) => 
         <div className="relative shrink-0 group">
           {/* Cień i poświata telefonu */}
           <div className="absolute inset-0 bg-black/40 rounded-[50px] blur-2xl transform translate-y-8 scale-90" />
+
+          {/* Subtle Violet Glow */}
+          <div className="absolute -inset-1 bg-primary/20 rounded-[2.5rem] blur-[40px] pointer-events-none" />
 
           {/* Przyciski fizyczne (Volume Up/Down) */}
           <div className="absolute -left-[3px] top-24 w-[3px] h-12 bg-zinc-700 rounded-l-md z-10" />

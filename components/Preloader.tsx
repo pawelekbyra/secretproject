@@ -121,7 +121,7 @@ const Preloader: React.FC = () => {
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="flex flex-col gap-3 w-full max-w-[240px] px-6">
+                <div className="flex flex-col gap-3 w-full max-w-[320px] px-6">
                   <Button
                     variant="outline"
                     className="w-full h-11 rounded-full text-sm font-bold active:scale-95 transition-all duration-300"
