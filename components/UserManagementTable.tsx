@@ -126,7 +126,7 @@ export default function UserManagementTable() {
                         placeholder="Szukaj po emailu, nazwie..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-black/40 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-white placeholder:text-white/20 focus:outline-none focus:border-pink-500 transition-all"
+                        className="w-full bg-black/40 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-white placeholder:text-white/20 focus:outline-none focus:border-primary transition-all"
                     />
                 </div>
                 <div className="flex gap-2">
@@ -137,7 +137,7 @@ export default function UserManagementTable() {
                             className={cn(
                                 "px-3 py-2 rounded-lg text-xs font-medium transition-colors border",
                                 roleFilter === r.value
-                                    ? "bg-pink-500/20 border-pink-500 text-pink-500"
+                                    ? "bg-primary/20 border-primary text-primary"
                                     : "bg-black/40 border-white/10 text-white/60 hover:text-white hover:bg-white/5"
                             )}
                         >
@@ -151,7 +151,7 @@ export default function UserManagementTable() {
             <div className="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
                 {isLoading ? (
                     <div className="p-20 flex flex-col items-center justify-center text-white/50">
-                        <Loader2 size={32} className="animate-spin mb-4 text-pink-500" />
+                        <Loader2 size={32} className="animate-spin mb-4 text-primary" />
                         <p>Ładowanie użytkowników...</p>
                     </div>
                 ) : isError ? (

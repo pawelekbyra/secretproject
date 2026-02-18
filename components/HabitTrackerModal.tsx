@@ -358,7 +358,7 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                     <div className="flex flex-col gap-8 pb-10">
                         {/* Summary Dashboard */}
                         <div className="grid grid-cols-1 gap-4">
-                            <div className="bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden border border-white/20">
+                            <div className="bg-gradient-to-br from-primary via-primary/80 to-primary/60 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden border border-white/20">
                                 <div className="relative z-10">
                                     <div className="flex items-center gap-2 mb-2">
                                         <Star size={16} className="fill-yellow-300 text-yellow-300" />

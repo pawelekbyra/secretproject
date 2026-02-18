@@ -80,21 +80,21 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
           <button
             onClick={() => handleTabClick('profile')}
             aria-label={t('profileTab')}
-            className={`flex-1 py-4 text-sm font-bold border-b-2 transition-all ${activeTab === 'profile' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-4 text-sm font-bold border-b-2 transition-all ${activeTab === 'profile' ? 'text-primary border-primary bg-white/5 shadow-[inset_0_-10px_10px_-10px_hsl(var(--primary)/0.2)]' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
           >
             {t('profileTab')}
           </button>
           <button
             onClick={() => handleTabClick('password')}
             aria-label={t('passwordTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'password' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'password' ? 'text-primary border-primary bg-white/5 shadow-[inset_0_-10px_10px_-10px_hsl(var(--primary)/0.2)]' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
           >
             {t('passwordTab')}
           </button>
           <button
             onClick={() => handleTabClick('delete')}
             aria-label={t('deleteTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'delete' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'delete' ? 'text-primary border-primary bg-white/5 shadow-[inset_0_-10px_10px_-10px_hsl(var(--primary)/0.2)]' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
           >
             {t('deleteTab')}
           </button>

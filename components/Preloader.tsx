@@ -65,7 +65,7 @@ const Preloader: React.FC = () => {
     <AnimatePresence>
       {!isLangSelected && (
         <motion.div
-          className="absolute inset-0 bg-black z-[10000] overflow-hidden flex flex-col items-center justify-center"
+          className="absolute inset-0 bg-black z-[10000] overflow-hidden flex flex-col items-center"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.3, delay: 0.2 } }}
         >
@@ -81,25 +81,28 @@ const Preloader: React.FC = () => {
           )}
           {/* ------------------------- */}
 
-          <div className="flex-1 flex items-center justify-center w-full px-6">
+          <div className="flex-1 flex items-center justify-center w-full mt-10">
             <motion.div
-              className="w-full max-w-[280px] aspect-square flex-shrink-0 relative"
+              className="w-full max-w-[480px] aspect-square flex-shrink-0 relative px-2"
               animate={{
-                opacity: showLangButtons ? 1 : 0,
-                y: showLangButtons ? -20 : 0
+                opacity: 1,
+                scale: [0.95, 1],
               }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
+              transition={{ duration: 1.2, ease: 'easeOut' }}
             >
               <motion.div
-                className="w-full h-full relative rounded-full overflow-hidden border-2 border-primary/20 shadow-[0_0_30px_rgba(236,72,153,0.2)]"
-                animate={{ scale: [1, 1.02, 1] }}
-                transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
+                className="w-full h-full relative"
+                animate={{
+                  scale: [1, 1.02, 1],
+                  filter: ["brightness(1)", "brightness(1.1)", "brightness(1)"]
+                }}
+                transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
               >
                 <Image
-                  src="/logo-guitar.jpg"
+                  src="/zajebiscie5.jpg"
                   alt="Polutek Logo"
                   fill
-                  className="object-cover"
+                  className="object-contain mix-blend-screen"
                   priority
                 />
               </motion.div>
@@ -109,19 +112,20 @@ const Preloader: React.FC = () => {
           <AnimatePresence>
             {showLangButtons && (
               <motion.div
-                className="w-full max-w-sm px-8 pb-20 flex flex-col items-center z-10"
-                initial={{ opacity: 0, y: 30 }}
+                className="w-full max-w-[400px] px-8 pb-[calc(env(safe-area-inset-bottom)+40px)] flex flex-col items-center z-10"
+                initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 30 }}
-                transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
+                exit={{ opacity: 0, y: 40 }}
+                transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
               >
-                <h2 className="text-xl font-bold text-white mb-8 tracking-tight italic">{t('selectLang')}</h2>
-                <div className="flex flex-col gap-4 w-full">
+                <h2 className="text-sm font-medium text-zinc-500 uppercase tracking-[0.2em] mb-6">{t('selectLang')}</h2>
+                <div className="flex gap-4 w-full">
                   <motion.button
                     onClick={() => handleLangSelect('pl')}
                     className={cn(
-                        "w-full bg-black border-2 border-primary/40 text-white font-bold py-4 rounded-2xl transition-all shadow-[0_0_15px_rgba(236,72,153,0.15)]",
-                        "hover:border-primary hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] active:scale-95"
+                        "flex-1 bg-white/5 backdrop-blur-xl border border-primary/30 text-white font-bold py-5 rounded-2xl transition-all",
+                        "shadow-[0_0_25px_-5px_hsl(var(--primary)/0.2)]",
+                        "hover:border-primary/60 hover:bg-white/10 active:scale-[0.97]"
                     )}
                   >
                     {t('polish')}
@@ -129,8 +133,9 @@ const Preloader: React.FC = () => {
                   <motion.button
                     onClick={() => handleLangSelect('en')}
                     className={cn(
-                        "w-full bg-black border-2 border-primary/40 text-white font-bold py-4 rounded-2xl transition-all shadow-[0_0_15px_rgba(236,72,153,0.15)]",
-                        "hover:border-primary hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] active:scale-95"
+                        "flex-1 bg-white/5 backdrop-blur-xl border border-primary/30 text-white font-bold py-5 rounded-2xl transition-all",
+                        "shadow-[0_0_25px_-5px_hsl(var(--primary)/0.2)]",
+                        "hover:border-primary/60 hover:bg-white/10 active:scale-[0.97]"
                     )}
                   >
                     {t('english')}

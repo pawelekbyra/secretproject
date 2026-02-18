@@ -190,10 +190,10 @@ const TopBar = () => {
                           {user.role === 'admin' && (
                               <button
                                   onClick={handleOpenAdmin}
-                                  className="flex flex-row items-center gap-3 p-3 bg-pink-500/10 hover:bg-pink-500/20 rounded-xl transition-all w-full mb-1 border border-pink-500/30 group"
+                                  className="flex flex-row items-center gap-3 p-3 bg-primary/10 hover:bg-primary/20 rounded-xl transition-all w-full mb-1 border border-primary/30 group"
                               >
-                                  <Settings size={18} className="text-pink-500 group-hover:rotate-45 transition-transform" />
-                                  <span className="text-sm font-semibold whitespace-nowrap text-pink-100 neon-text-pink">Zarządzaj</span>
+                                  <Settings size={18} className="text-primary group-hover:rotate-45 transition-transform" />
+                                  <span className="text-sm font-semibold whitespace-nowrap text-white/90 neon-text-pink">Zarządzaj</span>
                               </button>
                           )}
                           <button
@@ -263,7 +263,7 @@ const TopBar = () => {
                 <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="-mr-2 relative">
                   <BellIcon className="w-5 h-5" />
                   {unreadCount > 0 && (
-                    <span className="absolute top-1 right-2 block h-2 w-2 rounded-full bg-pink-500 ring-2 ring-black shadow-[0_0_8px_rgba(236,72,153,0.6)]" />
+                    <span className="absolute top-1 right-2 block h-2 w-2 rounded-full bg-primary ring-2 ring-black shadow-[0_0_8px_hsl(var(--primary)/0.6)]" />
                   )}
                 </Button>
               </div>

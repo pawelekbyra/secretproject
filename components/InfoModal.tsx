@@ -86,14 +86,14 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
               <p>{t('infoModalBodyP2') || 'Ut in nulla enim...'}</p>
 
               <div className="tip-cta bg-white/5 border border-white/10 rounded-3xl p-7 text-center shadow-inner relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <Coffee className="mx-auto text-pink-500 w-12 h-12 mb-3 drop-shadow-[0_0_10px_rgba(236,72,153,0.3)]" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Coffee className="mx-auto text-primary w-12 h-12 mb-3 drop-shadow-[0_0_10px_hsl(var(--primary)/0.3)]" />
                 <p className="text-sm font-medium text-white/90 relative z-10">
                   {t('infoModalBodyTip') || 'Enjoying the app? Leave a tip...'}
                 </p>
                 <Button
                     onClick={handleShowTipJar}
-                    className="mt-5 w-full bg-pink-600 hover:bg-pink-700 text-white font-bold h-12 shadow-lg shadow-pink-600/20 relative z-10"
+                    className="mt-5 w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 shadow-lg shadow-primary/20 relative z-10"
                 >
                   {t('tipText') || 'Tip'}
                 </Button>
