@@ -35,36 +35,40 @@ export function PatronProfileModal({ patronId, onClose }: PatronProfileModalProp
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
-                transition={{ type: 'spring', damping: 20, stiffness: 250 }}
-                className="relative flex flex-col w-full max-w-sm bg-neutral-900 text-white rounded-2xl shadow-lg border border-neutral-700 mx-4 overflow-hidden"
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className="relative flex flex-col w-full max-w-sm glass-modal text-white rounded-[2rem] shadow-2xl mx-4 overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
-                    <header className="relative flex items-center justify-center p-4 border-b border-neutral-800 shrink-0">
-                        <h2 className="text-lg font-semibold">Profil Użytkownika</h2>
-                        <button onClick={onClose} className="absolute p-1 right-3 top-3 rounded-full hover:bg-neutral-700">
-                            <X size={20} />
+                    <header className="relative flex flex-col items-center pb-4 shrink-0">
+                        <div className="modal-handle" />
+                        <h2 className="text-xl font-black italic tracking-tighter">Profil Użytkownika</h2>
+                        <button onClick={onClose} className="absolute p-2 right-4 top-6 text-white/40 hover:text-white transition-colors">
+                            <X size={22} />
                         </button>
                     </header>
 
-                    <main className="p-6">
+                    <main className="p-8 pt-4 border-t border-white/5">
                         {isLoading ? (
                             <PatronProfileSkeleton />
                         ) : isError ? (
-                            <div className="flex flex-col items-center justify-center h-full space-y-4">
-                                <p>Nie udało się załadować profilu.</p>
+                            <div className="flex flex-col items-center justify-center py-10 space-y-4">
+                                <p className="text-white/50 italic">Nie udało się załadować profilu.</p>
                             </div>
                         ) : profile ? (
                             <div className="flex flex-col items-center text-center">
-                                <div className="relative w-24 h-24 mb-4 rounded-full">
-                                    <Image
-                                      src={profile.avatarUrl || DEFAULT_AVATAR_URL}
-                                      alt={profile.username}
-                                      layout="fill"
-                                      objectFit="cover"
-                                      className="rounded-full border-2 border-white shadow-[0_0_15px_rgba(255,255,255,0.5)]"
-                                    />
+                                <div className="relative mb-6">
+                                    <div className="absolute inset-0 bg-white/10 rounded-full blur-xl opacity-50" />
+                                    <div className="relative w-28 h-28 rounded-full z-10">
+                                        <Image
+                                          src={profile.avatarUrl || DEFAULT_AVATAR_URL}
+                                          alt={profile.username}
+                                          layout="fill"
+                                          objectFit="cover"
+                                          className="rounded-full border-2 border-white shadow-2xl"
+                                        />
+                                    </div>
                                 </div>
-                                <h3 className="text-2xl font-bold">{profile.username}</h3>
+                                <h3 className="text-3xl font-black italic tracking-tighter mb-1">@{profile.username}</h3>
                                 <UserBadge role={profile.role} className="mb-2" />
                                 {profile.bio ? (
                                     <p className="text-neutral-400 text-sm leading-relaxed mt-2">{profile.bio}</p>

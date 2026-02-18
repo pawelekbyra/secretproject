@@ -41,50 +41,44 @@ export default function AdminModal() {
     };
 
     return (
-        <div className="absolute inset-0 z-[10300] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+        <div className="absolute inset-0 z-[10300] flex items-center justify-center bg-black/60 backdrop-blur-md p-4" onClick={closeAdminModal}>
             <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ type: "spring", duration: 0.4, bounce: 0.2 }}
-                className="w-full max-w-2xl bg-[#1c1c1e] rounded-2xl shadow-2xl border border-white/10 overflow-hidden flex flex-col max-h-[90vh]"
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="w-full max-w-2xl glass-modal rounded-[2rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+                onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between p-5 border-b border-white/10 bg-[#28282a]">
-                    <h2 className="text-xl font-bold text-white tracking-wide">Panel Administratora</h2>
+                <div className="flex flex-col items-center pb-4 shrink-0">
+                    <div className="modal-handle" />
+                    <h2 className="text-xl font-black italic tracking-tighter text-white uppercase">Panel Administratora</h2>
                     <button
                         onClick={closeAdminModal}
-                        className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+                        className="absolute right-5 top-6 p-2 text-white/40 hover:text-white transition-colors"
                     >
-                        <X size={20} />
+                        <X size={24} />
                     </button>
                 </div>
 
                 {/* Tabs */}
-                <div className="flex p-4 gap-4 border-b border-white/10">
+                <div className="flex bg-white/[0.03] border-y border-white/5">
                     <button
                         onClick={() => setActiveTab('users')}
-                        className={cn(
-                            "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
-                            activeTab === 'users'
-                                ? "bg-pink-500 text-white"
-                                : "text-white/60 hover:text-white hover:bg-white/5"
-                        )}
+                        className={`flex-1 py-5 flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] transition-all relative ${activeTab === 'users' ? 'text-pink-500' : 'text-white/30 hover:text-white/60'}`}
                     >
-                        <Users size={16} />
+                        <Users size={14} />
                         Użytkownicy
+                        {activeTab === 'users' && <motion.div layoutId="adminTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-pink-500" />}
                     </button>
                     <button
                         onClick={() => setActiveTab('slides')}
-                        className={cn(
-                            "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
-                            activeTab === 'slides'
-                                ? "bg-pink-500 text-white"
-                                : "text-white/60 hover:text-white hover:bg-white/5"
-                        )}
+                        className={`flex-1 py-5 flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] transition-all relative ${activeTab === 'slides' ? 'text-pink-500' : 'text-white/30 hover:text-white/60'}`}
                     >
-                        <Film size={16} />
+                        <Film size={14} />
                         Slajdy
+                        {activeTab === 'slides' && <motion.div layoutId="adminTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-pink-500" />}
                     </button>
                 </div>
 

@@ -51,6 +51,9 @@
     --ring: 336 100% 50%;
 
     --radius: 0.5rem;
+    --modal-bg: #1c1c1e;
+    --modal-border: rgba(255, 255, 255, 0.1);
+    --handle-bg: rgba(255, 255, 255, 0.2);
   }
 }
 
@@ -101,6 +104,19 @@
 }
 
 @layer components {
+  .modal-handle {
+    @apply w-10 h-1 bg-[var(--handle-bg)] rounded-full mx-auto my-2.5;
+  }
+
+  .app-modal-content {
+    @apply bg-[var(--modal-bg)] rounded-t-[2.5rem] border-t border-[var(--modal-border)] shadow-2xl;
+  }
+
+  .glass-modal {
+    background-color: rgba(28, 28, 30, 0.9);
+    @apply backdrop-blur-xl border-[var(--modal-border)] shadow-2xl;
+  }
+
   .secret-overlay {
     @apply absolute left-0 w-full bg-black/40 flex flex-col items-center justify-center text-center p-5;
     top: var(--topbar-height);

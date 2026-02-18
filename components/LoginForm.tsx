@@ -70,29 +70,35 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 px-4 pb-5">
-      <Input
-        type="text"
-        name="login"
-        placeholder="Email"
-        required
-        autoComplete="username"
-        className="bg-white border-2 border-black text-black placeholder:text-gray-500 font-mono focus:ring-2 focus:ring-pink-500"
-      />
-      <Input
-        type="password"
-        name="password"
-        placeholder={t('passwordPlaceholder')}
-        required
-        autoComplete="current-password"
-        className="bg-white border-2 border-black text-black placeholder:text-gray-500 font-mono focus:ring-2 focus:ring-pink-500"
-      />
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 px-6 pb-8 pt-2">
+      <div className="space-y-1">
+        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-1">Email</label>
+        <Input
+            type="text"
+            name="login"
+            placeholder="email@example.com"
+            required
+            autoComplete="username"
+            className="bg-white/5 border-white/10 h-12 rounded-xl text-white placeholder:text-white/20 focus:border-[#FE2C55]/50 focus:bg-white/[0.08] transition-all"
+        />
+      </div>
+      <div className="space-y-1">
+        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-1">{t('passwordPlaceholder')}</label>
+        <Input
+            type="password"
+            name="password"
+            placeholder="••••••••"
+            required
+            autoComplete="current-password"
+            className="bg-white/5 border-white/10 h-12 rounded-xl text-white placeholder:text-white/20 focus:border-[#FE2C55]/50 focus:bg-white/[0.08] transition-all"
+        />
+      </div>
 
       <Button
         type="submit"
         variant="default"
         disabled={isLoading}
-        className="font-bold uppercase tracking-wider bg-pink-600 hover:bg-pink-700 flex items-center justify-center gap-2"
+        className="mt-2 h-14 font-black uppercase tracking-[0.2em] bg-[#FE2C55] hover:bg-[#FE2C55]/90 text-white rounded-2xl shadow-lg shadow-[#FE2C55]/20 flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
       >
         {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
         {isLoading ? t('loggingIn') : 'ENTER'}
