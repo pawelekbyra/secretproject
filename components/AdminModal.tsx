@@ -78,8 +78,8 @@ export default function AdminModal() {
                                     <div className="space-y-2">
                                         <label className="text-xs font-medium text-white/70 uppercase">Adres Email</label>
                                         <div className="relative">
-                                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 z-10" size={18} />
-                                            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="user@example.com" className="pl-12" required variant="white" />
+                                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 z-10" size={18} />
+                                            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="user@example.com" className="pl-12" required />
                                         </div>
                                     </div>
                                     <Button type="submit" variant="default" size="lg" disabled={isSubmitting || !email} className="w-full">

@@ -81,7 +81,6 @@ const DeleteTab: React.FC<DeleteTabProps> = ({ onClose }) => {
               name="confirm_text"
               value={confirmation}
               onChange={(e) => setConfirmation(e.target.value)}
-              variant="white"
               className="focus-visible:border-red-500/50 focus-visible:ring-red-500/20 focus-visible:shadow-[0_0_15px_-3px_rgba(239,68,68,0.3)]"
             />
             <p className="text-xs text-white/50 mt-1 ml-1">
