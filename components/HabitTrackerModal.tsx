@@ -315,35 +315,35 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
 
     return (
         <motion.div
-            className="fixed inset-0 z-[100] bg-black flex flex-col"
+            className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-2xl flex flex-col"
             initial={{ opacity: 0, scale: 1.1 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
         >
             {/* Header */}
-            <div className="flex-shrink-0 flex items-center justify-between px-6 pt-14 pb-6 border-b border-white/5">
+            <div className="flex-shrink-0 flex items-center justify-between px-6 pt-14 pb-6 border-b border-white/10 bg-white/5">
                 <div className="flex items-center gap-4">
                     {selectedHabitId && (
-                        <button onClick={() => setSelectedHabitId(null)} className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl transition-colors">
+                        <button onClick={() => setSelectedHabitId(null)} className="w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-xl transition-all active:scale-90 text-white/60 hover:text-white">
                             <ChevronLeft size={24} />
                         </button>
                     )}
                     <div>
-                        <h1 className="text-3xl font-black tracking-tighter italic leading-none">
+                        <h1 className="text-3xl font-black tracking-tighter italic leading-none text-white drop-shadow-lg">
                             {selectedHabitId ? selectedHabit?.name : (lang === 'pl' ? 'Nawyki' : 'Habits')}
                         </h1>
                         {selectedHabit && (
                              <p className={cn(
-                                "text-[10px] font-bold tracking-widest mt-1",
-                                selectedHabit.type === 'good' ? "text-emerald-500" : "text-rose-500"
+                                "text-[10px] font-black tracking-[0.2em] uppercase mt-1",
+                                selectedHabit.type === 'good' ? "text-emerald-400" : "text-rose-400"
                              )}>
                                 {selectedHabit.type === 'good' ? 'Dobry nawyk' : 'Zły nawyk'}
                              </p>
                         )}
                     </div>
                 </div>
-                <button onClick={onClose} className="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-2xl transition-colors">
+                <button onClick={onClose} className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-2xl transition-all active:scale-90 text-white/60 hover:text-white">
                     <X size={28} />
                 </button>
             </div>
@@ -427,9 +427,11 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                         {/* Add Habit Button */}
                         <button
                             onClick={() => setIsAddingHabit(true)}
-                            className="w-full py-6 rounded-3xl border-2 border-dashed border-white/5 text-white/20 hover:text-white hover:border-white/20 transition-all flex items-center justify-center gap-3 font-black tracking-widest text-sm hover:bg-white/[0.02]"
+                            className="w-full py-8 rounded-[2.5rem] border-2 border-dashed border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-all flex flex-col items-center justify-center gap-4 font-black tracking-widest text-xs uppercase hover:bg-white/5 shadow-inner"
                         >
-                            <Plus size={24} />
+                            <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+                                <Plus size={24} />
+                            </div>
                             Dodaj nowy cel
                         </button>
                     </div>
@@ -474,17 +476,18 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                         onClick={() => setIsAddingHabit(false)}
                     >
                         <motion.div
-                            className="w-full max-w-md bg-zinc-900 border border-white/10 rounded-[2.5rem] p-8 shadow-2xl overflow-hidden relative"
+                            className="w-full max-w-md bg-[#1C1C1E]/95 backdrop-blur-2xl border border-white/10 rounded-[3rem] p-10 shadow-2xl overflow-hidden relative"
                             initial={{ y: '100%' }}
                             animate={{ y: 0 }}
                             exit={{ y: '100%' }}
                             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <h2 className="text-2xl font-black italic mb-8 tracking-tighter">Nowy cel</h2>
+                            <div className="w-12 h-1.5 bg-white/20 rounded-full mx-auto mb-8 shrink-0" />
+                            <h2 className="text-3xl font-black italic mb-8 tracking-tighter text-white">Nowy cel</h2>
 
                             {/* Type Toggle */}
-                            <div className="flex p-1 bg-black rounded-2xl mb-8 border border-white/5">
+                            <div className="flex p-1.5 bg-black/40 rounded-[1.5rem] mb-8 border border-white/5 shadow-inner">
                                 <button
                                     onClick={() => setNewHabitType('good')}
                                     className={cn(

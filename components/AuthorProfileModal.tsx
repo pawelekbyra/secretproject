@@ -106,19 +106,19 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
 
                 {/* Top Bar - Now inside scroll view and relative (not sticky/fixed to viewport) */}
                 <div
-                    className="flex items-center justify-between px-1 bg-black text-white border-b border-white/10 z-10 relative"
+                    className="flex items-center justify-between px-2 bg-black/40 backdrop-blur-xl text-white border-b border-white/5 z-20 sticky top-0"
                     style={{
                       height: 'var(--topbar-height)',
                       paddingTop: 'var(--safe-area-top)',
                     }}
                 >
                     <div className="flex justify-start w-12">
-                        <button onClick={onClose} className="p-2 -ml-2 text-white/80 hover:text-white transition-colors">
+                        <button onClick={onClose} className="p-2 -ml-2 text-white/60 hover:text-white transition-colors active:scale-90">
                             <ChevronLeft size={28} />
                         </button>
                     </div>
                     <div className="flex justify-center flex-1">
-                        <span className="font-bold text-base truncate max-w-[200px] text-white">
+                        <span className="font-bold text-base tracking-tight truncate max-w-[200px] text-white">
                             {profile?.username || '...'}
                         </span>
                     </div>
@@ -138,13 +138,14 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                         {/* Profile Header */}
                         <div className="flex flex-col items-center pt-4 px-4">
                             {/* Avatar */}
-                            <div className="relative mb-2">
+                            <div className="relative mb-4 group">
+                                <div className="absolute inset-0 bg-gradient-to-tr from-pink-500 to-violet-600 rounded-full blur-md opacity-40 group-hover:opacity-60 transition-opacity" />
                                 <Image
                                     src={profile.avatarUrl || DEFAULT_AVATAR_URL}
                                     alt={profile.username}
-                                    width={96}
-                                    height={96}
-                                    className={cn("rounded-full object-cover w-24 h-24 border-2 shadow-[0_0_15px_rgba(255,255,255,0.5)]", avatarBorderColor)}
+                                    width={100}
+                                    height={100}
+                                    className={cn("relative rounded-full object-cover w-24 h-24 border-2 shadow-2xl transition-transform group-active:scale-95", avatarBorderColor)}
                                 />
                             </div>
 
@@ -184,14 +185,14 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                             </div>
 
                             {/* Actions */}
-                            <div className="flex gap-2 w-full max-w-xs mb-4">
+                            <div className="flex gap-2 w-full max-w-sm mb-6 px-4">
                                 <button
                                     onClick={togglePatron}
                                     disabled={isPatron}
-                                    className={`flex-grow py-2.5 rounded text-sm font-semibold transition-colors flex items-center justify-center gap-2 px-4
+                                    className={`flex-grow py-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 px-6 shadow-lg active:scale-95
                                         ${isPatron
-                                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-default'
-                                            : 'bg-[#FE2C55] text-white hover:bg-[#E0274B]'
+                                            ? 'bg-emerald-600 text-white cursor-default'
+                                            : 'bg-gradient-to-r from-[#FE2C55] to-[#FF5E7D] text-white shadow-pink-500/20'
                                         }`}
                                 >
                                     {isPatron ? (
@@ -200,16 +201,17 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                                         <>Zostań Patronem</>
                                     )}
                                 </button>
-                                <button className="p-2.5 bg-[#3A3A3A] rounded hover:bg-[#4A4A4A] text-white transition-colors flex items-center justify-center min-w-[40px]">
-                                    <Youtube size={20} />
-                                </button>
-                                <button className="p-2.5 bg-[#3A3A3A] rounded hover:bg-[#4A4A4A] text-white transition-colors flex items-center justify-center min-w-[40px]">
-                                    <Instagram size={20} />
-                                </button>
-                                {/* Facebook removed */}
-                                <button className="p-2.5 bg-[#3A3A3A] rounded hover:bg-[#4A4A4A] text-white transition-colors flex items-center justify-center min-w-[40px]">
-                                    <TiktokIcon size={20} />
-                                </button>
+                                <div className="flex gap-1.5">
+                                    <button className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 text-white transition-all active:scale-90">
+                                        <Youtube size={20} />
+                                    </button>
+                                    <button className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 text-white transition-all active:scale-90">
+                                        <Instagram size={20} />
+                                    </button>
+                                    <button className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 text-white transition-all active:scale-90">
+                                        <TiktokIcon size={20} />
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
