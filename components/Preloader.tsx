@@ -10,6 +10,7 @@ import { shallow } from 'zustand/shallow';
 // Importujemy komponent odtwarzacza i typy
 import LocalVideoPlayer from './LocalVideoPlayer';
 import { VideoSlideDTO, SlideDTO } from '@/lib/dto';
+import { cn } from '@/lib/utils';
 
 const fetchSlides = async () => {
     const res = await fetch(`/api/slides?cursor=&limit=1`);
@@ -64,14 +65,11 @@ const Preloader: React.FC = () => {
     <AnimatePresence>
       {!isLangSelected && (
         <motion.div
-          className="absolute inset-0 bg-black z-[10000] overflow-hidden"
+          className="absolute inset-0 bg-black z-[10000] overflow-hidden flex flex-col items-center justify-center"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.3, delay: 0.2 } }}
         >
           {/* --- UKRYTY PREFETCHER --- */}
-          {/* Renderujemy LocalVideoPlayer dla pierwszego filmu w trybie 'shouldLoad'.
-              Ustawiamy isActive={false}, żeby nie próbował odtwarzać (tylko buforował).
-              Ukrywamy go wizualnie (hidden), ale musi być w DOM. */}
           {firstSlide && firstSlide.type === 'video' && (
             <div className="absolute w-0 h-0 overflow-hidden opacity-0 pointer-events-none">
                 <LocalVideoPlayer
@@ -83,22 +81,25 @@ const Preloader: React.FC = () => {
           )}
           {/* ------------------------- */}
 
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="flex-1 flex items-center justify-center w-full px-6">
             <motion.div
-              className="w-[150px] h-[150px] flex-shrink-0"
-              animate={{ opacity: showLangButtons ? 1 : 0 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
+              className="w-full max-w-[280px] aspect-square flex-shrink-0 relative"
+              animate={{
+                opacity: showLangButtons ? 1 : 0,
+                y: showLangButtons ? -20 : 0
+              }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
             >
               <motion.div
-                className="w-full h-full"
-                animate={{ scale: [1, 1.03, 1], opacity: [0.9, 1, 0.9] }}
-                transition={{ duration: 2.5, ease: "easeInOut", repeat: Infinity }}
+                className="w-full h-full relative rounded-full overflow-hidden border-2 border-primary/20 shadow-[0_0_30px_rgba(236,72,153,0.2)]"
+                animate={{ scale: [1, 1.02, 1] }}
+                transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
               >
                 <Image
-                  src="/icons/icon-512x512.png"
-                  alt="Ting Tong Logo"
-                  width={150}
-                  height={150}
+                  src="/logo-guitar.jpg"
+                  alt="Polutek Logo"
+                  fill
+                  className="object-cover"
                   priority
                 />
               </motion.div>
@@ -108,30 +109,32 @@ const Preloader: React.FC = () => {
           <AnimatePresence>
             {showLangButtons && (
               <motion.div
-                className="absolute bottom-16 left-0 right-0 px-4 flex justify-center w-full z-10"
-                initial={{ opacity: 0, y: 20 }}
+                className="w-full max-w-sm px-8 pb-20 flex flex-col items-center z-10"
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4, ease: 'easeOut' }}
+                exit={{ opacity: 0, y: 30 }}
+                transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
               >
-                <div className="text-center w-full max-w-sm flex flex-col items-center">
-                  <h2 className="text-lg font-semibold text-white mb-4">{t('selectLang')}</h2>
-                  <div className="flex flex-col gap-3 w-full">
-                    <motion.button
-                      onClick={() => handleLangSelect('pl')}
-                      className="bg-white/5 border border-white/20 hover:bg-white/10 text-sm py-3 rounded-md transition-colors"
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {t('polish')}
-                    </motion.button>
-                    <motion.button
-                      onClick={() => handleLangSelect('en')}
-                      className="bg-white/5 border border-white/20 hover:bg-white/10 text-sm py-3 rounded-md transition-colors"
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {t('english')}
-                    </motion.button>
-                  </div>
+                <h2 className="text-xl font-bold text-white mb-8 tracking-tight italic">{t('selectLang')}</h2>
+                <div className="flex flex-col gap-4 w-full">
+                  <motion.button
+                    onClick={() => handleLangSelect('pl')}
+                    className={cn(
+                        "w-full bg-black border-2 border-primary/40 text-white font-bold py-4 rounded-2xl transition-all shadow-[0_0_15px_rgba(236,72,153,0.15)]",
+                        "hover:border-primary hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] active:scale-95"
+                    )}
+                  >
+                    {t('polish')}
+                  </motion.button>
+                  <motion.button
+                    onClick={() => handleLangSelect('en')}
+                    className={cn(
+                        "w-full bg-black border-2 border-primary/40 text-white font-bold py-4 rounded-2xl transition-all shadow-[0_0_15px_rgba(236,72,153,0.15)]",
+                        "hover:border-primary hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] active:scale-95"
+                    )}
+                  >
+                    {t('english')}
+                  </motion.button>
                 </div>
               </motion.div>
             )}
