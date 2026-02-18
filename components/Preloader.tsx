@@ -117,20 +117,18 @@ const Preloader: React.FC = () => {
                 <div className="text-center w-full max-w-sm flex flex-col items-center">
                   <h2 className="text-lg font-semibold text-white mb-4">{t('selectLang')}</h2>
                   <div className="flex flex-col gap-3 w-full">
-                    <motion.button
+                    <button
                       onClick={() => handleLangSelect('pl')}
-                      className="bg-white/5 border border-white/20 hover:bg-white/10 text-sm py-3 rounded-md transition-colors"
-                      whileTap={{ scale: 0.95 }}
+                      className="w-full py-4 rounded-2xl bg-white/5 border border-white/10 text-xs font-black tracking-[0.2em] uppercase text-white/60 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all active:scale-[0.97]"
                     >
                       {t('polish')}
-                    </motion.button>
-                    <motion.button
+                    </button>
+                    <button
                       onClick={() => handleLangSelect('en')}
-                      className="bg-white/5 border border-white/20 hover:bg-white/10 text-sm py-3 rounded-md transition-colors"
-                      whileTap={{ scale: 0.95 }}
+                      className="w-full py-4 rounded-2xl bg-white/5 border border-white/10 text-xs font-black tracking-[0.2em] uppercase text-white/60 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all active:scale-[0.97]"
                     >
                       {t('english')}
-                    </motion.button>
+                    </button>
                   </div>
                 </div>
               </motion.div>

@@ -77,7 +77,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         placeholder="Email"
         required
         autoComplete="username"
-        className="bg-white border-2 border-black text-black placeholder:text-gray-500 font-mono focus:ring-2 focus:ring-pink-500"
+        className="font-medium"
       />
       <Input
         type="password"
@@ -85,14 +85,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         placeholder={t('passwordPlaceholder')}
         required
         autoComplete="current-password"
-        className="bg-white border-2 border-black text-black placeholder:text-gray-500 font-mono focus:ring-2 focus:ring-pink-500"
+        className="font-medium"
       />
 
       <Button
         type="submit"
         variant="default"
         disabled={isLoading}
-        className="font-bold uppercase tracking-wider bg-pink-600 hover:bg-pink-700 flex items-center justify-center gap-2"
+        className="mt-2 flex items-center justify-center gap-2"
       >
         {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
         {isLoading ? t('loggingIn') : 'ENTER'}

@@ -7,10 +7,11 @@ function Skeleton({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("rounded-md bg-white/10 flex items-center justify-center", className)}
+      className={cn("rounded-2xl bg-white/5 animate-pulse flex items-center justify-center border border-white/5", className)}
       {...props}
     >
-      <Loader2 className="h-8 w-8 text-white/20 animate-spin" />
+      <div className="w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 -translate-x-full animate-[shimmer_2s_infinite]" />
+      <Loader2 className="absolute h-6 w-6 text-white/10 animate-spin" />
     </div>
   )
 }

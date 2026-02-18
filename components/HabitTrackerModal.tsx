@@ -174,27 +174,22 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
             whileTap={{ scale: 0.98 }}
             onClick={() => setSelectedHabitId(habit.id)}
             className={cn(
-                "relative overflow-hidden bg-white/[0.03] backdrop-blur-md border p-4 rounded-3xl flex items-center justify-between group transition-all cursor-pointer",
-                habit.type === 'good' ? "border-emerald-500/20 hover:border-emerald-500/40" : "border-rose-500/20 hover:border-rose-500/40"
+                "relative overflow-hidden bg-white/[0.03] backdrop-blur-md border p-5 rounded-[2rem] flex items-center justify-between group transition-all cursor-pointer",
+                habit.type === 'good' ? "border-emerald-500/10 hover:border-emerald-500/30" : "border-rose-500/10 hover:border-rose-500/30"
             )}
         >
             <div className="flex items-center gap-4 z-10">
                 <div className={cn(
-                    "w-12 h-12 rounded-xl flex items-center justify-center text-2xl shadow-inner",
+                    "w-14 h-14 rounded-2xl flex items-center justify-center text-3xl shadow-inner backdrop-blur-sm",
                     habit.type === 'good' ? "bg-emerald-500/10 text-emerald-500" : "bg-rose-500/10 text-rose-500"
                 )}>
                     {habit.icon}
                 </div>
                 <div>
-                    <h3 className="font-bold text-white text-lg">{habit.name}</h3>
+                    <h3 className="font-black text-white text-xl italic tracking-tighter">{habit.name}</h3>
                     <div className="flex items-center gap-1.5">
-                        {habit.type === 'good' ? (
-                            <CheckCircle2 size={12} className="text-emerald-500" />
-                        ) : (
-                            <AlertCircle size={12} className="text-rose-500" />
-                        )}
                         <p className={cn(
-                            "text-[10px] tracking-widest font-bold",
+                            "text-[9px] tracking-[0.2em] font-black uppercase",
                             habit.type === 'good' ? "text-emerald-500/60" : "text-rose-500/60"
                         )}>
                             {habit.type === 'good' ? 'Pozytywne' : 'Wyzwanie'}
@@ -230,19 +225,19 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
 
         return (
             <div className="flex flex-col gap-6">
-                <div className="flex items-center justify-between bg-zinc-900/50 p-4 rounded-2xl border border-white/5">
-                    <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="p-2 hover:bg-white/10 rounded-full transition-colors text-white/60 hover:text-white">
-                        <ChevronLeft size={24} />
+                <div className="flex items-center justify-between bg-white/5 backdrop-blur-md p-4 rounded-3xl border border-white/5">
+                    <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-xl transition-all text-white/40 hover:text-white active:scale-90">
+                        <ChevronLeft size={20} />
                     </button>
-                    <h3 className="text-xl font-black capitalize tracking-tighter italic">
+                    <h3 className="text-lg font-black tracking-widest uppercase italic">
                         {format(currentMonth, 'MMMM yyyy', { locale: dateLocale })}
                     </h3>
-                    <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="p-2 hover:bg-white/10 rounded-full transition-colors text-white/60 hover:text-white">
-                        <ChevronRight size={24} />
+                    <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-xl transition-all text-white/40 hover:text-white active:scale-90">
+                        <ChevronRight size={20} />
                     </button>
                 </div>
 
-                <div className="bg-zinc-900/30 p-4 rounded-3xl border border-white/5">
+                <div className="bg-white/[0.02] backdrop-blur-sm p-5 rounded-[2rem] border border-white/5">
                     <div className="grid grid-cols-7 gap-2 mb-4">
                         {['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So', 'Nd'].map(d => (
                             <div key={d} className="text-center text-[10px] text-white/20 font-black tracking-widest">{d}</div>
@@ -264,24 +259,17 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                                     onClick={() => handleToggleDay(day)}
                                     disabled={isFuture}
                                     className={cn(
-                                        "aspect-square rounded-xl flex items-center justify-center text-xs font-black transition-all relative overflow-hidden group/day",
-                                        isToday(day) && "ring-2 ring-indigo-500 ring-offset-2 ring-offset-black",
-                                        !log && "bg-white/5 text-white/30 hover:bg-white/10",
+                                        "aspect-square rounded-xl flex items-center justify-center text-[10px] font-black transition-all relative overflow-hidden group/day active:scale-90",
+                                        isToday(day) && "ring-2 ring-primary ring-offset-2 ring-offset-black",
+                                        !log && "bg-white/5 text-white/20 hover:bg-white/10 hover:text-white",
                                         log?.isSuccess && (selectedHabit.type === 'good'
-                                            ? "bg-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]"
-                                            : "bg-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]"), // Avoided bad habit = success (green)
+                                            ? "bg-emerald-500 text-white neon-glow-green"
+                                            : "bg-emerald-500 text-white neon-glow-green"), // Avoided bad habit = success (green)
                                         log?.isSuccess === false && "bg-rose-500 text-white shadow-[0_0_15px_rgba(244,63,94,0.4)]",
                                         isFuture && "opacity-10 cursor-not-allowed"
                                     )}
                                 >
                                     <span className="relative z-10">{format(day, 'd')}</span>
-                                    {log?.isSuccess && (
-                                        <motion.div
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            className="absolute inset-0 bg-white/20 blur-xl rounded-full"
-                                        />
-                                    )}
                                 </button>
                             );
                         })}
@@ -427,9 +415,11 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                         {/* Add Habit Button */}
                         <button
                             onClick={() => setIsAddingHabit(true)}
-                            className="w-full py-6 rounded-3xl border-2 border-dashed border-white/5 text-white/20 hover:text-white hover:border-white/20 transition-all flex items-center justify-center gap-3 font-black tracking-widest text-sm hover:bg-white/[0.02]"
+                    className="w-full py-8 rounded-[2rem] border-2 border-dashed border-white/5 text-white/10 hover:text-white/40 hover:border-white/20 transition-all flex flex-col items-center justify-center gap-3 font-black tracking-[0.3em] uppercase text-xs hover:bg-white/[0.01] active:scale-[0.98]"
                         >
-                            <Plus size={24} />
+                    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-1">
+                        <Plus size={24} />
+                    </div>
                             Dodaj nowy cel
                         </button>
                     </div>
@@ -485,12 +475,12 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                             <h2 className="text-2xl font-black italic mb-8 tracking-tighter text-center">Nowy cel</h2>
 
                             {/* Type Toggle */}
-                            <div className="flex p-1 bg-black rounded-2xl mb-8 border border-white/5">
+                            <div className="flex p-1 bg-black/50 rounded-2xl mb-8 border border-white/10 backdrop-blur-md">
                                 <button
                                     onClick={() => setNewHabitType('good')}
                                     className={cn(
-                                        "flex-1 py-3 rounded-xl text-xs font-black tracking-widest transition-all",
-                                        newHabitType === 'good' ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20" : "text-white/40 hover:text-white"
+                                        "flex-1 py-3 rounded-xl text-[10px] font-black tracking-[0.2em] uppercase transition-all active:scale-95",
+                                        newHabitType === 'good' ? "bg-emerald-500 text-white neon-glow-green" : "text-white/30 hover:text-white"
                                     )}
                                 >
                                     Pozytywny
@@ -498,8 +488,8 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                                 <button
                                     onClick={() => setNewHabitType('bad')}
                                     className={cn(
-                                        "flex-1 py-3 rounded-xl text-xs font-black tracking-widest transition-all",
-                                        newHabitType === 'bad' ? "bg-rose-500 text-white shadow-lg shadow-rose-500/20" : "text-white/40 hover:text-white"
+                                        "flex-1 py-3 rounded-xl text-[10px] font-black tracking-[0.2em] uppercase transition-all active:scale-95",
+                                        newHabitType === 'bad' ? "bg-rose-500 text-white shadow-lg shadow-rose-500/20" : "text-white/30 hover:text-white"
                                     )}
                                 >
                                     Wyzwanie
@@ -512,30 +502,30 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                                     <button
                                         key={ph.name}
                                         onClick={() => addHabitMutation.mutate(ph)}
-                                        className="aspect-square bg-white/5 border border-white/5 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white/10 transition-all group"
+                                        className="aspect-square bg-white/5 border border-white/5 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white/10 hover:border-white/10 transition-all group active:scale-90"
                                     >
-                                        <span className="text-3xl group-hover:scale-125 transition-transform">{ph.icon}</span>
-                                        <span className="text-[10px] font-black tracking-tighter opacity-60">{ph.name}</span>
+                                        <span className="text-3xl group-hover:scale-110 transition-transform">{ph.icon}</span>
+                                        <span className="text-[9px] font-black tracking-widest uppercase opacity-40 group-hover:opacity-100">{ph.name}</span>
                                     </button>
                                 ))}
                             </div>
 
                             <div className="relative">
-                                <div className="text-[10px] text-white/20 font-black mb-3 ml-2 tracking-widest">Własna nazwa</div>
+                                <div className="text-[10px] text-white/20 font-black mb-3 ml-2 tracking-[0.2em] uppercase">Własna nazwa</div>
                                 <div className="flex gap-3">
                                     <input
                                         type="text"
                                         value={customHabitName}
                                         onChange={(e) => setCustomHabitName(e.target.value)}
                                         placeholder="Np. Zimny prysznic..."
-                                        className="flex-1 bg-black border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-indigo-500 transition-colors font-medium"
+                                        className="flex-1 h-14 bg-black/50 border border-white/10 rounded-2xl px-6 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all font-medium text-white placeholder:text-white/20"
                                     />
                                     <button
                                         onClick={() => addHabitMutation.mutate({ name: customHabitName, icon: newHabitType === 'good' ? '✨' : '🚫', type: newHabitType })}
                                         disabled={!customHabitName || addHabitMutation.isPending}
                                         className={cn(
-                                            "w-14 h-14 rounded-2xl flex items-center justify-center text-white transition-all shadow-xl",
-                                            newHabitType === 'good' ? "bg-emerald-500 shadow-emerald-500/20" : "bg-rose-500 shadow-rose-500/20",
+                                            "w-14 h-14 rounded-2xl flex items-center justify-center text-white transition-all shadow-xl active:scale-90",
+                                            newHabitType === 'good' ? "bg-emerald-500 neon-glow-green" : "bg-rose-500 shadow-rose-500/20",
                                             (!customHabitName || addHabitMutation.isPending) && "opacity-50 grayscale"
                                         )}
                                     >

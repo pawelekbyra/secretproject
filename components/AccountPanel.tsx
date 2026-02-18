@@ -76,25 +76,37 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
         </div>
 
         {/* Tabs Header */}
-        <div className="flex-shrink-0 flex bg-white/5 border-b border-white/5">
+        <div className="flex-shrink-0 flex p-1 bg-white/5 mx-4 mt-2 rounded-2xl border border-white/5">
           <button
             onClick={() => handleTabClick('profile')}
             aria-label={t('profileTab')}
-            className={`flex-1 py-4 text-sm font-bold border-b-2 transition-all ${activeTab === 'profile' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-3 text-[10px] font-black tracking-widest uppercase rounded-xl transition-all ${
+              activeTab === 'profile'
+                ? 'bg-primary text-white shadow-lg neon-glow-primary'
+                : 'text-white/40 hover:text-white hover:bg-white/5'
+            }`}
           >
             {t('profileTab')}
           </button>
           <button
             onClick={() => handleTabClick('password')}
             aria-label={t('passwordTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'password' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-3 text-[10px] font-black tracking-widest uppercase rounded-xl transition-all ${
+              activeTab === 'password'
+                ? 'bg-primary text-white shadow-lg neon-glow-primary'
+                : 'text-white/40 hover:text-white hover:bg-white/5'
+            }`}
           >
             {t('passwordTab')}
           </button>
           <button
             onClick={() => handleTabClick('delete')}
             aria-label={t('deleteTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'delete' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-3 text-[10px] font-black tracking-widest uppercase rounded-xl transition-all ${
+              activeTab === 'delete'
+                ? 'bg-rose-600 text-white shadow-lg'
+                : 'text-white/40 hover:text-white hover:bg-white/5'
+            }`}
           >
             {t('deleteTab')}
           </button>
