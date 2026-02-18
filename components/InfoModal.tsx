@@ -56,41 +56,46 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="absolute inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+          className="absolute inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="modal-content bg-black/80 backdrop-blur-md text-white rounded-xl max-w-md w-full max-h-[80vh] flex flex-col border border-white/10"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            className="modal-content bg-[#1C1C1E]/90 backdrop-blur-2xl text-white rounded-[2.5rem] max-w-md w-full max-h-[80vh] flex flex-col border border-white/10 shadow-2xl"
+            initial={{ y: '100%', opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: '100%', opacity: 0 }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 flex items-center justify-between p-4 border-b border-white/10">
-              <h2 id="infoTitle" className="text-lg font-semibold">
+            <div className="w-12 h-1.5 bg-white/20 rounded-full mx-auto my-3 flex-shrink-0" />
+            <div className="flex-shrink-0 flex items-center justify-between px-6 pb-4 border-b border-white/5">
+              <h2 id="infoTitle" className="text-lg font-bold tracking-tight">
                 {t('infoModalTitle') || 'Information'}
               </h2>
               <button
                 onClick={onClose}
-                className="text-white/60 hover:text-white"
+                className="text-white/40 hover:text-white transition-colors"
                 aria-label={t('closeInfoAriaLabel') || 'Close information'}
               >
                 <X size={24} />
               </button>
             </div>
-            <div className="modal-body flex-1 overflow-y-auto p-6 space-y-4 text-sm text-white/80">
+            <div className="modal-body flex-1 overflow-y-auto p-8 space-y-6 text-sm text-white/70 leading-relaxed custom-scrollbar">
               <p>{t('infoModalBodyP1') || 'Lorem ipsum dolor sit amet...'}</p>
               <p>{t('infoModalBodyP2') || 'Ut in nulla enim...'}</p>
-              <div className="tip-cta bg-white/5 border border-white/10 rounded-lg p-4 text-center">
-                <Coffee className="mx-auto text-pink-500 w-10 h-10 mb-2" />
-                <p className="text-sm">
+              <div className="tip-cta bg-white/5 border border-white/10 rounded-3xl p-6 text-center shadow-inner relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-violet-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Coffee className="mx-auto text-pink-500 w-12 h-12 mb-3 drop-shadow-[0_0_10px_rgba(236,72,153,0.3)]" />
+                <p className="text-base font-medium text-white mb-4">
                   {t('infoModalBodyTip') || 'Enjoying the app? Leave a tip...'}
                 </p>
-                <button onClick={handleShowTipJar} className="mt-3 bg-pink-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-pink-600">
+                <button
+                    onClick={handleShowTipJar}
+                    className="w-full bg-gradient-to-r from-[#FE2C55] to-[#FF5E7D] text-white py-3 rounded-xl text-sm font-bold shadow-lg shadow-pink-500/20 active:scale-95 transition-all"
+                >
                   {t('tipText') || 'Tip'}
                 </button>
               </div>

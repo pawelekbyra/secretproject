@@ -352,7 +352,7 @@ const TippingModal = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute inset-0 z-[-1] pointer-events-auto bg-black/70 backdrop-blur-[2px]"
+            className="absolute inset-0 z-[-1] pointer-events-auto bg-black/40 backdrop-blur-sm"
             onClick={closeTippingModal}
           />
           <motion.div
@@ -360,19 +360,20 @@ const TippingModal = () => {
             animate={{ x: '0%' }}
             exit={{ x: tippingModalOptions.fromLeft ? '-100%' : '100%' }}
             transition={{ type: "spring", stiffness: 200, damping: 30 }}
-            className="relative w-[90%] max-w-[420px] max-h-[85vh] flex flex-col rounded-3xl bg-[#1C1C1E] shadow-2xl pointer-events-auto border border-white/10 overflow-visible"
+            className="relative w-[90%] max-w-[420px] max-h-[85vh] flex flex-col rounded-[2.5rem] bg-[#1C1C1E]/90 backdrop-blur-2xl shadow-2xl pointer-events-auto border border-white/10 overflow-visible"
           >
+        <div className="w-12 h-1.5 bg-white/20 rounded-full mx-auto mt-3 mb-1 shrink-0" />
 
         {/* NAGŁÓWEK */}
-        <div className="relative h-14 flex items-center justify-center px-6 text-center shrink-0 z-10 bg-[#1C1C1E] border-b border-white/5 rounded-t-3xl">
-            <h2 className="text-xl font-bold text-white/50 tracking-widest">
+        <div className="relative h-12 flex items-center justify-center px-6 text-center shrink-0 z-10 border-b border-white/5">
+            <h2 className="text-base font-bold text-white tracking-tight uppercase opacity-50">
                 {modalTitle}
             </h2>
             <button
                 onClick={closeTippingModal}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-full transition-colors z-50"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-white/40 hover:text-white transition-colors z-50"
             >
-                <X size={22} strokeWidth={2.5} />
+                <X size={24} />
             </button>
         </div>
 
@@ -702,7 +703,7 @@ const TippingModal = () => {
                     <button
                         onClick={handleNext}
                         disabled={isProcessing}
-                        className="group flex-1 h-10 flex items-center justify-center gap-2 rounded-xl font-bold uppercase tracking-wider text-white bg-pink-600 hover:bg-pink-700 transition-all disabled:opacity-50 shadow-lg active:scale-[0.98]"
+                        className="group flex-1 h-12 flex items-center justify-center gap-2 rounded-xl font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#FE2C55] to-[#FF5E7D] transition-all disabled:opacity-50 shadow-lg shadow-pink-500/20 active:scale-[0.98]"
                     >
                         {isProcessing ? (
                             <div className="flex items-center gap-2">
