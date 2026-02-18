@@ -113,10 +113,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       </AnimatePresence>
       <AnimatePresence>
         {activeModal === 'financial' && (
-            <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center p-6 text-center">
-                 <h2 className="text-2xl font-bold mb-4">Dziennik Finansowy</h2>
-                 <p className="text-white/60 mb-8">Ta funkcja będzie dostępna wkrótce! Pracujemy nad tym, abyś mógł lepiej zarządzać swoim sianem. 💸</p>
-                 <button onClick={() => setActiveModal(null)} className="px-8 py-3 bg-white text-black font-bold rounded-full">Zamknij</button>
+            <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center p-8 text-center">
+                 <div className="w-1.5 h-12 bg-emerald-500 rounded-full mb-6 neon-glow-green mx-auto"></div>
+                 <h2 className="text-3xl font-black italic tracking-tighter mb-4 text-white uppercase">Dziennik Finansowy</h2>
+                 <p className="text-white/40 mb-10 text-sm leading-relaxed italic max-w-xs mx-auto">Ta funkcja będzie dostępna wkrótce! Pracujemy nad tym, abyś mógł lepiej zarządzać swoim sianem. 💸</p>
+                 <Button onClick={() => setActiveModal(null)} variant="secondary" className="px-10 h-14 w-full max-w-xs">Zamknij</Button>
             </div>
         )}
       </AnimatePresence>

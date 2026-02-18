@@ -27,10 +27,10 @@ const StatusMessage: React.FC<StatusMessageProps> = ({
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
           className={cn(
-            'flex items-center gap-2 rounded-lg py-3 px-4 text-sm font-medium border',
+            'flex items-center gap-3 rounded-2xl py-4 px-5 text-sm font-bold border backdrop-blur-md transition-all',
             type === 'success'
-              ? 'bg-green-500/15 border-green-500/30 text-green-500'
-              : 'bg-red-500/15 border-red-500/30 text-red-500',
+              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 neon-glow-green'
+              : 'bg-rose-500/10 border-rose-500/30 text-rose-400',
             className
           )}
         >

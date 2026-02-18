@@ -173,15 +173,15 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
       <form action={handleSubmit} id="profileForm" className="space-y-4">
 
         {/* Avatar Section */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col items-center text-center">
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col items-center text-center backdrop-blur-md">
             <div className="relative w-24 h-24 mb-4 group cursor-pointer" onClick={handleAvatarEditClick}>
-                <div className="w-full h-full rounded-full overflow-hidden shadow-lg bg-gray-800 flex items-center justify-center relative">
+                <div className="w-full h-full rounded-full overflow-hidden shadow-2xl bg-gray-800 flex items-center justify-center relative">
                     <Image
                       src={currentAvatar}
                       alt={t('avatarAlt')}
                       width={96}
                       height={96}
-                      className={`w-full h-full object-cover rounded-full border-2 ${profile.role === 'patron' ? 'border-yellow-500' : 'border-white'}`}
+                      className={`w-full h-full object-cover rounded-full border-2 ${profile.role === 'patron' ? 'border-yellow-500' : 'border-white/20'}`}
                       id="userAvatar"
                       unoptimized={!!previewUrl}
                     />
@@ -190,10 +190,9 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                         <Camera className="text-white w-8 h-8" />
                     </div>
                 </div>
-                {/* Zmieniono kolor ramki (border) z #2d2d2d na white */}
                 <button
                   type="button"
-                  className="absolute bottom-0 right-0 w-8 h-8 bg-emerald-600 border-2 border-white rounded-full text-white flex items-center justify-center hover:bg-emerald-500 transition-colors shadow-lg"
+                  className="absolute bottom-0 right-0 w-8 h-8 bg-primary border-2 border-black rounded-full text-white flex items-center justify-center hover:opacity-90 transition-all shadow-lg active:scale-90"
                   title={t('changeAvatarTitle')}
                 >
                    <Camera size={16} />
@@ -226,43 +225,43 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
         </div>
 
         {/* Combined Form Fields */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-          <h3 className="text-lg font-bold mb-5 flex items-center gap-3 text-white">
-            <span className="w-1 h-6 bg-gradient-to-b from-pink-500 to-rose-500 rounded-full"></span>
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-md">
+          <h3 className="text-lg font-black italic tracking-tighter mb-6 flex items-center gap-3 text-white">
+            <span className="w-1.5 h-6 bg-primary rounded-full neon-glow-primary"></span>
             {t('accountSettings')}
           </h3>
 
-          <div className="space-y-5">
+          <div className="space-y-6">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 ml-1">{t('displayName') || 'Display Name'}</label>
+              <label className="text-xs font-black tracking-widest text-white/40 ml-1 uppercase">{t('displayName') || 'Display Name'}</label>
               <Input
                 type="text"
                 name="displayName"
                 defaultValue={profile.displayName || ''}
                 placeholder={t('displayNamePlaceholder') || 'Your Name'}
-                className="bg-black/20 border-white/10 text-white focus:border-pink-500/50 focus:bg-black/40 transition-all"
+                className="bg-black/40"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 ml-1">{t('bio') || 'Coś o sobie'}</label>
+              <label className="text-xs font-black tracking-widest text-white/40 ml-1 uppercase">{t('bio') || 'Coś o sobie'}</label>
               <textarea
                 name="bio"
                 defaultValue={(profile as any).bio || ''}
                 placeholder={t('bioPlaceholder') || 'Napisz coś o sobie...'}
                 rows={3}
-                className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-sm text-white focus:border-pink-500/50 focus:bg-black/40 focus:outline-none transition-all resize-none placeholder:text-white/30"
+                className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm text-white focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all resize-none placeholder:text-white/20"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 ml-1">{t('email')}</label>
+              <label className="text-xs font-black tracking-widest text-white/40 ml-1 uppercase">{t('email')}</label>
               <Input
                 type="email"
                 name="email"
                 defaultValue={profile.email}
                 placeholder={t('emailPlaceholder')}
-                className="bg-black/20 border-white/10 text-white focus:border-pink-500/50 focus:bg-black/40 transition-all"
+                className="bg-black/40"
               />
             </div>
 
@@ -283,10 +282,10 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                             <button
                                 type="button"
                                 onClick={() => setEmailLanguage('pl')}
-                                className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all border ${
+                                className={`flex-1 py-3 px-4 rounded-xl text-xs font-black tracking-widest uppercase transition-all border ${
                                     emailLanguage === 'pl'
-                                    ? 'bg-pink-600/20 border-pink-500 text-pink-400'
-                                    : 'bg-white/5 border-transparent text-white/60 hover:bg-white/10'
+                                    ? 'bg-primary/20 border-primary text-primary neon-glow-primary'
+                                    : 'bg-white/5 border-transparent text-white/40 hover:bg-white/10 hover:text-white'
                                 }`}
                             >
                                 {t('polish')}
@@ -294,10 +293,10 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                             <button
                                 type="button"
                                 onClick={() => setEmailLanguage('en')}
-                                className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all border ${
+                                className={`flex-1 py-3 px-4 rounded-xl text-xs font-black tracking-widest uppercase transition-all border ${
                                     emailLanguage === 'en'
-                                    ? 'bg-pink-600/20 border-pink-500 text-pink-400'
-                                    : 'bg-white/5 border-transparent text-white/60 hover:bg-white/10'
+                                    ? 'bg-primary/20 border-primary text-primary neon-glow-primary'
+                                    : 'bg-white/5 border-transparent text-white/40 hover:bg-white/10 hover:text-white'
                                 }`}
                             >
                                 {t('english')}
@@ -341,7 +340,7 @@ function SaveButton({ t }: { t: any }) {
   return (
     <Button
         type="submit"
-        className="w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-semibold py-6 rounded-xl shadow-lg shadow-pink-900/20 active:scale-[0.98] transition-all"
+        className="w-full h-14 bg-primary text-white font-black tracking-widest uppercase rounded-2xl shadow-2xl active:scale-[0.97] transition-all"
         disabled={pending}
     >
       {pending ? (
