@@ -592,7 +592,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
         <motion.div className="absolute inset-0 bg-black/60 z-50 flex items-end" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={onClose}>
           <motion.div
             ref={modalRef}
-            className="w-full bg-[#1C1C1E] backdrop-blur-md rounded-t-2xl flex flex-col border-t border-white/10 comments-modal"
+            className="w-full bg-[#1C1C1E]/95 backdrop-blur-xl rounded-t-[2.5rem] flex flex-col border-t border-white/10 comments-modal shadow-2xl"
             style={{ height: modalHeight }}
             initial={{ y: '100%' }}
             animate={{ y: '0%' }}
@@ -600,9 +600,19 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
             transition={{ type: 'spring', stiffness: 400, damping: 40 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 relative text-center p-3 border-b border-white/10">
-              <h2 className="text-base font-semibold text-white">{t('commentsTitle', { count: totalCommentCount.toString() })}</h2>
-              <button onClick={onClose} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"><X size={24} /></button>
+            {/* Handle bar for bottom sheet feel */}
+            <div className="w-12 h-1.5 bg-white/20 rounded-full mx-auto mt-3 mb-1 shrink-0" />
+
+            <div className="flex-shrink-0 relative flex items-center justify-between px-6 py-4 border-b border-white/5">
+              <h2 className="text-xl font-black italic tracking-tighter text-white">
+                {t('commentsTitle', { count: totalCommentCount.toString() })}
+              </h2>
+              <button
+                onClick={onClose}
+                className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-white/70 hover:text-white"
+              >
+                <X size={24} />
+              </button>
             </div>
 
             <div className="flex-shrink-0 px-4 pt-3 pb-2 flex items-center gap-4 text-sm">

@@ -13,6 +13,7 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday
 import { pl, enUS } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/context/ToastContext';
+import { ModalHeader } from './ui/ModalHeader';
 
 interface Habit {
     id: string;
@@ -316,37 +317,18 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
     return (
         <motion.div
             className="fixed inset-0 z-[100] bg-black flex flex-col"
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 200 }}
         >
-            {/* Header */}
-            <div className="flex-shrink-0 flex items-center justify-between px-6 pt-14 pb-6 border-b border-white/5">
-                <div className="flex items-center gap-4">
-                    {selectedHabitId && (
-                        <button onClick={() => setSelectedHabitId(null)} className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl transition-colors">
-                            <ChevronLeft size={24} />
-                        </button>
-                    )}
-                    <div>
-                        <h1 className="text-3xl font-black tracking-tighter italic leading-none">
-                            {selectedHabitId ? selectedHabit?.name : (lang === 'pl' ? 'Nawyki' : 'Habits')}
-                        </h1>
-                        {selectedHabit && (
-                             <p className={cn(
-                                "text-[10px] font-bold tracking-widest mt-1",
-                                selectedHabit.type === 'good' ? "text-emerald-500" : "text-rose-500"
-                             )}>
-                                {selectedHabit.type === 'good' ? 'Dobry nawyk' : 'Zły nawyk'}
-                             </p>
-                        )}
-                    </div>
-                </div>
-                <button onClick={onClose} className="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-2xl transition-colors">
-                    <X size={28} />
-                </button>
-            </div>
+            <ModalHeader
+                title={selectedHabitId ? selectedHabit?.name || '' : (lang === 'pl' ? 'Nawyki' : 'Habits')}
+                subtitle={selectedHabit ? (selectedHabit.type === 'good' ? (lang === 'pl' ? 'Dobry nawyk' : 'Good habit') : (lang === 'pl' ? 'Zły nawyk' : 'Bad habit')) : undefined}
+                onClose={onClose}
+                showBack={!!selectedHabitId}
+                onBack={() => setSelectedHabitId(null)}
+            />
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
