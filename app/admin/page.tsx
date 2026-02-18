@@ -9,17 +9,17 @@ export default function AdminPage() {
       <nav>
         <ul className="space-y-2">
           <li>
-            <Link href="/admin/users" className="text-lg text-pink-400 hover:underline">
+            <Link href="/admin/users" className="text-lg text-primary hover:underline">
               Manage Users
             </Link>
           </li>
           <li>
-            <Link href="/admin/slides" className="text-lg text-pink-400 hover:underline">
+            <Link href="/admin/slides" className="text-lg text-primary hover:underline">
               Manage Slides
             </Link>
           </li>
           <li>
-            <Link href="/admin/notifications" className="text-lg text-pink-400 hover:underline">
+            <Link href="/admin/notifications" className="text-lg text-primary hover:underline">
               Send Notifications
             </Link>
           </li>

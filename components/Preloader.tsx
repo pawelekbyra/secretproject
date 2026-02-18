@@ -11,6 +11,7 @@ import { shallow } from 'zustand/shallow';
 import LocalVideoPlayer from './LocalVideoPlayer';
 import { VideoSlideDTO, SlideDTO } from '@/lib/dto';
 import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
 
 const fetchSlides = async () => {
     const res = await fetch(`/api/slides?cursor=&limit=1`);
@@ -100,7 +101,7 @@ const Preloader: React.FC = () => {
                 transition={{ duration: 5, ease: "easeInOut", repeat: Infinity }}
               >
                 <Image
-                  src="/zajebiscie5.jpg"
+                  src="/samagitara.jpg"
                   alt="Polutek Logo"
                   fill
                   className="object-contain mix-blend-screen"
@@ -110,40 +111,31 @@ const Preloader: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* LANGUAGE PANEL - Refined and Bottom-aligned */}
+          {/* LANGUAGE PANEL - Positioned elegantly below the centered logo */}
           <AnimatePresence>
             {showLangButtons && (
               <motion.div
-                className="mt-auto w-full max-w-[320px] px-6 pb-[calc(env(safe-area-inset-bottom)+50px)] flex flex-col items-center z-10"
-                initial={{ opacity: 0, y: 30 }}
+                className="absolute inset-x-0 bottom-[8%] flex flex-col items-center z-[100]"
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 30 }}
-                transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="w-12 h-[1px] bg-primary/30 mb-8" />
-                <h2 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.4em] mb-8">{t('selectLang')}</h2>
-
-                <div className="flex flex-col gap-4 w-full">
-                  <motion.button
+                <div className="flex flex-col gap-3 w-full max-w-[240px] px-6">
+                  <Button
+                    variant="default"
+                    className="w-full h-11 rounded-full text-sm font-bold shadow-xl shadow-primary/20 active:scale-95 transition-all duration-300"
                     onClick={() => handleLangSelect('pl')}
-                    className={cn(
-                        "w-full bg-gradient-to-r from-zinc-900/50 to-zinc-900/30 backdrop-blur-2xl border border-white/10 text-white font-black py-4 rounded-full transition-all tracking-[0.1em]",
-                        "shadow-[0_4px_20px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)]",
-                        "hover:border-primary/40 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)] active:scale-[0.96]"
-                    )}
                   >
-                    {t('polish')}
-                  </motion.button>
-                  <motion.button
+                    Polski
+                  </Button>
+                  <Button
+                    variant="default"
+                    className="w-full h-11 rounded-full text-sm font-bold shadow-xl shadow-primary/20 active:scale-95 transition-all duration-300"
                     onClick={() => handleLangSelect('en')}
-                    className={cn(
-                        "w-full bg-gradient-to-r from-zinc-900/50 to-zinc-900/30 backdrop-blur-2xl border border-white/10 text-white font-black py-4 rounded-full transition-all tracking-[0.1em]",
-                        "shadow-[0_4px_20px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)]",
-                        "hover:border-primary/40 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)] active:scale-[0.96]"
-                    )}
                   >
-                    {t('english')}
-                  </motion.button>
+                    English
+                  </Button>
                 </div>
               </motion.div>
             )}
