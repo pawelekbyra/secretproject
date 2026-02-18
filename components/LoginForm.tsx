@@ -77,6 +77,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         placeholder="Email"
         required
         autoComplete="username"
+        variant="white"
       />
       <Input
         type="password"
@@ -84,6 +85,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         placeholder={t('passwordPlaceholder')}
         required
         autoComplete="current-password"
+        variant="white"
       />
 
       <Button

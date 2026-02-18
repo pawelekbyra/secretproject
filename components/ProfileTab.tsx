@@ -239,6 +239,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                 name="displayName"
                 defaultValue={profile.displayName || ''}
                 placeholder={t('displayNamePlaceholder') || 'Your Name'}
+                variant="white"
               />
             </div>
 
@@ -249,7 +250,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                 defaultValue={(profile as any).bio || ''}
                 placeholder={t('bioPlaceholder') || 'Napisz coś o sobie...'}
                 rows={3}
-                className="w-full bg-zinc-950/50 border border-white/10 rounded-xl p-3 text-sm text-white focus:border-primary/50 focus:outline-none transition-all resize-none placeholder:text-zinc-500 shadow-inner"
+                className="w-full bg-white border border-white/10 rounded-xl p-3 text-sm text-zinc-950 focus:border-zinc-400 focus:outline-none transition-all resize-none placeholder:text-zinc-400 shadow-inner"
               />
             </div>
 
@@ -260,6 +261,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                 name="email"
                 defaultValue={profile.email}
                 placeholder={t('emailPlaceholder')}
+                variant="white"
               />
             </div>
 
