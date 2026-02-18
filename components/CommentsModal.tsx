@@ -111,7 +111,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onLike, onDelete, on
 
   let avatarBorderClass = 'border-white/80';
   if (isPatron) avatarBorderClass = 'border-yellow-500';
-  else if (isAuthor) avatarBorderClass = 'border-pink-500'; // "zajebisty fioletowy"
+  else if (isAuthor) avatarBorderClass = 'border-primary'; // "zajebisty fioletowy"
 
   return (
     <motion.div
@@ -144,7 +144,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onLike, onDelete, on
           <p className="text-[13px] text-white whitespace-pre-wrap break-words">
             {isL1Plus && comment.parentAuthorUsername && (
                 <span
-                  className="text-pink-400 font-semibold mr-1 cursor-pointer"
+                  className="text-primary font-semibold mr-1 cursor-pointer"
                   onClick={() => comment.parentAuthorId && onAvatarClick(comment.parentAuthorId)}
                 >
                   {comment.parentAuthorUsername}
@@ -205,7 +205,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onLike, onDelete, on
                 className="space-y-4 overflow-hidden pt-2"
               >
                 {isLoadingReplies && replies.length === 0 && (
-                   <div className="flex justify-center p-2"><Loader2 className="animate-spin h-4 w-4 text-pink-400" /></div>
+                   <div className="flex justify-center p-2"><Loader2 className="animate-spin h-4 w-4 text-primary" /></div>
                 )}
                 {replies.map((reply) => (
                   <MemoizedCommentItem key={reply.id} slideId={slideId} comment={reply} onLike={onLike} onDelete={onDelete} onReport={onReport} onAvatarClick={onAvatarClick} onStartReply={onStartReply} currentUserId={currentUserId} lang={lang} level={level + 1} lastRepliedParentId={lastRepliedParentId} />
@@ -545,7 +545,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
     if (isLoading && comments.length === 0) {
       return (
         <div className="flex-1 flex items-center justify-center h-full">
-          <Loader2 className="h-8 w-8 animate-spin text-pink-400" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       );
     }
@@ -575,7 +575,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
           ))}
           {hasNextPage && (
             <div className="flex justify-center py-2">
-              <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage} className="text-sm text-pink-400 hover:text-pink-300 disabled:opacity-50 flex items-center gap-2">
+              <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage} className="text-sm text-primary hover:text-primary/80 disabled:opacity-50 flex items-center gap-2">
                 {isFetchingNextPage && <Loader2 className="animate-spin h-3 w-3" />}
                 {t('loadMore')}
               </button>
@@ -630,7 +630,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
                     alt={t('yourAvatar')}
                     width={36}
                     height={36}
-                    className={cn("w-9 h-9 rounded-full object-cover border", user.role === 'patron' ? 'border-yellow-500' : (user.role === 'author' ? 'border-pink-500' : 'border-white/80'))}
+                    className={cn("w-9 h-9 rounded-full object-cover border", user.role === 'patron' ? 'border-yellow-500' : (user.role === 'author' ? 'border-primary' : 'border-white/80'))}
                   />
                   <div className="flex-1 relative flex items-center bg-zinc-950/50 border border-white/10 rounded-2xl transition-all focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20 focus-within:shadow-[0_0_15px_-3px_hsl(var(--primary)/0.3)]">
                     <input

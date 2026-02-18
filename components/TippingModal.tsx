@@ -21,7 +21,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK!);
 const STRIPE_APPEARANCE = {
     theme: 'night' as const,
     variables: {
-        colorPrimary: '#db2777', // bg-pink-600
+        colorPrimary: '#8b5cf6', // violet-500
         colorBackground: '#2C2C2E',
         colorText: '#ffffff',
         colorDanger: '#ff4444',
@@ -35,7 +35,7 @@ const STRIPE_APPEARANCE = {
             backgroundColor: 'rgba(0,0,0,0.3)',
         },
         '.Input:focus': {
-            border: '1px solid #db2777',
+            border: '1px solid #8b5cf6',
         }
     }
 };
@@ -134,7 +134,7 @@ const CheckoutForm = ({ clientSecret, email, onClose, onBack }: { clientSecret: 
                 <Button
                     type="submit"
                     disabled={isProcessing || !stripe || !elements || !isReady}
-                    className="flex-1 h-11 bg-pink-600 hover:bg-pink-700 shadow-lg shadow-pink-600/20"
+                    className="flex-1 h-11 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
                 >
                     {isProcessing ? (
                         <div className="flex items-center justify-center gap-2">
@@ -373,7 +373,7 @@ const TippingModal = () => {
 
         <div className="h-1 w-full bg-white/5 relative overflow-hidden z-10">
             <motion.div
-                className="h-full bg-pink-600 shadow-[0_0_8px_rgba(219,39,119,0.5)]"
+                className="h-full bg-primary shadow-[0_0_8px_hsl(var(--primary)/0.5)]"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -403,7 +403,7 @@ const TippingModal = () => {
                                 className={cn(
                                     "flex items-center justify-start h-12 px-4 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
                                     formData.recipient === 'Paweł'
-                                        ? "bg-white/10 border-pink-600 shadow-[0_0_15px_rgba(219,39,119,0.2)]"
+                                        ? "bg-white/10 border-primary shadow-[0_0_15px_hsl(var(--primary)/0.2)]"
                                         : "bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10"
                                 )}
                                 onClick={() => setFormData(prev => ({ ...prev, recipient: 'Paweł' }))}
@@ -411,10 +411,10 @@ const TippingModal = () => {
                                 <div className={cn(
                                     "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 shrink-0",
                                     formData.recipient === 'Paweł'
-                                        ? "border-pink-600"
+                                        ? "border-primary"
                                         : "border-white/30 group-hover:border-white"
                                 )}>
-                                    {formData.recipient === 'Paweł' && <div className="w-2.5 h-2.5 bg-pink-600 rounded-full" />}
+                                    {formData.recipient === 'Paweł' && <div className="w-2.5 h-2.5 bg-primary rounded-full" />}
                                 </div>
                                 <span className={cn("text-base font-semibold transition-colors", formData.recipient === 'Paweł' ? "text-white" : "text-white/70 group-hover:text-white")}>
                                     Pawłowi Polutkowi
@@ -464,7 +464,7 @@ const TippingModal = () => {
                                     className={cn(
                                         "flex items-center justify-start h-12 px-4 gap-3 rounded-2xl cursor-pointer transition-all duration-300 group border",
                                         formData.create_account
-                                            ? "bg-white/10 border-pink-600 shadow-[0_0_15px_rgba(219,39,119,0.2)]"
+                                            ? "bg-white/10 border-primary shadow-[0_0_15px_hsl(var(--primary)/0.2)]"
                                             : "bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10"
                                     )}
                                     onClick={() => setFormData(prev => ({ ...prev, create_account: !prev.create_account }))}
@@ -472,10 +472,10 @@ const TippingModal = () => {
                                     <div className={cn(
                                         "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 shrink-0",
                                         formData.create_account
-                                            ? "border-pink-600"
+                                            ? "border-primary"
                                             : "border-white/30 group-hover:border-white"
                                     )}>
-                                        {formData.create_account && <div className="w-2.5 h-2.5 bg-pink-600 rounded-full" />}
+                                        {formData.create_account && <div className="w-2.5 h-2.5 bg-primary rounded-full" />}
                                     </div>
                                     <span className={cn("text-base font-semibold transition-colors", formData.create_account ? "text-white" : "text-white/70 group-hover:text-white")}>
                                         No jacha!
@@ -548,7 +548,7 @@ const TippingModal = () => {
                                             className={cn(
                                                 "h-11 flex items-center justify-center rounded-xl font-bold transition-all border relative overflow-hidden group text-lg",
                                                 formData.amount === amount
-                                                    ? "bg-pink-600 border-pink-600 text-white shadow-lg shadow-pink-600/20"
+                                                    ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
                                                     : "bg-white/5 border-white/5 text-white/80 hover:bg-white/10 hover:text-white"
                                             )}
                                         >
@@ -568,7 +568,7 @@ const TippingModal = () => {
                                                 setFormData({ ...formData, amount: Number(e.target.value) });
                                                 setValidationError(null);
                                             }}
-                                            className="w-full h-full bg-black/40 border border-white/10 text-center text-xl font-black text-white rounded-l-2xl focus:outline-none focus:bg-black/60 focus:border-pink-600 transition-all z-10 relative"
+                                            className="w-full h-full bg-black/40 border border-white/10 text-center text-xl font-black text-white rounded-l-2xl focus:outline-none focus:bg-black/60 focus:border-primary transition-all z-10 relative"
                                             placeholder="0"
                                         />
                                     </div>
@@ -605,7 +605,7 @@ const TippingModal = () => {
                                                             >
                                                                 <span className="text-base">{currency}</span>
                                                                 {formData.currency === currency && (
-                                                                    <Check size={18} className="text-pink-600" strokeWidth={3} />
+                                                                    <Check size={18} className="text-primary" strokeWidth={3} />
                                                                 )}
                                                             </button>
                                                         ))}
@@ -625,7 +625,7 @@ const TippingModal = () => {
                                     <div className={cn(
                                         "w-5 h-5 rounded-md border flex items-center justify-center transition-all duration-200 shrink-0",
                                         formData.terms_accepted
-                                            ? "bg-pink-600 border-pink-600 shadow-[0_0_8px_rgba(219,39,119,0.4)]"
+                                            ? "bg-primary border-primary shadow-[0_0_8px_hsl(var(--primary)/0.4)]"
                                             : "border-white/20 bg-transparent group-hover:border-white/40"
                                     )}>
                                         {formData.terms_accepted && <Check size={12} className="text-white" strokeWidth={4} />}
@@ -670,7 +670,7 @@ const TippingModal = () => {
                             </Elements>
                         ) : (
                              <div className="flex items-center justify-center h-[260px]">
-                                <Loader2 className="animate-spin h-8 w-8 text-pink-600" />
+                                <Loader2 className="animate-spin h-8 w-8 text-primary" />
                             </div>
                         )}
                     </motion.div>
@@ -693,7 +693,7 @@ const TippingModal = () => {
                     <Button
                         onClick={handleNext}
                         disabled={isProcessing}
-                        className="flex-1 h-12 bg-pink-600 hover:bg-pink-700 shadow-lg shadow-pink-600/20"
+                        className="flex-1 h-12 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
                     >
                         {isProcessing ? (
                             <div className="flex items-center gap-2">

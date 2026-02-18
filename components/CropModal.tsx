@@ -214,7 +214,7 @@ const CropModal: React.FC<CropModalProps> = ({ isOpen, onClose, imageSrc, onCrop
               <Button variant="outline" size="icon" onClick={() => setScale(s => s * 1.1)} disabled={isSaving} aria-label={t('zoomInAriaLabel')}><ZoomIn className="h-5 w-5" /></Button>
             </div>
 
-            <Button onClick={handleSave} className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold h-12 rounded-xl transition-all active:scale-[0.98]" disabled={isSaving} aria-label={t('saveAvatarAriaLabel')}>
+            <Button onClick={handleSave} className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 rounded-xl transition-all active:scale-[0.98]" disabled={isSaving} aria-label={t('saveAvatarAriaLabel')}>
               {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Check className="mr-2 h-4 w-4" />}
               {isSaving ? t('saving') : t('saveAvatarButton')}
             </Button>

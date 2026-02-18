@@ -99,7 +99,7 @@ export const SafeLock = () => {
                                         key={i}
                                         initial={{ scale: 0 }}
                                         animate={{ scale: 1 }}
-                                        className="w-4 h-4 rounded-full bg-pink-500 shadow-[0_0_10px_rgba(236,72,153,0.8)]"
+                                        className="w-4 h-4 rounded-full bg-primary shadow-[0_0_10px_hsl(var(--primary)/0.8)]"
                                     />
                                 ))}
                                 {input.length === 0 && (
@@ -134,7 +134,7 @@ export const SafeLock = () => {
                 <div className="flex items-center justify-center">
                     <button
                         onClick={handleEnter}
-                        className="w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br from-pink-600 to-rose-600 text-white shadow-lg shadow-pink-900/30 active:scale-90 active:shadow-sm transition-all"
+                        className="w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/60 text-white shadow-lg shadow-primary/30 active:scale-90 active:shadow-sm transition-all"
                     >
                         <CornerDownLeft size={28} />
                     </button>

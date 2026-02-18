@@ -117,7 +117,7 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                 </div>
                 {isLoading && !profile ? (
                     <div className="flex-1 flex items-center justify-center h-full">
-                        <Loader2 className="h-8 w-8 animate-spin text-pink-400" />
+                        <Loader2 className="h-8 w-8 animate-spin text-primary" />
                     </div>
                 ) : isError ? (
                     <div className="flex flex-col items-center justify-center h-full space-y-4 text-white/50">

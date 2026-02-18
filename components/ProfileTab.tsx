@@ -227,7 +227,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
         {/* Combined Form Fields */}
         <div className="bg-white/5 border border-white/10 rounded-xl p-5">
           <h3 className="text-lg font-bold mb-5 flex items-center gap-3 text-white">
-            <span className="w-1 h-6 bg-gradient-to-b from-pink-500 to-rose-500 rounded-full"></span>
+            <span className="w-1 h-6 bg-gradient-to-b from-primary to-primary/40 rounded-full shadow-[0_0_8px_hsl(var(--primary)/0.4)]"></span>
             {t('accountSettings')}
           </h3>
 
@@ -282,7 +282,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                                 onClick={() => setEmailLanguage('pl')}
                                 className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all border ${
                                     emailLanguage === 'pl'
-                                    ? 'bg-pink-600/20 border-pink-500 text-pink-400'
+                                    ? 'bg-primary/10 border-primary text-primary shadow-[0_0_10px_-2px_hsl(var(--primary)/0.2)]'
                                     : 'bg-white/5 border-transparent text-white/60 hover:bg-white/10'
                                 }`}
                             >
@@ -293,7 +293,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                                 onClick={() => setEmailLanguage('en')}
                                 className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all border ${
                                     emailLanguage === 'en'
-                                    ? 'bg-pink-600/20 border-pink-500 text-pink-400'
+                                    ? 'bg-primary/10 border-primary text-primary shadow-[0_0_10px_-2px_hsl(var(--primary)/0.2)]'
                                     : 'bg-white/5 border-transparent text-white/60 hover:bg-white/10'
                                 }`}
                             >

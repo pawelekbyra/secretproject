@@ -65,7 +65,7 @@ const VideoControls: React.FC<VideoControlsProps> = ({
         className="flex items-center gap-2 text-white bg-black/30 p-2 rounded-lg mt-2 backdrop-blur-sm max-w-full"
         onClick={(e) => e.stopPropagation()}
     >
-      <button onClick={onTogglePlay} className="p-1 hover:text-pink-500 transition-colors shrink-0">
+      <button onClick={onTogglePlay} className="p-1 hover:text-primary transition-colors shrink-0">
         {isPlaying ? <Pause size={20} /> : <Play size={20} />}
       </button>
 
@@ -83,12 +83,12 @@ const VideoControls: React.FC<VideoControlsProps> = ({
         onChange={handleSeekChange}
         onMouseUp={handleSeekEnd}
         onTouchEnd={handleSeekEnd}
-        className="flex-1 h-1 bg-white/30 rounded-lg appearance-none cursor-pointer hover:bg-white/50 transition-colors accent-pink-500"
+        className="flex-1 h-1 bg-white/30 rounded-lg appearance-none cursor-pointer hover:bg-white/50 transition-colors accent-primary"
       />
 
       <span className="text-xs font-mono w-10 text-center">{formatTime(duration)}</span>
 
-      <button onClick={onToggleMute} className="p-1 hover:text-pink-500 transition-colors">
+      <button onClick={onToggleMute} className="p-1 hover:text-primary transition-colors">
         {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
       </button>
     </div>
