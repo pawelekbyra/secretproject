@@ -632,7 +632,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
                     height={36}
                     className={cn("w-9 h-9 rounded-full object-cover border", user.role === 'patron' ? 'border-yellow-500' : (user.role === 'author' ? 'border-pink-500' : 'border-white/80'))}
                   />
-                  <div className="flex-1 relative flex items-center bg-white/5 border border-white/10 rounded-2xl transition-all focus-within:border-pink-500/50 focus-within:bg-white/10">
+                  <div className="flex-1 relative flex items-center bg-zinc-950/50 border border-white/10 rounded-2xl transition-all focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20 focus-within:shadow-[0_0_15px_-3px_hsl(var(--primary)/0.3)]">
                     <input
                       type="file"
                       ref={imageInputRef}
@@ -659,11 +659,11 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
                          <EmojiPicker onEmojiClick={onEmojiClick} theme={Theme.DARK} previewConfig={{ showPreview: false }} />
                       </div>
                    )}
-                   <button type="submit" className="p-2 disabled:opacity-50 flex items-center justify-center transition-opacity" disabled={(!newComment.trim() && !imageFile) || replyMutation.isPending}>
+                   <button type="submit" className="p-2 disabled:opacity-50 flex items-center justify-center transition-all active:scale-90" disabled={(!newComment.trim() && !imageFile) || replyMutation.isPending}>
                     {replyMutation.isPending ? (
-                        <Loader2 className="h-6 w-6 animate-spin text-[#FE2C55]" />
+                        <Loader2 className="h-6 w-6 animate-spin text-primary" />
                     ) : (
-                        <div className="w-8 h-8 bg-[#FE2C55] rounded-full flex items-center justify-center text-white">
+                        <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center text-white shadow-[0_0_15px_-3px_hsl(var(--primary)/0.5)]">
                             <ArrowUp size={20} strokeWidth={3} />
                         </div>
                     )}

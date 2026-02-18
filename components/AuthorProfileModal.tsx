@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { ChevronLeft, Instagram, Grid, Heart, Lock, Loader2, Youtube, Facebook } from 'lucide-react';
+import { ChevronLeft, Instagram, Grid, Heart, Lock, Loader2, Youtube } from 'lucide-react';
 import { useStore } from '@/store/useStore';
 import Image from 'next/image';
 import { DEFAULT_AVATAR_URL } from '@/lib/constants';
@@ -13,6 +13,7 @@ import { AuthorProfile } from '@/types';
 import { formatCount, cn } from '@/lib/utils';
 import { SafeLock } from './SafeLock';
 import { useUser } from '@/context/UserContext';
+import { Button } from '@/components/ui/button';
 
 // Simple TikTok Icon SVG Component
 const TiktokIcon = ({ size = 20, className = "" }: { size?: number, className?: string }) => (
@@ -38,7 +39,7 @@ interface AuthorProfileModalProps {
 }
 
 export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProps) {
-    const { jumpToSlide, openTippingModal, closeAuthorProfileModal } = useStore();
+    const { jumpToSlide, openTippingModal } = useStore();
     const { user } = useUser();
     const [activeTab, setActiveTab] = useState<'videos' | 'liked' | 'private'>('videos');
 
@@ -47,17 +48,6 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
         queryFn: () => fetchAuthorProfile(authorId),
         enabled: !!authorId,
         placeholderData: (previousData) => previousData, // Optimization: keep previous data while fetching
-    });
-
-    const { data: patronData } = useQuery({
-        queryKey: ['patron', authorId],
-        queryFn: async () => {
-             // Mock fetch or real endpoint if exists.
-             // If no endpoint, we default to false.
-             return { isPatron: false };
-        },
-        enabled: !!user && !!authorId,
-        initialData: { isPatron: false }
     });
 
     const isPatron = !!user;
@@ -145,7 +135,7 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                                     alt={profile.username}
                                     width={96}
                                     height={96}
-                                    className={cn("rounded-full object-cover w-24 h-24 border-2 shadow-[0_0_15px_rgba(255,255,255,0.5)]", avatarBorderColor)}
+                                    className={cn("rounded-full object-cover w-24 h-24 border-2 shadow-[0_0_20px_rgba(255,255,255,0.3)]", avatarBorderColor)}
                                 />
                             </div>
 
@@ -169,12 +159,12 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                             )}
 
                             {/* Stats */}
-                            <div className="flex items-center gap-6 mt-1 mb-4">
+                            <div className="flex items-center gap-6 mt-1 mb-5">
                                 <div className="flex flex-col items-center">
                                     <span className="font-bold text-white text-lg">{formatCount(profile.slides.length)}</span>
                                     <span className="text-xs text-white/60">Filmików</span>
                                 </div>
-                                <div className="flex flex-col items-center">
+                                <div className="flex flex-col items-center border-x border-white/10 px-6">
                                     <span className="font-bold text-white text-lg">{formatCount(stats.followers)}</span>
                                     <span className="text-xs text-white/60">Patronów</span>
                                 </div>
@@ -186,61 +176,53 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
 
                             {/* Actions */}
                             <div className="flex gap-2 w-full max-w-xs mb-4">
-                                <button
+                                <Button
                                     onClick={togglePatron}
                                     disabled={isPatron}
-                                    className={`flex-grow py-2.5 rounded text-sm font-semibold transition-colors flex items-center justify-center gap-2 px-4
-                                        ${isPatron
-                                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-default'
-                                            : 'bg-[#FE2C55] text-white hover:bg-[#E0274B]'
-                                        }`}
+                                    variant={isPatron ? "glass" : "default"}
+                                    className={cn("flex-grow h-11", !isPatron && "bg-primary hover:bg-primary/90")}
                                 >
-                                    {isPatron ? (
-                                        <>Jesteś Patronem</>
-                                    ) : (
-                                        <>Zostań Patronem</>
-                                    )}
-                                </button>
-                                <button className="p-2.5 bg-[#3A3A3A] rounded hover:bg-[#4A4A4A] text-white transition-colors flex items-center justify-center min-w-[40px]">
+                                    {isPatron ? "Jesteś Patronem" : "Zostań Patronem"}
+                                </Button>
+                                <Button variant="glass" size="icon" className="h-11 w-11 shrink-0">
                                     <Youtube size={20} />
-                                </button>
-                                <button className="p-2.5 bg-[#3A3A3A] rounded hover:bg-[#4A4A4A] text-white transition-colors flex items-center justify-center min-w-[40px]">
+                                </Button>
+                                <Button variant="glass" size="icon" className="h-11 w-11 shrink-0">
                                     <Instagram size={20} />
-                                </button>
-                                {/* Facebook removed */}
-                                <button className="p-2.5 bg-[#3A3A3A] rounded hover:bg-[#4A4A4A] text-white transition-colors flex items-center justify-center min-w-[40px]">
+                                </Button>
+                                <Button variant="glass" size="icon" className="h-11 w-11 shrink-0">
                                     <TiktokIcon size={20} />
-                                </button>
+                                </Button>
                             </div>
                         </div>
 
                         {/* Tabs */}
-                        <div className="flex border-b border-white/5 mt-2 sticky top-0 bg-black/40 backdrop-blur-md z-10" style={{ top: 0 }}>
+                        <div className="flex border-y border-white/5 mt-2 sticky top-0 bg-black/60 backdrop-blur-xl z-10">
                             <button
                                 onClick={() => setActiveTab('videos')}
-                                className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'videos' ? 'bg-[#1a1a1a] text-pink-500' : 'bg-[#121212] text-white/40 hover:bg-[#1a1a1a]/50'}`}
+                                className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'videos' ? 'text-primary' : 'text-white/40 hover:text-white/60'}`}
                             >
-                                <Grid size={26} />
+                                <Grid size={24} />
                                 {activeTab === 'videos' && (
-                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[2px] bg-pink-500" />
+                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]" />
                                 )}
                             </button>
                             <button
                                 onClick={() => setActiveTab('liked')}
-                                className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'liked' ? 'bg-[#1a1a1a] text-pink-500' : 'bg-[#121212] text-white/40 hover:bg-[#1a1a1a]/50'}`}
+                                className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'liked' ? 'text-primary' : 'text-white/40 hover:text-white/60'}`}
                             >
-                                <Heart size={26} />
+                                <Heart size={24} />
                                 {activeTab === 'liked' && (
-                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[2px] bg-pink-500" />
+                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]" />
                                 )}
                             </button>
                             <button
                                 onClick={() => setActiveTab('private')}
-                                className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'private' ? 'bg-[#1a1a1a] text-pink-500' : 'bg-[#121212] text-white/40 hover:bg-[#1a1a1a]/50'}`}
+                                className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'private' ? 'text-primary' : 'text-white/40 hover:text-white/60'}`}
                             >
-                                <Lock size={26} />
+                                <Lock size={24} />
                                 {activeTab === 'private' && (
-                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[2px] bg-pink-500" />
+                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]" />
                                 )}
                             </button>
                         </div>
@@ -252,20 +234,20 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                                     {profile.slides && profile.slides.length > 0 ? profile.slides.map(slide => (
                                         <div
                                             key={slide.id}
-                                            className="aspect-[3/4] bg-neutral-800 relative cursor-pointer overflow-hidden group"
+                                            className="aspect-[3/4] bg-neutral-900 relative cursor-pointer overflow-hidden group"
                                             onClick={() => handleSlideClick(slide.id)}
                                         >
                                             <Image
                                                 src={slide.thumbnailUrl || 'https://placehold.co/600x800/222/FFF?text=Video'}
                                                 alt={slide.title}
                                                 fill
-                                                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                                className="object-cover group-hover:scale-110 transition-transform duration-500"
                                                 sizes="(max-width: 768px) 33vw, 150px"
                                             />
-                                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
-                                            <div className="absolute bottom-1 left-1 flex items-center gap-1 text-white drop-shadow-md">
+                                            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-300" />
+                                            <div className="absolute bottom-1.5 left-1.5 flex items-center gap-1 text-white drop-shadow-md">
                                                 <div className="flex items-center gap-1">
-                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="white" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                                                     <span className="text-[10px] font-bold">
                                                         {formatCount(Math.floor(Math.random() * 50000))}
                                                     </span>

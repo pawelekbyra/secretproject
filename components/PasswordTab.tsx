@@ -7,6 +7,7 @@ import { Loader2 } from 'lucide-react';
 import { useTranslation } from '@/context/LanguageContext';
 import { changePassword } from '@/lib/actions';
 import { useToast } from '@/context/ToastContext';
+import { cn } from '@/lib/utils';
 
 const PasswordTab: React.FC = () => {
   const { t } = useTranslation();
@@ -73,7 +74,6 @@ const PasswordTab: React.FC = () => {
                 placeholder={t('currentPasswordPlaceholder')}
                 required
                 autoComplete="current-password"
-                className="bg-black/20 border-white/10 text-white focus:border-pink-500/50 focus:bg-black/40 transition-all"
             />
           </div>
           <div className="space-y-2">
@@ -86,7 +86,6 @@ const PasswordTab: React.FC = () => {
                 placeholder={t('newPasswordPlaceholder')}
                 required
                 autoComplete="new-password"
-                className="bg-black/20 border-white/10 text-white focus:border-pink-500/50 focus:bg-black/40 transition-all"
             />
           </div>
           <div className="space-y-2">
@@ -99,7 +98,7 @@ const PasswordTab: React.FC = () => {
                 placeholder={t('confirmPasswordPlaceholder')}
                 required
                 autoComplete="new-password"
-                className={`bg-black/20 border-white/10 text-white focus:bg-black/40 transition-all ${confirmPassword && !passwordsMatch ? 'border-red-500 focus:border-red-500' : 'focus:border-pink-500/50'}`}
+                className={cn(confirmPassword && !passwordsMatch && "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20 focus:shadow-[0_0_15px_-3px_rgba(244,63,94,0.3)]")}
             />
             {error && (
                 <p className="text-xs text-red-400 mt-1 ml-1 animate-in fade-in slide-in-from-top-1">
@@ -116,7 +115,9 @@ const PasswordTab: React.FC = () => {
           <div className="pt-4">
             <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-semibold py-6 rounded-xl shadow-lg shadow-pink-900/20 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                variant="default"
+                size="lg"
+                className="w-full"
                 disabled={isSaving || !isFormValid}
             >
                 {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}

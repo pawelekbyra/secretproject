@@ -183,43 +183,43 @@ const TopBar = () => {
                   <PopoverContent
                     align="start"
                     sideOffset={5}
-                    className="w-auto min-w-[150px] p-2 bg-zinc-900 border-zinc-800 text-white shadow-xl rounded-xl data-[state=closed]:slide-out-to-top-5 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
+                    className="w-auto min-w-[180px] p-2 app-glass border-white/10 text-white shadow-2xl rounded-2xl data-[state=closed]:slide-out-to-top-5 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
                   >
-                      <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-1.5">
                           {/* Admin Button */}
                           {user.role === 'admin' && (
                               <button
                                   onClick={handleOpenAdmin}
-                                  className="flex flex-row items-center gap-3 p-3 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors w-full mb-1 border border-pink-500/30"
+                                  className="flex flex-row items-center gap-3 p-3 bg-pink-500/10 hover:bg-pink-500/20 rounded-xl transition-all w-full mb-1 border border-pink-500/30 group"
                               >
-                                  <Settings size={20} className="text-pink-500" />
-                                  <span className="text-sm font-medium whitespace-nowrap text-pink-100">Zarządzaj</span>
+                                  <Settings size={18} className="text-pink-500 group-hover:rotate-45 transition-transform" />
+                                  <span className="text-sm font-semibold whitespace-nowrap text-pink-100 neon-text-pink">Zarządzaj</span>
                               </button>
                           )}
                           <button
                             onClick={handleOpenAccount}
-                            className="flex flex-row items-center gap-3 p-3 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors w-full"
+                            className="flex flex-row items-center gap-3 p-3 hover:bg-white/10 rounded-xl transition-all w-full group"
                           >
-                              <User size={20} className="text-blue-400" />
+                              <User size={18} className="text-blue-400 group-hover:scale-110 transition-transform" />
                               <span className="text-sm font-medium whitespace-nowrap">{t('account')}</span>
                           </button>
                           <button
                             onClick={handleLogout}
-                            className="flex flex-row items-center gap-3 p-3 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors w-full"
+                            className="flex flex-row items-center gap-3 p-3 hover:bg-white/10 rounded-xl transition-all w-full group"
                           >
-                              <LogOut size={20} className="text-red-400" />
+                              <LogOut size={18} className="text-red-400 group-hover:translate-x-0.5 transition-transform" />
                               <span className="text-sm font-medium whitespace-nowrap">{t('logout')}</span>
                           </button>
 
                           {/* Apki Section */}
-                          <div className="mt-2 pt-2 border-t border-zinc-800 flex flex-col gap-1">
+                          <div className="mt-1 pt-1 border-t border-white/5 flex flex-col gap-1">
                               <button
                                 onClick={() => setIsAppsExpanded(!isAppsExpanded)}
-                                className="px-3 py-2 flex items-center justify-between text-zinc-500 hover:text-white transition-colors"
+                                className="px-3 py-2 flex items-center justify-between text-white/40 hover:text-white transition-colors"
                               >
                                   <div className="flex items-center gap-2">
-                                      <LayoutGrid size={14} />
-                                      <span className="text-[10px] font-bold tracking-wider">{t('apps') || 'Apki'}</span>
+                                      <LayoutGrid size={12} />
+                                      <span className="text-[10px] font-bold tracking-wider uppercase">{t('apps') || 'Apki'}</span>
                                   </div>
                                   <ChevronDown size={14} className={cn("transition-transform", isAppsExpanded && "rotate-180")} />
                               </button>
@@ -234,16 +234,16 @@ const TopBar = () => {
                                       >
                                           <button
                                             onClick={() => { setActiveModal('financial'); setIsMenuOpen(false); }}
-                                            className="flex flex-row items-center gap-3 p-3 bg-zinc-800/50 hover:bg-zinc-700 rounded-lg transition-colors w-full"
+                                            className="flex flex-row items-center gap-3 p-3 hover:bg-white/10 rounded-xl transition-all w-full group"
                                           >
-                                              <Wallet size={18} className="text-emerald-400" />
+                                              <Wallet size={18} className="text-emerald-400 group-hover:scale-110 transition-transform" />
                                               <span className="text-sm font-medium whitespace-nowrap">{t('financialJournal') || 'Dziennik Finansowy'}</span>
                                           </button>
                                           <button
                                             onClick={() => { setActiveModal('habits'); setIsMenuOpen(false); }}
-                                            className="flex flex-row items-center gap-3 p-3 bg-zinc-800/50 hover:bg-zinc-700 rounded-lg transition-colors w-full"
+                                            className="flex flex-row items-center gap-3 p-3 hover:bg-white/10 rounded-xl transition-all w-full group"
                                           >
-                                              <CheckCircle size={18} className="text-orange-400" />
+                                              <CheckCircle size={18} className="text-orange-400 group-hover:scale-110 transition-transform" />
                                               <span className="text-sm font-medium whitespace-nowrap">{t('habits') || 'Nawyki'}</span>
                                           </button>
                                       </motion.div>
@@ -263,7 +263,7 @@ const TopBar = () => {
                 <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="-mr-2 relative">
                   <BellIcon className="w-5 h-5" />
                   {unreadCount > 0 && (
-                    <span className="absolute top-1 right-2 block h-2 w-2 rounded-full bg-pink-500 ring-2 ring-black" />
+                    <span className="absolute top-1 right-2 block h-2 w-2 rounded-full bg-pink-500 ring-2 ring-black shadow-[0_0_8px_rgba(236,72,153,0.6)]" />
                   )}
                 </Button>
               </div>
@@ -276,7 +276,7 @@ const TopBar = () => {
       <AnimatePresence>
         {isLoginPanelOpen && (
           <motion.div
-            className="absolute left-0 w-full z-[50] bg-black/80 backdrop-blur-md pt-0 border-b border-zinc-800"
+            className="absolute left-0 w-full z-[50] bg-black/80 backdrop-blur-md pt-0 border-b border-white/5"
             style={{ top: 'var(--topbar-height)' }}
             initial={{ y: '-100%' }}
             animate={{ y: '0%', transition: { type: 'spring', stiffness: 200, damping: 30 } }}
