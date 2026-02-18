@@ -49,7 +49,7 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
       onClick={onClose} // Close on overlay click
     >
       <motion.div
-        className="absolute top-0 left-0 h-full w-full max-w-md bg-gradient-to-br from-[#121212] to-[#1e1e1e] flex flex-col shadow-2xl"
+        className="absolute top-0 left-0 h-full w-full max-w-md bg-[#1C1C1E]/95 backdrop-blur-xl flex flex-col shadow-2xl border-r border-white/10"
         // Zaktualizowana animacja: taka sama jak AuthorProfileModal, ale z lewej strony (x: -100%)
         initial={{ x: '-100%' }}
         animate={{ x: '0%' }}
@@ -59,15 +59,20 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
       >
         {/* Top Bar - styled to be distinct but integrated */}
         <div
-            className="relative flex-shrink-0 flex items-center justify-center bg-[#121212]/90 backdrop-blur-md border-b border-white/5 shadow-sm z-10"
-            style={{ height: 'var(--topbar-height)', paddingTop: 'var(--safe-area-top)'}}
+            className="relative flex-shrink-0 flex items-center justify-between px-6 border-b border-white/5 z-10"
+            style={{ height: 'calc(var(--topbar-height) + 1.5rem)', paddingTop: 'var(--safe-area-top)'}}
         >
-          <div className="flex flex-col items-center gap-1">
-             <h2 className="text-base font-semibold text-white tracking-wide">{t('account') || 'Konto'}</h2>
+          <div className="flex flex-col">
+             <h2 className="text-2xl font-black italic tracking-tighter text-white leading-none">
+                 {t('account') || 'Konto'}
+             </h2>
+             <p className="text-[10px] font-bold tracking-widest mt-1.5 uppercase text-pink-500 leading-none">
+                 Ustawienia
+             </p>
           </div>
           <button
             onClick={onClose}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-all active:scale-90"
+            className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl transition-all text-white/70 hover:text-white"
             aria-label={t('closeAccountAriaLabel')}
           >
               <X size={20} />

@@ -35,13 +35,16 @@ export function PatronProfileModal({ patronId, onClose }: PatronProfileModalProp
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
-                transition={{ type: 'spring', damping: 20, stiffness: 250 }}
-                className="relative flex flex-col w-full max-w-sm bg-neutral-900 text-white rounded-2xl shadow-lg border border-neutral-700 mx-4 overflow-hidden"
+                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                className="relative flex flex-col w-full max-w-sm bg-[#1C1C1E]/95 backdrop-blur-xl text-white rounded-[2.5rem] shadow-2xl border border-white/10 mx-4 overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
-                    <header className="relative flex items-center justify-center p-4 border-b border-neutral-800 shrink-0">
-                        <h2 className="text-lg font-semibold">Profil Użytkownika</h2>
-                        <button onClick={onClose} className="absolute p-1 right-3 top-3 rounded-full hover:bg-neutral-700">
+                    <header className="relative flex items-center justify-between px-6 py-5 border-b border-white/5 shrink-0">
+                        <h2 className="text-xl font-black italic tracking-tighter">Profil Użytkownika</h2>
+                        <button
+                            onClick={onClose}
+                            className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-white/70 hover:text-white"
+                        >
                             <X size={20} />
                         </button>
                     </header>

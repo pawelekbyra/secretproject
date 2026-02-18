@@ -7,6 +7,9 @@
     /* Szklane UI dla sidebara */
     --glass-bg: rgba(255, 255, 255, 0.06);
     --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-bg-strong: rgba(255, 255, 255, 0.12);
+    --surface: #000000;
+    --surface-elevated: #1c1c1e;
 
     /* Ujednolicone zmienne z prototypu tingtong.txt */
     --app-height: 100vh;

@@ -304,21 +304,23 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ isOpen, onClose }
           onClick={onClose}
         >
           <motion.div
-            className="w-[350px] max-w-[calc(100vw-20px)] bg-[rgba(30,30,30,0.9)] border border-white/15 rounded-xl shadow-lg text-white flex flex-col"
+            className="w-[380px] max-w-[calc(100vw-20px)] bg-[#1C1C1E]/95 border border-white/10 rounded-[2rem] shadow-2xl text-white flex flex-col overflow-hidden"
             style={{
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
             }}
-            // Zmiany: animacja y z góry (-10) a nie z dołu (10)
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 flex justify-between items-center p-4 border-b border-white/10">
-              <h3 className="font-semibold text-base">{t('notificationsTitle')}</h3>
-              <button onClick={onClose} className="text-white/70 hover:text-white transition-colors">
+            <div className="flex-shrink-0 flex justify-between items-center px-6 py-5 border-b border-white/5 bg-white/5">
+              <h3 className="text-xl font-black italic tracking-tighter">{t('notificationsTitle')}</h3>
+              <button
+                onClick={onClose}
+                className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-white/70 hover:text-white"
+              >
                 <X size={20} />
               </button>
             </div>

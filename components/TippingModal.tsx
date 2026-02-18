@@ -360,17 +360,17 @@ const TippingModal = () => {
             animate={{ x: '0%' }}
             exit={{ x: tippingModalOptions.fromLeft ? '-100%' : '100%' }}
             transition={{ type: "spring", stiffness: 200, damping: 30 }}
-            className="relative w-[90%] max-w-[420px] max-h-[85vh] flex flex-col rounded-3xl bg-[#1C1C1E] shadow-2xl pointer-events-auto border border-white/10 overflow-visible"
+            className="relative w-[90%] max-w-[420px] max-h-[85vh] flex flex-col rounded-[2.5rem] bg-[#1C1C1E]/95 backdrop-blur-xl shadow-2xl pointer-events-auto border border-white/10 overflow-hidden"
           >
 
         {/* NAGŁÓWEK */}
-        <div className="relative h-14 flex items-center justify-center px-6 text-center shrink-0 z-10 bg-[#1C1C1E] border-b border-white/5 rounded-t-3xl">
-            <h2 className="text-xl font-bold text-white/50 tracking-widest">
+        <div className="relative flex items-center justify-between px-6 py-5 shrink-0 z-10 border-b border-white/5">
+            <h2 className="text-xl font-black italic tracking-tighter text-white">
                 {modalTitle}
             </h2>
             <button
                 onClick={closeTippingModal}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-full transition-colors z-50"
+                className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-white/70 hover:text-white"
             >
                 <X size={22} strokeWidth={2.5} />
             </button>

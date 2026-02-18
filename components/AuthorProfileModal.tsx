@@ -13,6 +13,7 @@ import { AuthorProfile } from '@/types';
 import { formatCount, cn } from '@/lib/utils';
 import { SafeLock } from './SafeLock';
 import { useUser } from '@/context/UserContext';
+import { ModalHeader } from './ui/ModalHeader';
 
 // Simple TikTok Icon SVG Component
 const TiktokIcon = ({ size = 20, className = "" }: { size?: number, className?: string }) => (
@@ -95,35 +96,19 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
             animate={{ x: '0%' }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 200 }}
-            className="absolute inset-0 z-[70] bg-[#121212] flex flex-col overflow-hidden"
+            className="absolute inset-0 z-[70] bg-black flex flex-col overflow-hidden"
             style={{
                 height: '100%',
                 width: '100%',
             }}
         >
+            <ModalHeader
+                title={profile?.username || '...'}
+                subtitle={profile?.role === 'author' ? 'Twórca' : 'Patron'}
+                onClose={onClose}
+            />
             {/* Scrollable Content Container */}
             <div className="flex-1 overflow-y-auto custom-scrollbar relative">
-
-                {/* Top Bar - Now inside scroll view and relative (not sticky/fixed to viewport) */}
-                <div
-                    className="flex items-center justify-between px-1 bg-black text-white border-b border-white/10 z-10 relative"
-                    style={{
-                      height: 'var(--topbar-height)',
-                      paddingTop: 'var(--safe-area-top)',
-                    }}
-                >
-                    <div className="flex justify-start w-12">
-                        <button onClick={onClose} className="p-2 -ml-2 text-white/80 hover:text-white transition-colors">
-                            <ChevronLeft size={28} />
-                        </button>
-                    </div>
-                    <div className="flex justify-center flex-1">
-                        <span className="font-bold text-base truncate max-w-[200px] text-white">
-                            {profile?.username || '...'}
-                        </span>
-                    </div>
-                    <div className="w-12" /> {/* Spacer to balance the back button */}
-                </div>
                 {isLoading && !profile ? (
                     <div className="flex-1 flex items-center justify-center h-full">
                         <Loader2 className="h-8 w-8 animate-spin text-pink-400" />
@@ -214,7 +199,7 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                         </div>
 
                         {/* Tabs */}
-                        <div className="flex border-b border-white/10 mt-2 sticky top-0 bg-[#121212] z-10" style={{ top: 0 }}>
+                        <div className="flex border-b border-white/10 mt-2 sticky top-0 bg-black z-10" style={{ top: 0 }}>
                             <button
                                 onClick={() => setActiveTab('videos')}
                                 className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'videos' ? 'bg-[#1a1a1a] text-pink-500' : 'bg-[#121212] text-white/40 hover:bg-[#1a1a1a]/50'}`}
