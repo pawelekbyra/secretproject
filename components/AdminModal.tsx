@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, Users, Film, Mail, Loader2 } from 'lucide-react';
+import { X, Users, Film, Mail, Loader2, Info } from 'lucide-react';
 import { useTranslation } from '@/context/LanguageContext';
 import { useToast } from '@/context/ToastContext';
 import { useStore } from '@/store/useStore';
@@ -78,14 +78,18 @@ export default function AdminModal() {
                                     <div className="space-y-2">
                                         <label className="text-xs font-medium text-white/70 uppercase">Adres Email</label>
                                         <div className="relative">
-                                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 z-10" size={18} />
-                                            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="user@example.com" className="pl-12" required />
+                                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 z-10" size={18} />
+                                            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="user@example.com" className="pl-12" required variant="white" />
                                         </div>
                                     </div>
                                     <Button type="submit" variant="default" size="lg" disabled={isSubmitting || !email} className="w-full">
                                         {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : "Utwórz użytkownika"}
                                     </Button>
                                 </form>
+                                <div className="mt-4 flex items-start gap-3 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg text-blue-200 text-xs">
+                                    <Info size={16} className="shrink-0 mt-0.5" />
+                                    <p>System automatycznie utworzy konto i wyśle link do ustawienia hasła. Jeśli użytkownik już istnieje, zostanie mu przypisana rola &apos;user&apos; (jeśli nie jest adminem).</p>
+                                </div>
                             </div>
                             <div className="pt-4 border-t border-white/10">
                                 <h3 className="text-lg font-semibold text-white mb-4">Zarządzaj Użytkownikami</h3>

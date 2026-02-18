@@ -533,6 +533,7 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                                         onChange={(e) => setCustomHabitName(e.target.value)}
                                         placeholder="Np. Zimny prysznic..."
                                         className="flex-1 h-14 rounded-2xl"
+                                        variant="white"
                                     />
                                     <Button
                                         size="icon"

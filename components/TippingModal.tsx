@@ -490,6 +490,7 @@ const TippingModal = () => {
                                         value={formData.email}
                                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                         className="h-12 text-center text-lg"
+                                        variant="white"
                                     />
                                 </div>
                                 <p className="text-xs text-white/40 text-left px-2 font-medium leading-relaxed">
@@ -568,17 +569,17 @@ const TippingModal = () => {
                                                 setFormData({ ...formData, amount: Number(e.target.value) });
                                                 setValidationError(null);
                                             }}
-                                            className="w-full h-full bg-black/40 border border-white/10 text-center text-xl font-black text-white rounded-l-2xl focus:outline-none focus:bg-black/60 focus:border-pink-600 transition-all z-10 relative"
+                                            className="w-full h-full bg-white border border-white/10 text-center text-xl font-black text-zinc-950 rounded-l-2xl focus:outline-none focus:bg-white focus:border-zinc-400 transition-all z-10 relative"
                                             placeholder="0"
                                         />
                                     </div>
                                     <div className="relative h-full w-[100px]">
                                         <div
-                                            className="h-full border border-l-0 border-white/10 bg-white/5 hover:bg-white/10 transition-colors relative shrink-0 cursor-pointer px-4 rounded-r-2xl flex items-center justify-between"
+                                            className="h-full border border-l-0 border-white/10 bg-white hover:bg-zinc-100 transition-colors relative shrink-0 cursor-pointer px-4 rounded-r-2xl flex items-center justify-between"
                                             onClick={() => setIsCurrencyDropdownOpen(true)}
                                         >
-                                            <span className="font-bold text-base text-white select-none">{formData.currency}</span>
-                                            <ChevronDown className="w-5 h-5 text-white/50" />
+                                            <span className="font-bold text-base text-zinc-950 select-none">{formData.currency}</span>
+                                            <ChevronDown className="w-5 h-5 text-zinc-400" />
                                         </div>
                                         <AnimatePresence>
                                             {isCurrencyDropdownOpen && (
@@ -586,7 +587,7 @@ const TippingModal = () => {
                                                     initial={{ opacity: 0, y: -10, scale: 0.95 }}
                                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                                                    className="absolute top-full right-0 w-full mt-2 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl overflow-hidden z-[9999]"
+                                                    className="absolute top-full right-0 w-full mt-2 bg-white border border-zinc-200 rounded-xl shadow-2xl overflow-hidden z-[9999]"
                                                 >
                                                     <div className="flex flex-col">
                                                         {currencies.map((currency) => (
@@ -597,10 +598,10 @@ const TippingModal = () => {
                                                                     setIsCurrencyDropdownOpen(false);
                                                                 }}
                                                                 className={cn(
-                                                                    "w-full flex items-center justify-between px-4 py-3 text-left font-bold transition-colors relative group text-white border-b border-white/5 last:border-0",
+                                                                    "w-full flex items-center justify-between px-4 py-3 text-left font-bold transition-colors relative group text-zinc-950 border-b border-zinc-100 last:border-0",
                                                                     formData.currency === currency
-                                                                        ? "bg-white/10"
-                                                                        : "hover:bg-white/5"
+                                                                        ? "bg-zinc-100"
+                                                                        : "hover:bg-zinc-50"
                                                                 )}
                                                             >
                                                                 <span className="text-base">{currency}</span>
