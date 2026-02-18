@@ -74,7 +74,6 @@ const PasswordTab: React.FC = () => {
                 placeholder={t('currentPasswordPlaceholder')}
                 required
                 autoComplete="current-password"
-                variant="white"
             />
           </div>
           <div className="space-y-2">
@@ -87,7 +86,6 @@ const PasswordTab: React.FC = () => {
                 placeholder={t('newPasswordPlaceholder')}
                 required
                 autoComplete="new-password"
-                variant="white"
             />
           </div>
           <div className="space-y-2">
@@ -100,7 +98,6 @@ const PasswordTab: React.FC = () => {
                 placeholder={t('confirmPasswordPlaceholder')}
                 required
                 autoComplete="new-password"
-                variant="white"
                 className={cn(confirmPassword && !passwordsMatch && "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20 focus:shadow-[0_0_15px_-3px_rgba(244,63,94,0.3)]")}
             />
             {error && (
