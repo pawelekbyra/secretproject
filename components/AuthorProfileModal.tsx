@@ -95,7 +95,7 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
             animate={{ x: '0%' }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 200 }}
-            className="absolute inset-0 z-[70] bg-[#121212] flex flex-col overflow-hidden"
+            className="absolute inset-0 z-[70] app-modal-glass flex flex-col overflow-hidden border-l border-white/10"
             style={{
                 height: '100%',
                 width: '100%',
@@ -103,13 +103,14 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
         >
             {/* Scrollable Content Container */}
             <div className="flex-1 overflow-y-auto custom-scrollbar relative">
+                <div className="app-handle" />
 
                 {/* Top Bar - Now inside scroll view and relative (not sticky/fixed to viewport) */}
                 <div
-                    className="flex items-center justify-between px-1 bg-black text-white border-b border-white/10 z-10 relative"
+                    className="flex items-center justify-between px-1 text-white border-b border-white/5 z-10 relative bg-black/20"
                     style={{
-                      height: 'var(--topbar-height)',
-                      paddingTop: 'var(--safe-area-top)',
+                      height: 'calc(var(--topbar-height) - 10px)',
+                      paddingTop: '0',
                     }}
                 >
                     <div className="flex justify-start w-12">
@@ -214,7 +215,7 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                         </div>
 
                         {/* Tabs */}
-                        <div className="flex border-b border-white/10 mt-2 sticky top-0 bg-[#121212] z-10" style={{ top: 0 }}>
+                        <div className="flex border-b border-white/5 mt-2 sticky top-0 bg-black/40 backdrop-blur-md z-10" style={{ top: 0 }}>
                             <button
                                 onClick={() => setActiveTab('videos')}
                                 className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'videos' ? 'bg-[#1a1a1a] text-pink-500' : 'bg-[#121212] text-white/40 hover:bg-[#1a1a1a]/50'}`}

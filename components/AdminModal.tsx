@@ -47,11 +47,11 @@ export default function AdminModal() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ type: "spring", duration: 0.4, bounce: 0.2 }}
-                className="w-full max-w-2xl bg-[#1c1c1e] rounded-2xl shadow-2xl border border-white/10 overflow-hidden flex flex-col max-h-[90vh]"
+                className="w-full max-w-2xl app-modal-glass rounded-[2rem] shadow-2xl border border-white/20 overflow-hidden flex flex-col max-h-[90vh]"
             >
                 {/* Header */}
-                <div className="flex items-center justify-between p-5 border-b border-white/10 bg-[#28282a]">
-                    <h2 className="text-xl font-bold text-white tracking-wide">Panel Administratora</h2>
+                <div className="flex items-center justify-between p-6 border-b border-white/5 bg-black/20">
+                    <h2 className="text-xl font-bold text-white tracking-tight">Panel Administratora</h2>
                     <button
                         onClick={closeAdminModal}
                         className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-full transition-colors"
@@ -89,7 +89,7 @@ export default function AdminModal() {
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 overflow-y-auto p-6 bg-[#18181b]">
+                <div className="flex-1 overflow-y-auto p-6 bg-black/10">
                     {activeTab === 'users' && (
                         <div className="space-y-8">
                             <div className="bg-white/5 p-6 rounded-xl border border-white/5">

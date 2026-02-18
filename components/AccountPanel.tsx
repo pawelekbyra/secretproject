@@ -49,7 +49,7 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
       onClick={onClose} // Close on overlay click
     >
       <motion.div
-        className="absolute top-0 left-0 h-full w-full max-w-md bg-gradient-to-br from-[#121212] to-[#1e1e1e] flex flex-col shadow-2xl"
+        className="absolute top-0 left-0 h-full w-full max-w-md app-modal-glass flex flex-col shadow-2xl border-r border-white/10"
         // Zaktualizowana animacja: taka sama jak AuthorProfileModal, ale z lewej strony (x: -100%)
         initial={{ x: '-100%' }}
         animate={{ x: '0%' }}
@@ -58,9 +58,10 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the panel
       >
         {/* Top Bar - styled to be distinct but integrated */}
+        <div className="app-handle" />
         <div
-            className="relative flex-shrink-0 flex items-center justify-center bg-[#121212]/90 backdrop-blur-md border-b border-white/5 shadow-sm z-10"
-            style={{ height: 'var(--topbar-height)', paddingTop: 'var(--safe-area-top)'}}
+            className="relative flex-shrink-0 flex items-center justify-center border-b border-white/5 z-10"
+            style={{ height: 'calc(var(--topbar-height) - 10px)', paddingTop: '0'}}
         >
           <div className="flex flex-col items-center gap-1">
              <h2 className="text-base font-semibold text-white tracking-wide">{t('account') || 'Konto'}</h2>
@@ -75,11 +76,11 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
         </div>
 
         {/* Tabs Header */}
-        <div className="flex-shrink-0 flex bg-[#1a1a1a] border-b border-white/5">
+        <div className="flex-shrink-0 flex bg-white/5 border-b border-white/5">
           <button
             onClick={() => handleTabClick('profile')}
             aria-label={t('profileTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'profile' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-4 text-sm font-bold border-b-2 transition-all ${activeTab === 'profile' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
           >
             {t('profileTab')}
           </button>

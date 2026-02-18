@@ -304,11 +304,7 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ isOpen, onClose }
           onClick={onClose}
         >
           <motion.div
-            className="w-[350px] max-w-[calc(100vw-20px)] bg-[rgba(30,30,30,0.9)] border border-white/15 rounded-xl shadow-lg text-white flex flex-col"
-            style={{
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-            }}
+            className="w-[350px] max-w-[calc(100vw-20px)] app-modal-glass border border-white/20 rounded-3xl shadow-2xl text-white flex flex-col overflow-hidden"
             // Zmiany: animacja y z góry (-10) a nie z dołu (10)
             initial={{ opacity: 0, y: -10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -316,8 +312,8 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ isOpen, onClose }
             transition={{ duration: 0.2, ease: 'easeOut' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 flex justify-between items-center p-4 border-b border-white/10">
-              <h3 className="font-semibold text-base">{t('notificationsTitle')}</h3>
+            <div className="flex-shrink-0 flex justify-between items-center p-5 border-b border-white/5 bg-black/20">
+              <h3 className="font-bold text-base tracking-tight">{t('notificationsTitle')}</h3>
               <button onClick={onClose} className="text-white/70 hover:text-white transition-colors">
                 <X size={20} />
               </button>

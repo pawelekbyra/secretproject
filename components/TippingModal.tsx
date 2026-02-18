@@ -360,12 +360,14 @@ const TippingModal = () => {
             animate={{ x: '0%' }}
             exit={{ x: tippingModalOptions.fromLeft ? '-100%' : '100%' }}
             transition={{ type: "spring", stiffness: 200, damping: 30 }}
-            className="relative w-[90%] max-w-[420px] max-h-[85vh] flex flex-col rounded-3xl bg-[#1C1C1E] shadow-2xl pointer-events-auto border border-white/10 overflow-visible"
+            className="relative w-[90%] max-w-[420px] max-h-[85vh] flex flex-col rounded-[2.5rem] app-modal-glass shadow-2xl pointer-events-auto border border-white/20 overflow-visible"
           >
 
+        <div className="app-handle" />
+
         {/* NAGŁÓWEK */}
-        <div className="relative h-14 flex items-center justify-center px-6 text-center shrink-0 z-10 bg-[#1C1C1E] border-b border-white/5 rounded-t-3xl">
-            <h2 className="text-xl font-bold text-white/50 tracking-widest">
+        <div className="relative h-10 flex items-center justify-center px-6 text-center shrink-0 z-10 border-b border-white/5">
+            <h2 className="text-xl font-bold text-white tracking-tight">
                 {modalTitle}
             </h2>
             <button
@@ -388,7 +390,7 @@ const TippingModal = () => {
 
         {/* TREŚĆ */}
         <div className={cn(
-            "flex-1 overflow-y-auto px-6 pt-6 pb-0 flex flex-col relative z-10 text-white rounded-b-3xl custom-scrollbar",
+            "flex-1 overflow-y-auto px-6 pt-6 pb-0 flex flex-col relative z-10 text-white rounded-b-[2.5rem] custom-scrollbar",
             isCurrencyDropdownOpen && "z-30"
         )}>
             <AnimatePresence mode="wait" initial={false}>
@@ -722,7 +724,7 @@ const TippingModal = () => {
             </div>
         )}
 
-        <div className="pb-4 pt-4 flex items-center justify-center bg-[#1C1C1E] z-10 border-t border-white/5 rounded-b-3xl min-h-[50px]">
+        <div className="pb-6 pt-4 flex items-center justify-center z-10 border-t border-white/5 rounded-b-[2.5rem] min-h-[50px]">
              {showTerms ? (
                   <button
                     onClick={() => setShowTerms(false)}

@@ -63,15 +63,15 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
           onClick={onClose}
         >
           <motion.div
-            className="modal-content bg-black/80 backdrop-blur-md text-white rounded-xl max-w-md w-full max-h-[80vh] flex flex-col border border-white/10"
+            className="modal-content app-modal-glass text-white rounded-[2.5rem] max-w-md w-full max-h-[80vh] flex flex-col border border-white/20 shadow-2xl overflow-hidden"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.3 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 flex items-center justify-between p-4 border-b border-white/10">
-              <h2 id="infoTitle" className="text-lg font-semibold">
+            <div className="flex-shrink-0 flex items-center justify-between p-6 border-b border-white/5 bg-black/20">
+              <h2 id="infoTitle" className="text-xl font-bold tracking-tight">
                 {t('infoModalTitle') || 'Information'}
               </h2>
               <button
@@ -85,12 +85,12 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
             <div className="modal-body flex-1 overflow-y-auto p-6 space-y-4 text-sm text-white/80">
               <p>{t('infoModalBodyP1') || 'Lorem ipsum dolor sit amet...'}</p>
               <p>{t('infoModalBodyP2') || 'Ut in nulla enim...'}</p>
-              <div className="tip-cta bg-white/5 border border-white/10 rounded-lg p-4 text-center">
+              <div className="tip-cta bg-white/5 border border-white/10 rounded-2xl p-6 text-center shadow-inner">
                 <Coffee className="mx-auto text-pink-500 w-10 h-10 mb-2" />
                 <p className="text-sm">
                   {t('infoModalBodyTip') || 'Enjoying the app? Leave a tip...'}
                 </p>
-                <button onClick={handleShowTipJar} className="mt-3 bg-pink-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-pink-600">
+                <button onClick={handleShowTipJar} className="mt-4 bg-pink-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-pink-700 transition-all active:scale-[0.98] shadow-lg shadow-pink-600/20">
                   {t('tipText') || 'Tip'}
                 </button>
               </div>
