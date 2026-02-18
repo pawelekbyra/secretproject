@@ -54,7 +54,7 @@ export default function AdminLoginPage() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               required
               disabled={isLoading}
             />
@@ -68,7 +68,7 @@ export default function AdminLoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               required
               disabled={isLoading}
             />
@@ -76,7 +76,7 @@ export default function AdminLoginPage() {
           {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-pink-600 hover:bg-pink-700 rounded-lg font-semibold transition-colors disabled:opacity-50"
+            className="w-full py-2 px-4 bg-primary hover:bg-primary/90 rounded-lg font-semibold transition-colors disabled:opacity-50"
             disabled={isLoading}
           >
             {isLoading ? 'Logging in...' : 'Login'}

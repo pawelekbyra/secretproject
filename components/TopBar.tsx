@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from '@/context/LanguageContext';
 import { useStore } from '@/store/useStore';
+import Image from 'next/image';
 import LoginForm from './LoginForm';
 import { useToast } from '@/context/ToastContext';
 import MenuIcon from './icons/MenuIcon';
@@ -148,13 +149,22 @@ const TopBar = () => {
             <div className="flex justify-center flex-1 text-center min-w-0">
               <button
                 onClick={handleToggleLoginPanel}
-                className="relative flex items-center justify-center font-bold text-[13px] tracking-tight text-white transition-all duration-300 focus:outline-none outline-none px-1"
+                className="relative flex items-center justify-center font-bold text-[13px] tracking-tight text-white transition-all duration-300 focus:outline-none outline-none px-1 group"
               >
-                <span className="whitespace-nowrap">{loggedOutTitle}</span>
+                <div className="flex items-center gap-2">
+                  <Image
+                    src="/samagitara.jpg"
+                    alt="Logo"
+                    width={20}
+                    height={20}
+                    className="mix-blend-screen opacity-80 group-hover:opacity-100 transition-opacity"
+                  />
+                  <span className="whitespace-nowrap group-hover:text-primary transition-colors">{loggedOutTitle}</span>
+                </div>
                 <div className="absolute left-full ml-0.5 flex items-center">
                   <ChevronDown
                     size={14}
-                    className={`transition-transform duration-200 ${isLoginPanelOpen ? 'rotate-180' : ''}`}
+                    className={`text-white/40 group-hover:text-primary transition-all duration-200 ${isLoginPanelOpen ? 'rotate-180' : ''}`}
                   />
                 </div>
               </button>
@@ -193,7 +203,7 @@ const TopBar = () => {
                                   className="flex flex-row items-center gap-3 p-3 bg-primary/10 hover:bg-primary/20 rounded-xl transition-all w-full mb-1 border border-primary/30 group"
                               >
                                   <Settings size={18} className="text-primary group-hover:rotate-45 transition-transform" />
-                                  <span className="text-sm font-semibold whitespace-nowrap text-white/90 neon-text-pink">Zarządzaj</span>
+                                  <span className="text-sm font-semibold whitespace-nowrap text-white/90 neon-text-primary">Zarządzaj</span>
                               </button>
                           )}
                           <button
@@ -256,7 +266,16 @@ const TopBar = () => {
 
             </div>
             <div className="flex justify-center flex-1 min-w-0">
-              <span className="font-bold text-[13px] tracking-tight text-white truncate px-1">{loggedInTitle}</span>
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/samagitara.jpg"
+                  alt="Logo"
+                  width={20}
+                  height={20}
+                  className="mix-blend-screen"
+                />
+                <span className="font-bold text-[13px] tracking-tight text-white truncate">{loggedInTitle}</span>
+              </div>
             </div>
             <div className="flex justify-end w-8">
               <div className="relative">

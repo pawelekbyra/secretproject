@@ -79,7 +79,7 @@ export default function SlideEditModal({ isOpen, onClose, onSubmit, slide, users
               name="type"
               value={type}
               onChange={(e) => setType(e.target.value as any)}
-              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
             >
               <option value="video">Video</option>
               <option value="html">HTML</option>
@@ -94,7 +94,7 @@ export default function SlideEditModal({ isOpen, onClose, onSubmit, slide, users
                 name="author_id"
                 value={authorId}
                 onChange={(e) => setAuthorId(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+                className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
               >
                 {users.map(user => (
                   <option key={user.id} value={user.id}>{user.username}</option>
@@ -111,7 +111,7 @@ export default function SlideEditModal({ isOpen, onClose, onSubmit, slide, users
               name="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
             />
           </div>
 
@@ -123,7 +123,7 @@ export default function SlideEditModal({ isOpen, onClose, onSubmit, slide, users
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={4}
-              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
               placeholder={
                 type === 'video' ? 'Enter video URL' :
                 'Enter HTML content'
@@ -143,7 +143,7 @@ export default function SlideEditModal({ isOpen, onClose, onSubmit, slide, users
             <button
               type="submit"
               disabled={isSubmitting}
-              className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:bg-gray-500"
+              className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:bg-gray-500"
             >
               {isSubmitting ? 'Saving...' : 'Save'}
             </button>

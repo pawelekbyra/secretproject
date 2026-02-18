@@ -56,7 +56,7 @@ export default function AdminNotificationsPage() {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             required
           />
         </div>
@@ -66,7 +66,7 @@ export default function AdminNotificationsPage() {
             id="body"
             value={body}
             onChange={(e) => setBody(e.target.value)}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             required
           />
         </div>
@@ -77,7 +77,7 @@ export default function AdminNotificationsPage() {
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
         <div className="border-t border-gray-600 pt-4">
@@ -90,7 +90,7 @@ export default function AdminNotificationsPage() {
                 type="text"
                 value={userId}
                 onChange={(e) => { setUserId(e.target.value); setUserType(''); setTargetPwa(false); setTargetBrowser(false); }}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="e.g., 7bfdb7c9-3d8f-4b70-ac77-92741d889861"
               />
             </div>
@@ -101,7 +101,7 @@ export default function AdminNotificationsPage() {
                 id="userType"
                 value={userType}
                 onChange={(e) => { setUserType(e.target.value); setUserId(''); setTargetPwa(false); setTargetBrowser(false); }}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="">Select Type</option>
                 <option value="user">User</option>
@@ -124,7 +124,7 @@ export default function AdminNotificationsPage() {
         {message && <p className="text-sm mt-4">{message}</p>}
         <button
           type="submit"
-          className="w-full py-2 px-4 bg-pink-600 hover:bg-pink-700 rounded-lg font-semibold transition-colors disabled:opacity-50"
+          className="w-full py-2 px-4 bg-primary hover:bg-primary/90 rounded-lg font-semibold transition-colors disabled:opacity-50"
           disabled={isLoading}
         >
           {isLoading ? 'Sending...' : 'Send Notification'}
