@@ -592,7 +592,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
         <motion.div className="absolute inset-0 bg-black/60 z-50 flex items-end" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={onClose}>
           <motion.div
             ref={modalRef}
-            className="w-full bg-[#1C1C1E] backdrop-blur-md rounded-t-2xl flex flex-col border-t border-white/10 comments-modal"
+            className="w-full glass-modal rounded-t-[2rem] flex flex-col comments-modal overflow-hidden"
             style={{ height: modalHeight }}
             initial={{ y: '100%' }}
             animate={{ y: '0%' }}
@@ -600,21 +600,22 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
             transition={{ type: 'spring', stiffness: 400, damping: 40 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 relative text-center p-3 border-b border-white/10">
-              <h2 className="text-base font-semibold text-white">{t('commentsTitle', { count: totalCommentCount.toString() })}</h2>
-              <button onClick={onClose} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"><X size={24} /></button>
+            <div className="flex-shrink-0 relative text-center pb-3">
+              <div className="modal-handle" />
+              <h2 className="text-base font-bold text-white tracking-tight">{t('commentsTitle', { count: totalCommentCount.toString() })}</h2>
+              <button onClick={onClose} className="absolute right-4 top-5 text-white/40 hover:text-white transition-colors"><X size={22} /></button>
             </div>
 
-            <div className="flex-shrink-0 px-4 pt-3 pb-2 flex items-center gap-4 text-sm">
-                <button onClick={() => setSortBy('top')} className={cn("font-semibold", sortBy === 'top' ? 'text-white' : 'text-white/40')}>{t('top')}</button>
-                <button onClick={() => setSortBy('newest')} className={cn("font-semibold", sortBy === 'newest' ? 'text-white' : 'text-white/40')}>{t('newest')}</button>
+            <div className="flex-shrink-0 px-6 pt-1 pb-3 flex items-center gap-6 text-sm border-b border-white/5">
+                <button onClick={() => setSortBy('top')} className={cn("font-bold transition-colors", sortBy === 'top' ? 'text-white' : 'text-white/30 hover:text-white/50')}>{t('top')}</button>
+                <button onClick={() => setSortBy('newest')} className={cn("font-bold transition-colors", sortBy === 'newest' ? 'text-white' : 'text-white/30 hover:text-white/50')}>{t('newest')}</button>
             </div>
 
             <div className="flex-1 overflow-y-auto min-h-0 flex flex-col pb-20">{renderContent()}</div>
 
             {/* Footer / Input Area - Fixed at bottom */}
             <div
-                className="absolute bottom-0 left-0 right-0 border-t border-white/10 bg-[#121212] pb-[calc(0.5rem+env(safe-area-inset-bottom))] z-20"
+                className="absolute bottom-0 left-0 right-0 border-t border-white/5 bg-[#121212]/95 backdrop-blur-lg pb-[calc(0.5rem+env(safe-area-inset-bottom))] z-20"
             >
               {replyingTo && (
                 <div className="bg-[#282828] px-4 py-1.5 text-xs text-[#A6A6A6] flex justify-between items-center">

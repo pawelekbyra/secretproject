@@ -59,25 +59,25 @@ const PasswordTab: React.FC = () => {
 
   return (
     <div className="tab-pane active p-4" id="password-tab">
-      <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-        <h3 className="text-lg font-bold mb-5 flex items-center gap-3 text-white">
-            <span className="w-1 h-6 bg-gradient-to-b from-pink-500 to-rose-500 rounded-full"></span>
+      <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6">
+        <h3 className="text-xl font-black italic tracking-tighter mb-6 flex items-center gap-3 text-white uppercase">
+            <span className="w-1.5 h-6 bg-[#FE2C55] rounded-full shadow-[0_0_8px_rgba(254,44,85,0.5)]"></span>
             {t('changePasswordTitle')}
         </h3>
-        <form id="passwordForm" onSubmit={handlePasswordSubmit} className="space-y-4">
+        <form id="passwordForm" onSubmit={handlePasswordSubmit} className="space-y-5">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white/80 ml-1">{t('currentPasswordLabel')}</label>
+            <label className="text-xs font-black uppercase tracking-widest text-white/40 ml-1">{t('currentPasswordLabel')}</label>
             <Input
                 type="password"
                 name="currentPassword"
                 placeholder={t('currentPasswordPlaceholder')}
                 required
                 autoComplete="current-password"
-                className="bg-black/20 border-white/10 text-white focus:border-pink-500/50 focus:bg-black/40 transition-all"
+                className="bg-black/40 border-white/10 h-12 rounded-xl text-white focus:border-[#FE2C55]/50 focus:bg-black/60 transition-all"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white/80 ml-1">{t('newPasswordLabel')}</label>
+            <label className="text-xs font-black uppercase tracking-widest text-white/40 ml-1">{t('newPasswordLabel')}</label>
             <Input
                 type="password"
                 name="newPassword"
@@ -86,11 +86,11 @@ const PasswordTab: React.FC = () => {
                 placeholder={t('newPasswordPlaceholder')}
                 required
                 autoComplete="new-password"
-                className="bg-black/20 border-white/10 text-white focus:border-pink-500/50 focus:bg-black/40 transition-all"
+                className="bg-black/40 border-white/10 h-12 rounded-xl text-white focus:border-[#FE2C55]/50 focus:bg-black/60 transition-all"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white/80 ml-1">{t('confirmPasswordLabel')}</label>
+            <label className="text-xs font-black uppercase tracking-widest text-white/40 ml-1">{t('confirmPasswordLabel')}</label>
             <Input
                 type="password"
                 name="confirmPassword"
@@ -99,7 +99,7 @@ const PasswordTab: React.FC = () => {
                 placeholder={t('confirmPasswordPlaceholder')}
                 required
                 autoComplete="new-password"
-                className={`bg-black/20 border-white/10 text-white focus:bg-black/40 transition-all ${confirmPassword && !passwordsMatch ? 'border-red-500 focus:border-red-500' : 'focus:border-pink-500/50'}`}
+                className={`bg-black/40 border-white/10 h-12 rounded-xl text-white focus:bg-black/60 transition-all ${confirmPassword && !passwordsMatch ? 'border-red-500 focus:border-red-500' : 'focus:border-[#FE2C55]/50'}`}
             />
             {error && (
                 <p className="text-xs text-red-400 mt-1 ml-1 animate-in fade-in slide-in-from-top-1">
@@ -113,10 +113,10 @@ const PasswordTab: React.FC = () => {
             )}
           </div>
 
-          <div className="pt-4">
+          <div className="pt-6">
             <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-semibold py-6 rounded-xl shadow-lg shadow-pink-900/20 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#FE2C55] hover:bg-[#FE2C55]/90 text-white font-black uppercase tracking-widest py-7 rounded-2xl shadow-xl shadow-[#FE2C55]/10 active:scale-[0.98] transition-all disabled:opacity-50"
                 disabled={isSaving || !isFormValid}
             >
                 {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}

@@ -356,30 +356,32 @@ const TippingModal = () => {
             onClick={closeTippingModal}
           />
           <motion.div
-            initial={{ x: tippingModalOptions.fromLeft ? '-100%' : '100%' }}
-            animate={{ x: '0%' }}
-            exit={{ x: tippingModalOptions.fromLeft ? '-100%' : '100%' }}
-            transition={{ type: "spring", stiffness: 200, damping: 30 }}
-            className="relative w-[90%] max-w-[420px] max-h-[85vh] flex flex-col rounded-3xl bg-[#1C1C1E] shadow-2xl pointer-events-auto border border-white/10 overflow-visible"
+            initial={{ y: '100%' }}
+            animate={{ y: '0%' }}
+            exit={{ y: '100%' }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="relative w-full max-w-[440px] mt-auto flex flex-col app-modal-content pointer-events-auto overflow-visible"
+            style={{ maxHeight: '90vh' }}
           >
 
         {/* NAGŁÓWEK */}
-        <div className="relative h-14 flex items-center justify-center px-6 text-center shrink-0 z-10 bg-[#1C1C1E] border-b border-white/5 rounded-t-3xl">
-            <h2 className="text-xl font-bold text-white/50 tracking-widest">
+        <div className="relative flex flex-col items-center px-6 pb-4 shrink-0 z-10">
+            <div className="modal-handle" />
+            <h2 className="text-xl font-black text-white italic tracking-tighter">
                 {modalTitle}
             </h2>
             <button
                 onClick={closeTippingModal}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-full transition-colors z-50"
+                className="absolute right-4 top-6 p-2 text-white/40 hover:text-white transition-colors z-50"
             >
-                <X size={22} strokeWidth={2.5} />
+                <X size={24} />
             </button>
         </div>
 
         {/* PROGRESS BAR */}
-        <div className="h-1 w-full bg-white/5 relative overflow-hidden z-10">
+        <div className="h-1.5 w-full bg-white/5 relative overflow-hidden z-10">
             <motion.div
-                className="h-full bg-pink-600"
+                className="h-full bg-pink-600 shadow-[0_0_10px_rgba(219,39,119,0.5)]"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -388,7 +390,7 @@ const TippingModal = () => {
 
         {/* TREŚĆ */}
         <div className={cn(
-            "flex-1 overflow-y-auto px-6 pt-6 pb-0 flex flex-col relative z-10 text-white rounded-b-3xl custom-scrollbar",
+            "flex-1 overflow-y-auto px-6 pt-8 pb-0 flex flex-col relative z-10 text-white custom-scrollbar",
             isCurrencyDropdownOpen && "z-30"
         )}>
             <AnimatePresence mode="wait" initial={false}>

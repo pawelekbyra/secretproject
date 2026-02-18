@@ -173,30 +173,30 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
       <form action={handleSubmit} id="profileForm" className="space-y-4">
 
         {/* Avatar Section */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col items-center text-center">
-            <div className="relative w-24 h-24 mb-4 group cursor-pointer" onClick={handleAvatarEditClick}>
-                <div className="w-full h-full rounded-full overflow-hidden shadow-lg bg-gray-800 flex items-center justify-center relative">
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-8 flex flex-col items-center text-center">
+            <div className="relative w-28 h-28 mb-6 group cursor-pointer" onClick={handleAvatarEditClick}>
+                <div className="absolute inset-0 bg-white/10 rounded-full blur-xl opacity-50 group-hover:opacity-100 transition-opacity" />
+                <div className="w-full h-full rounded-full overflow-hidden shadow-2xl bg-gray-800 flex items-center justify-center relative z-10">
                     <Image
                       src={currentAvatar}
                       alt={t('avatarAlt')}
-                      width={96}
-                      height={96}
+                      width={112}
+                      height={112}
                       className={`w-full h-full object-cover rounded-full border-2 ${profile.role === 'patron' ? 'border-yellow-500' : 'border-white'}`}
                       id="userAvatar"
                       unoptimized={!!previewUrl}
                     />
 
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <Camera className="text-white w-8 h-8" />
                     </div>
                 </div>
-                {/* Zmieniono kolor ramki (border) z #2d2d2d na white */}
                 <button
                   type="button"
-                  className="absolute bottom-0 right-0 w-8 h-8 bg-emerald-600 border-2 border-white rounded-full text-white flex items-center justify-center hover:bg-emerald-500 transition-colors shadow-lg"
+                  className="absolute bottom-1 right-1 w-9 h-9 bg-[#FE2C55] border-2 border-white rounded-full text-white flex items-center justify-center hover:scale-110 transition-transform shadow-xl z-20"
                   title={t('changeAvatarTitle')}
                 >
-                   <Camera size={16} />
+                   <Camera size={18} />
                 </button>
 
                 <input
@@ -226,43 +226,43 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
         </div>
 
         {/* Combined Form Fields */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-          <h3 className="text-lg font-bold mb-5 flex items-center gap-3 text-white">
-            <span className="w-1 h-6 bg-gradient-to-b from-pink-500 to-rose-500 rounded-full"></span>
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6">
+          <h3 className="text-xl font-black italic tracking-tighter mb-6 flex items-center gap-3 text-white uppercase">
+            <span className="w-1.5 h-6 bg-[#FE2C55] rounded-full shadow-[0_0_8px_rgba(254,44,85,0.5)]"></span>
             {t('accountSettings')}
           </h3>
 
-          <div className="space-y-5">
+          <div className="space-y-6">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 ml-1">{t('displayName') || 'Display Name'}</label>
+              <label className="text-xs font-black uppercase tracking-widest text-white/40 ml-1">{t('displayName') || 'Display Name'}</label>
               <Input
                 type="text"
                 name="displayName"
                 defaultValue={profile.displayName || ''}
                 placeholder={t('displayNamePlaceholder') || 'Your Name'}
-                className="bg-black/20 border-white/10 text-white focus:border-pink-500/50 focus:bg-black/40 transition-all"
+                className="bg-black/40 border-white/10 h-12 rounded-xl text-white focus:border-[#FE2C55]/50 focus:bg-black/60 transition-all"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 ml-1">{t('bio') || 'Coś o sobie'}</label>
+              <label className="text-xs font-black uppercase tracking-widest text-white/40 ml-1">{t('bio') || 'Coś o sobie'}</label>
               <textarea
                 name="bio"
                 defaultValue={(profile as any).bio || ''}
                 placeholder={t('bioPlaceholder') || 'Napisz coś o sobie...'}
                 rows={3}
-                className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-sm text-white focus:border-pink-500/50 focus:bg-black/40 focus:outline-none transition-all resize-none placeholder:text-white/30"
+                className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm text-white focus:border-[#FE2C55]/50 focus:bg-black/60 focus:outline-none transition-all resize-none placeholder:text-white/20"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 ml-1">{t('email')}</label>
+              <label className="text-xs font-black uppercase tracking-widest text-white/40 ml-1">{t('email')}</label>
               <Input
                 type="email"
                 name="email"
                 defaultValue={profile.email}
                 placeholder={t('emailPlaceholder')}
-                className="bg-black/20 border-white/10 text-white focus:border-pink-500/50 focus:bg-black/40 transition-all"
+                className="bg-black/40 border-white/10 h-12 rounded-xl text-white focus:border-[#FE2C55]/50 focus:bg-black/60 transition-all"
               />
             </div>
 
@@ -341,7 +341,7 @@ function SaveButton({ t }: { t: any }) {
   return (
     <Button
         type="submit"
-        className="w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-semibold py-6 rounded-xl shadow-lg shadow-pink-900/20 active:scale-[0.98] transition-all"
+        className="w-full bg-[#FE2C55] hover:bg-[#FE2C55]/90 text-white font-black uppercase tracking-widest py-7 rounded-2xl shadow-xl shadow-[#FE2C55]/10 active:scale-[0.98] transition-all"
         disabled={pending}
     >
       {pending ? (

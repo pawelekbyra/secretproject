@@ -94,7 +94,7 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
             initial={{ x: '100%' }}
             animate={{ x: '0%' }}
             exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 200 }}
+            transition={{ type: 'spring', damping: 35, stiffness: 250 }}
             className="absolute inset-0 z-[70] bg-[#121212] flex flex-col overflow-hidden"
             style={{
                 height: '100%',
@@ -138,19 +138,20 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                         {/* Profile Header */}
                         <div className="flex flex-col items-center pt-4 px-4">
                             {/* Avatar */}
-                            <div className="relative mb-2">
+                            <div className="relative mb-4">
+                                <div className="absolute inset-0 bg-white/20 rounded-full blur-xl opacity-50" />
                                 <Image
                                     src={profile.avatarUrl || DEFAULT_AVATAR_URL}
                                     alt={profile.username}
-                                    width={96}
-                                    height={96}
-                                    className={cn("rounded-full object-cover w-24 h-24 border-2 shadow-[0_0_15px_rgba(255,255,255,0.5)]", avatarBorderColor)}
+                                    width={100}
+                                    height={100}
+                                    className={cn("rounded-full object-cover w-28 h-28 border-2 shadow-2xl relative z-10", avatarBorderColor)}
                                 />
                             </div>
 
                             {/* Name */}
-                            <h1 className={cn("text-lg font-bold mb-1", profile.role === 'patron' ? "text-yellow-400" : "text-white")}>
-                                {profile.username}
+                            <h1 className={cn("text-2xl font-black italic tracking-tighter mb-1", profile.role === 'patron' ? "text-yellow-400" : "text-white")}>
+                                @{profile.username}
                             </h1>
 
                             {/* Badge */}
@@ -168,30 +169,30 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                             )}
 
                             {/* Stats */}
-                            <div className="flex items-center gap-6 mt-1 mb-4">
+                            <div className="flex items-center gap-8 mt-2 mb-6">
                                 <div className="flex flex-col items-center">
-                                    <span className="font-bold text-white text-lg">{formatCount(profile.slides.length)}</span>
-                                    <span className="text-xs text-white/60">Filmików</span>
+                                    <span className="font-black text-white text-xl italic">{formatCount(profile.slides.length)}</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Filmików</span>
                                 </div>
                                 <div className="flex flex-col items-center">
-                                    <span className="font-bold text-white text-lg">{formatCount(stats.followers)}</span>
-                                    <span className="text-xs text-white/60">Patronów</span>
+                                    <span className="font-black text-white text-xl italic">{formatCount(stats.followers)}</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Patronów</span>
                                 </div>
                                 <div className="flex flex-col items-center">
-                                    <span className="font-bold text-white text-lg">{formatCount(stats.likes)}</span>
-                                    <span className="text-xs text-white/60">Polubień</span>
+                                    <span className="font-black text-white text-xl italic">{formatCount(stats.likes)}</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Polubień</span>
                                 </div>
                             </div>
 
                             {/* Actions */}
-                            <div className="flex gap-2 w-full max-w-xs mb-4">
+                            <div className="flex gap-2 w-full max-w-sm mb-6 px-4">
                                 <button
                                     onClick={togglePatron}
                                     disabled={isPatron}
-                                    className={`flex-grow py-2.5 rounded text-sm font-semibold transition-colors flex items-center justify-center gap-2 px-4
+                                    className={`flex-grow py-3 rounded-2xl text-sm font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 px-6 shadow-lg active:scale-95
                                         ${isPatron
-                                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-default'
-                                            : 'bg-[#FE2C55] text-white hover:bg-[#E0274B]'
+                                            ? 'bg-emerald-600 text-white cursor-default'
+                                            : 'bg-[#FE2C55] text-white hover:bg-[#FE2C55]/90 shadow-[#FE2C55]/20'
                                         }`}
                                 >
                                     {isPatron ? (

@@ -49,53 +49,56 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
       onClick={onClose} // Close on overlay click
     >
       <motion.div
-        className="absolute top-0 left-0 h-full w-full max-w-md bg-gradient-to-br from-[#121212] to-[#1e1e1e] flex flex-col shadow-2xl"
+        className="absolute top-0 left-0 h-full w-full max-w-md bg-[#121212] flex flex-col shadow-2xl border-r border-white/10"
         // Zaktualizowana animacja: taka sama jak AuthorProfileModal, ale z lewej strony (x: -100%)
         initial={{ x: '-100%' }}
         animate={{ x: '0%' }}
         exit={{ x: '-100%' }}
-        transition={{ type: 'spring', damping: 30, stiffness: 200 }}
+        transition={{ type: 'spring', damping: 35, stiffness: 250 }}
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the panel
       >
         {/* Top Bar - styled to be distinct but integrated */}
         <div
-            className="relative flex-shrink-0 flex items-center justify-center bg-[#121212]/90 backdrop-blur-md border-b border-white/5 shadow-sm z-10"
+            className="relative flex-shrink-0 flex items-center justify-center bg-black/40 backdrop-blur-xl border-b border-white/5 z-10"
             style={{ height: 'var(--topbar-height)', paddingTop: 'var(--safe-area-top)'}}
         >
-          <div className="flex flex-col items-center gap-1">
-             <h2 className="text-base font-semibold text-white tracking-wide">{t('account') || 'Konto'}</h2>
+          <div className="flex flex-col items-center">
+             <h2 className="text-xl font-black italic tracking-tighter text-white uppercase">{t('account') || 'Konto'}</h2>
           </div>
           <button
             onClick={onClose}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-all active:scale-90"
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-white/40 hover:text-white transition-all active:scale-90"
             aria-label={t('closeAccountAriaLabel')}
           >
-              <X size={20} />
+              <X size={24} />
           </button>
         </div>
 
         {/* Tabs Header */}
-        <div className="flex-shrink-0 flex bg-[#1a1a1a] border-b border-white/5">
+        <div className="flex-shrink-0 flex bg-white/[0.02] border-b border-white/5">
           <button
             onClick={() => handleTabClick('profile')}
             aria-label={t('profileTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'profile' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-5 text-[10px] font-black uppercase tracking-[0.2em] transition-all relative ${activeTab === 'profile' ? 'text-pink-500' : 'text-white/30 hover:text-white/60'}`}
           >
             {t('profileTab')}
+            {activeTab === 'profile' && <motion.div layoutId="accountTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-pink-500" />}
           </button>
           <button
             onClick={() => handleTabClick('password')}
             aria-label={t('passwordTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'password' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-5 text-[10px] font-black uppercase tracking-[0.2em] transition-all relative ${activeTab === 'password' ? 'text-pink-500' : 'text-white/30 hover:text-white/60'}`}
           >
             {t('passwordTab')}
+            {activeTab === 'password' && <motion.div layoutId="accountTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-pink-500" />}
           </button>
           <button
             onClick={() => handleTabClick('delete')}
             aria-label={t('deleteTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'delete' ? 'text-pink-500 border-pink-500 bg-white/5' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-5 text-[10px] font-black uppercase tracking-[0.2em] transition-all relative ${activeTab === 'delete' ? 'text-pink-500' : 'text-white/30 hover:text-white/60'}`}
           >
             {t('deleteTab')}
+            {activeTab === 'delete' && <motion.div layoutId="accountTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-pink-500" />}
           </button>
         </div>
 
