@@ -2,7 +2,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
-import { mockNotifications } from '@/lib/mock-db';
 import { db } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
@@ -17,9 +16,8 @@ export async function GET(req: Request) {
     const successResponse = (data: any[], unreadCount: number) => NextResponse.json({ success: true, notifications: data, unreadCount });
 
     if (forceMock || !session?.user) {
-      console.log("🔔 API: Returning mock notifications (Force Mock or Guest)");
-      // For mock/guest, we can say 0 unread or calc from mock
-      return successResponse(mockNotifications, 1);
+      console.log("🔔 API: Returning empty notifications (Force Mock or Guest)");
+      return successResponse([], 0);
     }
 
     try {
