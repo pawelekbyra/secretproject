@@ -6,14 +6,15 @@ import { useStore } from '@/store/useStore';
 import { shallow } from 'zustand/shallow';
 import { VideoSlideDTO } from '@/lib/dto';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 interface LocalVideoPlayerProps {
     slide: VideoSlideDTO;
     isActive: boolean;
-    shouldLoad?: boolean;
+    playMode: 'active' | 'buffer' | 'hidden';
 }
 
-const LocalVideoPlayer = ({ slide, isActive, shouldLoad = false }: LocalVideoPlayerProps) => {
+const LocalVideoPlayer = ({ slide, isActive, playMode }: LocalVideoPlayerProps) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const hlsRef = useRef<Hls | null>(null);
     const [isReadyToPlay, setIsReadyToPlay] = useState(false);
@@ -65,14 +66,15 @@ const LocalVideoPlayer = ({ slide, isActive, shouldLoad = false }: LocalVideoPla
     // 2. Logika Preloadingu (Smart Loading)
     useEffect(() => {
         const hls = hlsRef.current;
+        const isPreloadNeeded = playMode === 'active' || playMode === 'buffer';
 
-        if ((isActive || shouldLoad) && hls && slide.data.hlsUrl) {
+        if (isPreloadNeeded && hls && slide.data.hlsUrl) {
             if (hls.url !== slide.data.hlsUrl) {
                  hls.loadSource(slide.data.hlsUrl);
                  hls.startLoad();
             }
         }
-    }, [isActive, shouldLoad, slide.data.hlsUrl, slide.id]);
+    }, [playMode, slide.data.hlsUrl, slide.id]);
 
     // 3. Logika Odtwarzania (Tylko Active)
     useEffect(() => {
@@ -82,21 +84,26 @@ const LocalVideoPlayer = ({ slide, isActive, shouldLoad = false }: LocalVideoPla
         const shouldPlay = isActive && isPlaying;
 
         if (shouldPlay) {
+            // Re-set src if it was removed
+            if (!video.src && !hlsRef.current) {
+                const { hlsUrl, mp4Url } = slide.data;
+                if (!video.canPlayType('application/vnd.apple.mpegurl') || !hlsUrl) {
+                    if (mp4Url) video.src = mp4Url;
+                } else {
+                    video.src = hlsUrl;
+                }
+            }
+
             const playPromise = video.play();
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
                     console.warn("Autoplay prevented", error);
-                    // Tu można dodać logikę pokazania przycisku "Play" w razie błędu
                 });
             }
         } else {
             video.pause();
-            if (!isActive) {
-                // Opcjonalnie: przewiń do początku po przewinięciu dalej
-                // video.currentTime = 0;
-            }
         }
-    }, [isActive, isPlaying]);
+    }, [isActive, isPlaying, slide.data]);
 
     // 4. Obsługa Mute
     useEffect(() => {
@@ -107,14 +114,28 @@ const LocalVideoPlayer = ({ slide, isActive, shouldLoad = false }: LocalVideoPla
 
     return (
         <div className="absolute inset-0 z-0 bg-black">
-             <video
-                ref={videoRef}
-                className="w-full h-full object-cover"
-                loop
-                playsInline
-                muted={isMuted}
-                poster={slide.data.poster}
-            />
+             {playMode !== 'hidden' ? (
+                 <video
+                    ref={videoRef}
+                    className="w-full h-full object-cover"
+                    loop
+                    playsInline
+                    muted={isMuted}
+                    poster={slide.data.poster}
+                    preload="auto"
+                />
+             ) : (
+                 <div className="relative w-full h-full">
+                     <Image
+                        src={slide.data.poster}
+                        alt={slide.data.title || 'Video poster'}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        priority={false}
+                     />
+                 </div>
+             )}
         </div>
     );
 };

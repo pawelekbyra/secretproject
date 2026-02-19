@@ -1,6 +1,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma'; // Use singleton instance
+import { redis } from '@/lib/kv';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,6 +13,16 @@ export async function GET(
 
   if (!id) {
     return NextResponse.json({ success: false, message: 'Missing user ID' }, { status: 400 });
+  }
+
+  const cacheKey = `author:profile:v1:${id}`;
+  try {
+    const cached = await redis.get(cacheKey);
+    if (cached) {
+      return NextResponse.json(cached);
+    }
+  } catch (e) {
+    console.error('Redis error:', e);
   }
 
   try {
@@ -26,6 +37,16 @@ export async function GET(
         image: true,
         bio: true,
         role: true,
+        slides: {
+          orderBy: { createdAt: 'desc' },
+          take: 12,
+          select: {
+            id: true,
+            title: true,
+            thumbnailUrl: true,
+            content: true,
+          },
+        },
       },
     });
 
@@ -33,19 +54,7 @@ export async function GET(
       return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
     }
 
-    const slides = await prisma.slide.findMany({
-      where: { userId: id },
-      orderBy: { createdAt: 'desc' },
-      take: 12,
-      select: {
-        id: true,
-        title: true,
-        thumbnailUrl: true,
-        content: true,
-      },
-    });
-
-    const formattedSlides = slides.map((slide) => {
+    const formattedSlides = user.slides.map((slide) => {
       let title = slide.title || 'Untitled';
       let thumbnailUrl = slide.thumbnailUrl || '/placeholder.jpg';
 
@@ -79,6 +88,12 @@ export async function GET(
       role: user.role || "user",
       slides: formattedSlides,
     };
+
+    try {
+      await redis.set(cacheKey, responseData, { ex: 300 }); // Cache for 5 minutes
+    } catch (e) {
+      console.error('Redis set error:', e);
+    }
 
     return NextResponse.json(responseData);
   } catch (error) {

@@ -1,61 +1,10 @@
-"use client";
-
-import React, { useEffect } from 'react';
+import React from 'react';
 import Preloader from './Preloader';
 import TopBar from './TopBar';
-import { useStore } from '@/store/useStore';
-import { shallow } from 'zustand/shallow';
-import { AuthorProfileModal } from './AuthorProfileModal';
-import { PatronProfileModal } from './PatronProfileModal';
-import AdminModal from './AdminModal';
-import TippingModal from './TippingModal';
-import CommentsModal from './CommentsModal';
-import AccountPanel from './AccountPanel';
-import HabitTrackerModal from './HabitTrackerModal';
-import NotificationPopup from './NotificationPopup';
-import { AnimatePresence } from 'framer-motion';
-import { useUser } from '@/context/UserContext';
-import PWAInstallPrompt from './PWAInstallPrompt';
-import { ToastContainer } from '@/context/ToastContext';
+import UIController from './layout/UIController';
+import ViewportHandler from './layout/ViewportHandler';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const { user } = useUser();
-  const {
-    activeModal,
-    setActiveModal,
-    activeSlide,
-    isAuthorProfileModalOpen,
-    activeAuthorId,
-    closeAuthorProfileModal,
-    isPatronProfileModalOpen,
-    activePatronId,
-    closePatronProfileModal,
-    isAdminModalOpen,
-    closeAdminModal
-  } = useStore(state => ({
-    activeModal: state.activeModal,
-    setActiveModal: state.setActiveModal,
-    activeSlide: state.activeSlide,
-    isAuthorProfileModalOpen: state.isAuthorProfileModalOpen,
-    activeAuthorId: state.activeAuthorId,
-    closeAuthorProfileModal: state.closeAuthorProfileModal,
-    isPatronProfileModalOpen: state.isPatronProfileModalOpen,
-    activePatronId: state.activePatronId,
-    closePatronProfileModal: state.closePatronProfileModal,
-    isAdminModalOpen: state.isAdminModalOpen,
-    closeAdminModal: state.closeAdminModal
-  }), shallow);
-
-  useEffect(() => {
-    const setAppHeight = () => {
-      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
-    };
-    window.addEventListener('resize', setAppHeight);
-    setAppHeight();
-
-    return () => window.removeEventListener('resize', setAppHeight);
-  }, []);
-
   return (
     <div
         id="app-layout"
@@ -65,6 +14,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             bg-black
         "
     >
+      <ViewportHandler />
       <Preloader />
       <TopBar />
       <div
@@ -73,56 +23,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       >
         {children}
       </div>
-      <AnimatePresence mode="wait">
-        {isAuthorProfileModalOpen && activeAuthorId && (
-          <AuthorProfileModal
-            authorId={activeAuthorId}
-            onClose={closeAuthorProfileModal}
-          />
-        )}
-      </AnimatePresence>
-      <AnimatePresence mode="wait">
-        {isPatronProfileModalOpen && activePatronId && (
-            <PatronProfileModal
-                patronId={activePatronId}
-                onClose={closePatronProfileModal}
-            />
-        )}
-      </AnimatePresence>
-      <AnimatePresence mode="wait">
-          {isAdminModalOpen && (
-              <AdminModal />
-          )}
-      </AnimatePresence>
-      <TippingModal />
-      <CommentsModal
-        isOpen={activeModal === 'comments'}
-        onClose={() => setActiveModal(null)}
-        slideId={activeSlide?.id || null}
-        initialCommentsCount={activeSlide?.initialComments || 0}
-      />
-      <NotificationPopup
-        isOpen={activeModal === 'notifications'}
-        onClose={() => setActiveModal(null)}
-      />
-      <AnimatePresence>
-        {activeModal === 'account' && <AccountPanel key="account-panel" onClose={() => setActiveModal(null)} />}
-      </AnimatePresence>
-      <AnimatePresence>
-        {activeModal === 'habits' && <HabitTrackerModal key="habits-modal" onClose={() => setActiveModal(null)} />}
-      </AnimatePresence>
-      <AnimatePresence>
-        {activeModal === 'financial' && (
-            <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center p-6 text-center">
-                 <h2 className="text-2xl font-bold mb-4">Dziennik Finansowy</h2>
-                 <p className="text-white/60 mb-8">Ta funkcja będzie dostępna wkrótce! Pracujemy nad tym, abyś mógł lepiej zarządzać swoim sianem. 💸</p>
-                 <button onClick={() => setActiveModal(null)} className="px-8 py-3 bg-white text-black font-bold rounded-full">Zamknij</button>
-            </div>
-        )}
-      </AnimatePresence>
-
-      {/* <PWAInstallPrompt /> */}
-      <ToastContainer />
+      <UIController />
     </div>
   );
 }

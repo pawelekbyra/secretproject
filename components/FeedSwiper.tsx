@@ -83,7 +83,7 @@ const FeedSwiper = () => {
       swiperInstance.current = new Swiper(swiperRef.current, {
         modules: [Mousewheel, Keyboard],
         direction: 'vertical',
-        loop: true,
+        loop: false,
         mousewheel: true,
         keyboard: {
           enabled: true,
@@ -130,7 +130,7 @@ const FeedSwiper = () => {
         },
       });
     }
-  }, [hasSlides, queryClient, playVideo, setActiveSlide, setNextSlide]);
+  }, [hasSlides, queryClient, playVideo, setActiveSlide, setNextSlide, slides]);
 
   useEffect(() => {
     if (swiperInstance.current) {
@@ -160,10 +160,17 @@ const FeedSwiper = () => {
     <div className="swiper" ref={swiperRef} style={{ height: '100vh' }}>
       <div className="swiper-wrapper">
         {slides.map((slide, index) => {
-          const priorityLoad = index === activeIndex || index === activeIndex + 1;
           return (
-            <div className="swiper-slide" key={slide.id}>
-              <Slide slide={slide} priorityLoad={priorityLoad} />
+            <div
+              className="swiper-slide"
+              key={slide.id}
+              data-swiper-slide-index={index}
+            >
+              <Slide
+                slide={slide}
+                index={index}
+                activeIndex={activeIndex}
+              />
             </div>
           );
         })}
