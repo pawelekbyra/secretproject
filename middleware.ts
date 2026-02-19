@@ -29,10 +29,7 @@ export default auth((req) => {
     return NextResponse.redirect(new URL('/', nextUrl));
   }
 
-  // Set x-pathname header for server components
-  const response = NextResponse.next();
-  response.headers.set('x-pathname', nextUrl.pathname);
-  return response;
+  return NextResponse.next();
 });
 
 export const config = {

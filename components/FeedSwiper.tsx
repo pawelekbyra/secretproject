@@ -3,11 +3,10 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import Swiper from 'swiper';
-import { Mousewheel, Keyboard, Virtual } from 'swiper/modules';
+import { Mousewheel, Keyboard } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/keyboard';
 import 'swiper/css/mousewheel';
-import 'swiper/css/virtual';
 import Slide from '@/components/Slide';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useStore } from '@/store/useStore';
@@ -43,18 +42,6 @@ const FeedSwiper = () => {
   const queryClient = useQueryClient();
   const swiperRef = useRef(null);
   const swiperInstance = useRef<Swiper | null>(null);
-
-  const [virtualData, setVirtualData] = useState<{
-    from: number;
-    to: number;
-    offset: number;
-    slides: any[];
-  }>({
-    from: 0,
-    to: 0,
-    offset: 0,
-    slides: [],
-  });
 
   const {
     data,
@@ -93,23 +80,13 @@ const FeedSwiper = () => {
   const hasSlides = slides.length > 0;
   useEffect(() => {
     if (hasSlides && swiperRef.current && !swiperInstance.current) {
-      // @ts-ignore
       swiperInstance.current = new Swiper(swiperRef.current, {
-        modules: [Mousewheel, Keyboard, Virtual],
+        modules: [Mousewheel, Keyboard],
         direction: 'vertical',
-        loop: false, // Virtual loop is complex and often causes issues with infinite scrolling
+        loop: false,
         mousewheel: true,
         keyboard: {
           enabled: true,
-        },
-        virtual: {
-          enabled: true,
-          slides: slides,
-          addSlidesBefore: 1,
-          addSlidesAfter: 1,
-          renderExternal(data) {
-            setVirtualData(data);
-          },
         },
         on: {
           slideChange: () => {
@@ -156,10 +133,7 @@ const FeedSwiper = () => {
   }, [hasSlides, queryClient, playVideo, setActiveSlide, setNextSlide, slides]);
 
   useEffect(() => {
-    if (swiperInstance.current && swiperInstance.current.virtual) {
-      swiperInstance.current.virtual.slides = slides;
-      swiperInstance.current.virtual.update(true);
-    } else if (swiperInstance.current) {
+    if (swiperInstance.current) {
       swiperInstance.current.update();
     }
   }, [slides]);
@@ -185,17 +159,18 @@ const FeedSwiper = () => {
   return (
     <div className="swiper" ref={swiperRef} style={{ height: '100vh' }}>
       <div className="swiper-wrapper">
-        {virtualData.slides.map((slide, index) => {
-          const actualIndex = virtualData.from + index;
-          const priorityLoad = actualIndex === activeIndex || actualIndex === activeIndex + 1;
+        {slides.map((slide, index) => {
           return (
             <div
               className="swiper-slide"
               key={slide.id}
-              style={{ top: `${virtualData.offset}px` }}
-              data-swiper-slide-index={actualIndex}
+              data-swiper-slide-index={index}
             >
-              <Slide slide={slide} priorityLoad={priorityLoad} />
+              <Slide
+                slide={slide}
+                index={index}
+                activeIndex={activeIndex}
+              />
             </div>
           );
         })}

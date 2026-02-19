@@ -76,7 +76,7 @@ const Preloader: React.FC = () => {
                 <LocalVideoPlayer
                     slide={firstSlide as VideoSlideDTO}
                     isActive={false}
-                    shouldLoad={true}
+                    playMode="buffer"
                 />
             </div>
           )}

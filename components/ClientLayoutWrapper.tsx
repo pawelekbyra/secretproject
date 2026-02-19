@@ -1,4 +1,6 @@
-import { headers } from "next/headers";
+"use client";
+
+import { usePathname } from "next/navigation";
 import AppLayout from "@/components/AppLayout";
 import DesktopDeviceFrame from "@/components/layout/DesktopDeviceFrame";
 import BMCWidget from "@/components/layout/BMCWidget";
@@ -8,8 +10,7 @@ export default function ClientLayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  const headersList = headers();
-  const pathname = headersList.get('x-pathname') || "";
+  const pathname = usePathname();
 
   if (pathname.startsWith("/robert") || pathname.startsWith("/setup")) {
     return (
