@@ -1,5 +1,6 @@
 import type { PrecacheEntry } from "@serwist/precaching";
 import { installSerwist } from "@serwist/sw";
+import { StaleWhileRevalidate, CacheFirst, ExpirationPlugin } from "serwist";
 
 declare const self: ServiceWorkerGlobalScope & {
   __SW_MANIFEST: (PrecacheEntry | string)[] | undefined;
@@ -10,14 +11,46 @@ installSerwist({
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
-  runtimeCaching: [],
+  runtimeCaching: [
+    {
+      // Cache API requests with StaleWhileRevalidate
+      matcher: ({ url }) => url.pathname.startsWith("/api/"),
+      handler: new StaleWhileRevalidate({
+        cacheName: "api-cache",
+        plugins: [
+          new ExpirationPlugin({
+            maxEntries: 100,
+            maxAgeSeconds: 60 * 60 * 24, // 24 hours
+          }),
+        ],
+      }),
+    },
+    {
+      // Cache static assets with CacheFirst
+      matcher: ({ url }) =>
+        url.origin === self.location.origin &&
+        (url.pathname.startsWith("/_next/static/") ||
+          url.pathname.startsWith("/images/") ||
+          url.pathname.startsWith("/icons/") ||
+          url.pathname.endsWith(".woff2")),
+      handler: new CacheFirst({
+        cacheName: "static-assets",
+        plugins: [
+          new ExpirationPlugin({
+            maxEntries: 500,
+            maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+          }),
+        ],
+      }),
+    },
+  ],
 });
 
 self.addEventListener('push', (event) => {
   const data = event.data?.json() ?? {};
-  const title = data.title || 'Ting Tong';
+  const title = data.title || 'Polutek';
   const options = {
-    body: data.body || 'You have a new notification.',
+    body: data.body || 'Masz nowe powiadomienie.',
     icon: '/icons/icon-192x192.png',
     badge: '/icons/icon-192x192.png',
     data: {
@@ -29,8 +62,8 @@ self.addEventListener('push', (event) => {
     self.registration.showNotification(title, options)
   );
 
-  if ('setAppBadge' in navigator && data.badge) {
-    navigator.setAppBadge(data.badge);
+  if ('setAppBadge' in navigator && (data as any).badge) {
+    (navigator as any).setAppBadge((data as any).badge);
   }
 });
 
@@ -50,7 +83,7 @@ self.addEventListener('notificationclick', (event) => {
             client = clientList[i];
           }
         }
-        return client.focus().then(client => client.navigate(urlToOpen));
+        return client.focus().then(c => c?.navigate(urlToOpen));
       }
       return self.clients.openWindow(urlToOpen);
     })

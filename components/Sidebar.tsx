@@ -8,7 +8,6 @@ import { useToast } from '@/context/ToastContext';
 import { useTranslation } from '@/context/LanguageContext';
 import { useStore } from '@/store/useStore';
 import { formatCount } from '@/lib/utils';
-import { shallow } from 'zustand/shallow';
 import { useUser } from '@/context/UserContext';
 import { cn } from '@/lib/utils';
 
@@ -32,21 +31,14 @@ const Sidebar: React.FC<SidebarProps> = ({
   const { addToast } = useToast();
   const { t } = useTranslation();
   const { isLoggedIn, user: currentUser } = useUser();
-  const {
-    setActiveModal,
-    toggleLike,
-    likeChanges,
-    commentCountChanges,
-    openAuthorProfileModal,
-    openTippingModal
-  } = useStore(state => ({
-    setActiveModal: state.setActiveModal,
-    toggleLike: state.toggleLike,
-    likeChanges: state.likeChanges,
-    commentCountChanges: state.commentCountChanges,
-    openAuthorProfileModal: state.openAuthorProfileModal,
-    openTippingModal: state.openTippingModal
-  }), shallow);
+
+  // Use atomic selectors to minimize re-renders
+  const setActiveModal = useStore(state => state.setActiveModal);
+  const toggleLike = useStore(state => state.toggleLike);
+  const likeChanges = useStore(state => state.likeChanges);
+  const commentCountChanges = useStore(state => state.commentCountChanges);
+  const openAuthorProfileModal = useStore(state => state.openAuthorProfileModal);
+  const openTippingModal = useStore(state => state.openTippingModal);
 
   const likeState = likeChanges[slideId];
   const currentCommentCount = commentCountChanges[slideId] ?? commentsCount;
@@ -57,8 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Optimistic update for author avatar if it's the current user
   const displayAvatar = (currentUser && currentUser.id === authorId) ? currentUser.avatar : authorAvatar;
 
-  // Logic to hide the plus icon: if logged in (per user request: "bo tak jakby juz subskrajbuje")
-  // or if currentUser is the author.
+  // Logic to hide the plus icon
   const showPlusIcon = !isLoggedIn && (!currentUser || currentUser.id !== authorId);
 
   useEffect(() => {
@@ -98,7 +89,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const handleOpenAuthorProfile = () => {
-    // Trigger Author Profile
     if (authorId) {
       openAuthorProfileModal(authorId);
     }
@@ -110,9 +100,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   const labelClass = "text-[10px] leading-none text-center font-medium text-white/80 group-hover:text-white transition-colors drop-shadow-sm";
   const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 app-glass border-white/10 hover:border-white/20 active:scale-95";
 
-  // Determine avatar border color
-  // In Sidebar, this is the Author's avatar.
-  // Requirement: Author = White border with white glow.
   const avatarBorderColor = 'border-white';
 
   return (
@@ -196,7 +183,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         <span className={labelClass}>{t('shareText') || 'Udostępnij'}</span>
       </motion.button>
 
-      {/* Tip Jar (Custom SVG) */}
+      {/* Tip Jar */}
       <motion.button
         onClick={() => openTippingModal()}
         data-action="show-tip-jar"

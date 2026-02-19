@@ -1,26 +1,45 @@
-import { auth } from "@/auth";
+import NextAuth from "next-auth";
+import { authConfig } from "./auth.config";
 import { NextResponse } from "next/server";
+import { rateLimit } from "@/lib/rate-limiter";
+
+const { auth } = NextAuth(authConfig);
 
 const onBoardingPath = '/setup';
 
-export default auth((req) => {
-  const { nextUrl } = req;
+export default auth(async (req) => {
+  const { nextUrl, ip = "127.0.0.1" } = req;
   const session = req.auth;
   const isLoggedIn = !!session?.user;
+
+  // Edge Rate Limiting
+  const limit = nextUrl.pathname.startsWith('/api') ? 50 : 100;
+
+  // We handle rateLimit failure gracefully if Redis is not available or errors out
+  let rateLimitSuccess = true;
+  try {
+    const res = await rateLimit(`mw:${ip}`, limit, 60);
+    rateLimitSuccess = res.success;
+  } catch (e) {
+    console.error("Rate limit error:", e);
+  }
+
+  if (!rateLimitSuccess) {
+    return new NextResponse("Too many requests", { status: 429 });
+  }
 
   const isOnAdmin = nextUrl.pathname.startsWith('/admin');
 
   // If user is logged in and is marked as first login
   if (session?.user?.isFirstLogin) {
-    // Prevent redirect loop if already on setup page or hitting an API/resource
-    if (nextUrl.pathname !== onBoardingPath) {
+    if (nextUrl.pathname !== onBoardingPath && !nextUrl.pathname.startsWith('/api')) {
        return NextResponse.redirect(new URL(onBoardingPath, nextUrl));
     }
     return NextResponse.next();
   }
 
   // If user is NOT first login but tries to access /setup, redirect to home
-  if (!session?.user?.isFirstLogin && nextUrl.pathname === onBoardingPath) {
+  if (session && !session.user?.isFirstLogin && nextUrl.pathname === onBoardingPath) {
       return NextResponse.redirect(new URL('/', nextUrl));
   }
 
@@ -33,6 +52,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-  matcher: ['/((?!api|_next/static|_next/image|images|videos|favicon.ico).*)'],
+  matcher: ['/((?!_next/static|_next/image|images|videos|favicon.ico).*)'],
 };
