@@ -82,21 +82,26 @@ const LocalVideoPlayer = ({ slide, isActive, shouldLoad = false }: LocalVideoPla
         const shouldPlay = isActive && isPlaying;
 
         if (shouldPlay) {
+            // Re-set src if it was removed
+            if (!video.src && !hlsRef.current) {
+                const { hlsUrl, mp4Url } = slide.data;
+                if (!video.canPlayType('application/vnd.apple.mpegurl') || !hlsUrl) {
+                    if (mp4Url) video.src = mp4Url;
+                } else {
+                    video.src = hlsUrl;
+                }
+            }
+
             const playPromise = video.play();
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
                     console.warn("Autoplay prevented", error);
-                    // Tu można dodać logikę pokazania przycisku "Play" w razie błędu
                 });
             }
         } else {
             video.pause();
-            if (!isActive) {
-                // Opcjonalnie: przewiń do początku po przewinięciu dalej
-                // video.currentTime = 0;
-            }
         }
-    }, [isActive, isPlaying]);
+    }, [isActive, isPlaying, slide.data]);
 
     // 4. Obsługa Mute
     useEffect(() => {
@@ -114,6 +119,7 @@ const LocalVideoPlayer = ({ slide, isActive, shouldLoad = false }: LocalVideoPla
                 playsInline
                 muted={isMuted}
                 poster={slide.data.poster}
+                preload="none"
             />
         </div>
     );

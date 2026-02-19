@@ -116,6 +116,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                     width={40}
                     height={40}
                     className="rounded-full border-2 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)] shrink-0"
+                    sizes="40px"
                 />
                 <p className="font-bold text-lg truncate min-w-0">{slide.username}</p>
             </div>
