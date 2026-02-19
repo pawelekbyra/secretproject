@@ -123,14 +123,14 @@ const Preloader: React.FC = () => {
               >
                 <div className="flex flex-col gap-3 w-full max-w-[320px] px-6">
                   <Button
-                    variant="outline"
+                    variant="outlineWhite"
                     className="w-full h-11 rounded-full text-sm font-bold active:scale-95 transition-all duration-300"
                     onClick={() => handleLangSelect('pl')}
                   >
                     Polski
                   </Button>
                   <Button
-                    variant="outline"
+                    variant="outlineWhite"
                     className="w-full h-11 rounded-full text-sm font-bold active:scale-95 transition-all duration-300"
                     onClick={() => handleLangSelect('en')}
                   >
