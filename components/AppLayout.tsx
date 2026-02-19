@@ -1,22 +1,24 @@
 "use client";
 
 import React, { useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import Preloader from './Preloader';
 import TopBar from './TopBar';
 import { useStore } from '@/store/useStore';
 import { shallow } from 'zustand/shallow';
-import { AuthorProfileModal } from './AuthorProfileModal';
-import { PatronProfileModal } from './PatronProfileModal';
-import AdminModal from './AdminModal';
-import TippingModal from './TippingModal';
-import CommentsModal from './CommentsModal';
-import AccountPanel from './AccountPanel';
-import HabitTrackerModal from './HabitTrackerModal';
-import NotificationPopup from './NotificationPopup';
 import { AnimatePresence } from 'framer-motion';
 import { useUser } from '@/context/UserContext';
-import PWAInstallPrompt from './PWAInstallPrompt';
 import { ToastContainer } from '@/context/ToastContext';
+
+// Dynamic imports for heavy modals to improve initial load time
+const AuthorProfileModal = dynamic(() => import('./AuthorProfileModal').then(mod => mod.AuthorProfileModal));
+const PatronProfileModal = dynamic(() => import('./PatronProfileModal').then(mod => mod.PatronProfileModal));
+const AdminModal = dynamic(() => import('./AdminModal'));
+const TippingModal = dynamic(() => import('./TippingModal'));
+const CommentsModal = dynamic(() => import('./CommentsModal'));
+const AccountPanel = dynamic(() => import('./AccountPanel'));
+const HabitTrackerModal = dynamic(() => import('./HabitTrackerModal'));
+const NotificationPopup = dynamic(() => import('./NotificationPopup'));
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { user } = useUser();
@@ -31,7 +33,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     activePatronId,
     closePatronProfileModal,
     isAdminModalOpen,
-    closeAdminModal
   } = useStore(state => ({
     activeModal: state.activeModal,
     setActiveModal: state.setActiveModal,
@@ -43,7 +44,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     activePatronId: state.activePatronId,
     closePatronProfileModal: state.closePatronProfileModal,
     isAdminModalOpen: state.isAdminModalOpen,
-    closeAdminModal: state.closeAdminModal
   }), shallow);
 
   useEffect(() => {
@@ -121,7 +121,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      {/* <PWAInstallPrompt /> */}
       <ToastContainer />
     </div>
   );

@@ -59,9 +59,9 @@ export function PatronProfileModal({ patronId, onClose }: PatronProfileModalProp
                                     <Image
                                       src={profile.avatarUrl || DEFAULT_AVATAR_URL}
                                       alt={profile.username}
-                                      layout="fill"
-                                      objectFit="cover"
-                                      className="rounded-full border-2 border-white shadow-[0_0_15px_rgba(255,255,255,0.5)]"
+                                      fill
+                                      className="rounded-full border-2 border-white shadow-[0_0_15px_rgba(255,255,255,0.5)] object-cover"
+                                      sizes="96px"
                                     />
                                 </div>
                                 <h3 className="text-2xl font-bold">{profile.username}</h3>

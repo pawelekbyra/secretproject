@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { SlideDTO, HtmlSlideDTO, VideoSlideDTO } from '@/lib/dto';
 import { useStore } from '@/store/useStore';
 import VideoControls from './VideoControls';
-import { shallow } from 'zustand/shallow';
 import { AnimatePresence, motion } from 'framer-motion';
 import PlayIcon from './icons/PlayIcon';
 import PauseIcon from './icons/PauseIcon';
@@ -29,27 +28,17 @@ interface SlideUIProps {
 import { usePWAStatus } from '@/hooks/usePWAStatus';
 
 const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
-    const {
-        togglePlay,
-        isPlaying,
-        isMuted,
-        seekTo,
-        setIsMuted
-    } = useStore(state => ({
-        togglePlay: state.togglePlay,
-        isPlaying: state.isPlaying,
-        isMuted: state.isMuted,
-        seekTo: state.seekTo,
-        setIsMuted: state.setIsMuted,
-    }), shallow);
+    // Atomic selectors to minimize re-renders
+    const togglePlay = useStore(state => state.togglePlay);
+    const isPlaying = useStore(state => state.isPlaying);
+    const isMuted = useStore(state => state.isMuted);
+    const seekTo = useStore(state => state.seekTo);
+    const setIsMuted = useStore(state => state.setIsMuted);
 
     const [showPlaybackIcon, setShowPlaybackIcon] = useState(false);
     const iconTimer = useRef<NodeJS.Timeout | null>(null);
 
     const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        // If locked, we do NOT want to toggle play. We want clicks to go through to overlay (or just be ignored here)
-        // But since this container has pointer-events-none when locked (see return), this might not be reachable.
-        // Keeping logic just in case.
         if (isLocked) return;
 
         if (e.target === e.currentTarget) {
@@ -107,7 +96,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
             )}
         </AnimatePresence>
 
-        {/* UI Controls Container - Added bottom padding/margin to lift it up */}
+        {/* UI Controls Container */}
         <div className="relative z-20 pointer-events-none w-full max-w-[calc(100%-60px)] flex flex-col items-start text-left mb-2 pb-[calc(env(safe-area-inset-bottom)+24px)]">
             <div className="flex items-center gap-2 mb-2 pointer-events-auto max-w-full">
                 <Image
@@ -116,6 +105,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                     width={40}
                     height={40}
                     className="rounded-full border-2 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)] shrink-0"
+                    sizes="40px"
                 />
                 <p className="font-bold text-lg truncate min-w-0">{slide.username}</p>
             </div>
@@ -133,7 +123,6 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
             authorAvatar={slide.avatar || DEFAULT_AVATAR_URL}
         />
 
-        {/* Hide video controls if locked? Usually yes. */}
         {isVideoSlide && !isLocked && (
             <div className="pointer-events-auto w-full px-2">
                 <VideoControls
@@ -158,11 +147,9 @@ interface SlideProps {
 
 const Slide = memo<SlideProps>(({ slide, priorityLoad = false }) => {
     const { isLoggedIn } = useUser();
+    // Atomic selector for activation
     const activeSlideId = useStore(state => state.activeSlide?.id);
     const { isStandalone } = usePWAStatus();
-
-    // Determine active status: must be selected AND not locked by overlay
-    // But overlay is checked below. If overlay is active, video should be paused.
 
     const isLockedSecret = slide.accessLevel === 'SECRET_PATRON' && !isLoggedIn;
     const isLockedPWA = slide.accessLevel === 'SECRET_PWA' && !isStandalone;
@@ -176,7 +163,6 @@ const Slide = memo<SlideProps>(({ slide, priorityLoad = false }) => {
     // Prefetch comments and author profile logic
     useEffect(() => {
         if (isActive && slide?.id) {
-            // Prefetch Comments (Infinite Query to match CommentsModal)
             try {
                 queryClient.prefetchInfiniteQuery({
                     queryKey: ['comments', slide.id],
@@ -188,7 +174,6 @@ const Slide = memo<SlideProps>(({ slide, priorityLoad = false }) => {
                 console.error("Prefetch comments error:", err);
             }
 
-            // Prefetch Author Profile
             if (slide.userId) {
                 try {
                     queryClient.prefetchQuery({
@@ -206,7 +191,6 @@ const Slide = memo<SlideProps>(({ slide, priorityLoad = false }) => {
     const renderContent = () => {
         switch (slide.type) {
             case 'video':
-                // Pass shouldPlay instead of just isActive to control playback under overlay
                 return <LocalVideoPlayer slide={slide as VideoSlideDTO} isActive={shouldPlay} shouldLoad={priorityLoad} />;
             case 'html':
                 return (
@@ -222,16 +206,13 @@ const Slide = memo<SlideProps>(({ slide, priorityLoad = false }) => {
 
     return (
         <div className="relative w-full h-full z-10 bg-black">
-            {/* Background Content with Blur if locked */}
             <div className={cn("w-full h-full transition-all duration-300", isLocked && "blur-md brightness-50")}>
                 {renderContent()}
             </div>
 
-            {/* Overlays (Rendered on top without blur) - z-10 */}
             {isLockedSecret && <SecretOverlay />}
             {isLockedPWA && <PwaOverlay />}
 
-            {/* UI (Always rendered, but pointer-events managed) - z-20 */}
             <SlideUI slide={slide} isLocked={isLocked} />
         </div>
     );

@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
+import dynamic from 'next/dynamic';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import ToggleSwitch from './ui/ToggleSwitch';
@@ -12,11 +13,13 @@ import { useTranslation } from '@/context/LanguageContext';
 import { useToast } from '@/context/ToastContext';
 import { updateUserProfile } from '@/lib/actions';
 import { DEFAULT_AVATAR_URL } from '@/lib/constants';
-import CropModal from './CropModal';
 import UserBadge from './UserBadge';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import StatusMessage from '@/components/ui/StatusMessage';
+
+// Dynamic import for CropModal to reduce initial bundle size
+const CropModal = dynamic(() => import('./CropModal'));
 
 interface ProfileTabProps {
     onClose: () => void;
