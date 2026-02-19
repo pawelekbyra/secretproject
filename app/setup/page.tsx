@@ -436,7 +436,7 @@ function Step3({ onNext, initialData, isSubmitting }: { onNext: (data: any) => v
                     disabled={isSubmitting}
                     className="w-full h-16 bg-gradient-to-r from-primary to-purple-600 hover:from-primary hover:to-purple-500 text-white font-black text-2xl tracking-widest rounded-xl shadow-lg shadow-primary/30 active:scale-[0.98] transition-all"
                 >
-                    {isSubmitting ? <Loader2 className="animate-spin" /> : 'ENTER'}
+                    {isSubmitting ? <Loader2 className="animate-spin" /> : 'ENTER.'}
                 </Button>
             </div>
         </motion.div>

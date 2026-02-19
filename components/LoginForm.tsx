@@ -95,7 +95,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         className="mt-2 flex items-center justify-center gap-2"
       >
         {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-        {isLoading ? t('loggingIn') : 'ENTER'}
+        {isLoading ? t('loggingIn') : 'ENTER.'}
       </Button>
 
       {errorMessage && (

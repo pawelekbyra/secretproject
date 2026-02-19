@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { auth } from '@/auth';
-import { redis } from '@/lib/kv';
 import { sanitize } from '@/lib/sanitize';
 import { rateLimit } from '@/lib/rate-limiter';
 import { ably } from '@/lib/ably-server';
@@ -25,29 +24,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ success: false, message: 'slideId is required' }, { status: 400 });
   }
 
-  const cacheKey = `comments:v1:${slideId}:${sortBy || 'top'}:${limit}:${currentUserId || 'guest'}`;
-  if (!cursor) {
-    try {
-      const cached = await redis.get(cacheKey);
-      if (cached) {
-        return NextResponse.json({ success: true, ...cached as object });
-      }
-    } catch (e) {
-      console.error('Redis error:', e);
-    }
-  }
-
   try {
     const { comments, nextCursor } = await db.getComments(slideId, { limit, cursor, sortBy: sortBy || 'top', currentUserId });
-
-    if (!cursor) {
-      try {
-        await redis.set(cacheKey, { comments, nextCursor }, { ex: 30 }); // Cache for 30 seconds
-      } catch (e) {
-        console.error('Redis set error:', e);
-      }
-    }
-
     return NextResponse.json({ success: true, comments, nextCursor });
   } catch (error) {
     console.error('Error fetching comments:', error);

@@ -116,7 +116,6 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                     width={40}
                     height={40}
                     className="rounded-full border-2 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)] shrink-0"
-                    sizes="40px"
                 />
                 <p className="font-bold text-lg truncate min-w-0">{slide.username}</p>
             </div>
@@ -154,11 +153,10 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
 
 interface SlideProps {
     slide: SlideDTO;
-    index: number;
-    activeIndex: number;
+    priorityLoad?: boolean;
 }
 
-const Slide = memo<SlideProps>(({ slide, index, activeIndex }) => {
+const Slide = memo<SlideProps>(({ slide, priorityLoad = false }) => {
     const { isLoggedIn } = useUser();
     const activeSlideId = useStore(state => state.activeSlide?.id);
     const { isStandalone } = usePWAStatus();
@@ -170,23 +168,46 @@ const Slide = memo<SlideProps>(({ slide, index, activeIndex }) => {
     const isLockedPWA = slide.accessLevel === 'SECRET_PWA' && !isStandalone;
     const isLocked = isLockedSecret || isLockedPWA;
 
-    const isActive = activeIndex === index;
-    const isBuffer = Math.abs(activeIndex - index) === 1;
-    const playMode = isActive ? 'active' : isBuffer ? 'buffer' : 'hidden';
-
+    const isActive = activeSlideId === slide.id;
     const shouldPlay = isActive && !isLocked;
+
+    const queryClient = useQueryClient();
+
+    // Prefetch comments and author profile logic
+    useEffect(() => {
+        if (isActive && slide?.id) {
+            // Prefetch Comments (Infinite Query to match CommentsModal)
+            try {
+                queryClient.prefetchInfiniteQuery({
+                    queryKey: ['comments', slide.id],
+                    queryFn: ({ pageParam }) => fetchComments({ pageParam, slideId: slide.id }),
+                    initialPageParam: '',
+                    staleTime: 1000 * 60 * 5,
+                });
+            } catch (err) {
+                console.error("Prefetch comments error:", err);
+            }
+
+            // Prefetch Author Profile
+            if (slide.userId) {
+                try {
+                    queryClient.prefetchQuery({
+                        queryKey: ['author', slide.userId],
+                        queryFn: () => fetchAuthorProfile(slide.userId),
+                        staleTime: 1000 * 60 * 5,
+                    });
+                } catch (err) {
+                    console.error("Prefetch author error:", err);
+                }
+            }
+        }
+    }, [isActive, slide?.id, slide?.userId, queryClient]);
 
     const renderContent = () => {
         switch (slide.type) {
             case 'video':
-                // Pass playMode and adjusted isActive for internal logic
-                return (
-                    <LocalVideoPlayer
-                        slide={slide as VideoSlideDTO}
-                        isActive={shouldPlay}
-                        playMode={playMode}
-                    />
-                );
+                // Pass shouldPlay instead of just isActive to control playback under overlay
+                return <LocalVideoPlayer slide={slide as VideoSlideDTO} isActive={shouldPlay} shouldLoad={priorityLoad} />;
             case 'html':
                 return (
                     <HtmlContent

@@ -41,8 +41,7 @@ async function executeWithRetry(queryFn: () => Promise<any>) {
 function getDb() {
   if (!sql) {
     if (!process.env.DATABASE_URL) {
-      // Return a dummy for build/test environments if DATABASE_URL is missing
-      return ((strings: any) => Promise.resolve([])) as any;
+      throw new Error("DATABASE_URL environment variable is not set");
     }
     sql = neon(process.env.DATABASE_URL);
   }
@@ -701,29 +700,6 @@ export async function getSlide(id: string): Promise<Slide | null> {
 }
 
 export async function getSlides(options: { limit?: number, cursor?: string, currentUserId?: string }): Promise<Slide[]> {
-    if (!process.env.DATABASE_URL) {
-        // Return mock slides if no DB is available
-        return Array.from({ length: 10 }).map((_, i) => ({
-            id: `mock-slide-${i}`,
-            userId: 'mock-user',
-            username: 'Mock User',
-            avatar: 'https://i.pravatar.cc/150?u=mock',
-            createdAt: new Date(Date.now() - i * 1000).toISOString(),
-            initialLikes: 10,
-            isLiked: false,
-            initialComments: 5,
-            accessLevel: 'PUBLIC',
-            type: 'video',
-            data: {
-                mp4Url: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4',
-                hlsUrl: null,
-                poster: 'https://peach.blender.org/wp-content/uploads/bbb-splash.png',
-                title: `Mock Video ${i}`,
-                description: 'Mock Description',
-            },
-        })) as any as Slide[];
-    }
-
     const sql = getDb();
     const { limit = 5, cursor, currentUserId } = options;
 
@@ -731,6 +707,10 @@ export async function getSlides(options: { limit?: number, cursor?: string, curr
 
     // Use Date object for cursor comparison if provided
     const cursorDate = cursor ? new Date(parseInt(cursor)) : null;
+
+    // Refactored: Reads directly from denormalized counters.
+    // Removed complex JOINs for counts.
+    // 'isLiked' still requires a subquery or join, but exists() is efficient.
 
     if (cursorDate) {
         result = await sql`
