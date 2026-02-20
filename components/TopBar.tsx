@@ -120,13 +120,13 @@ const TopBar = () => {
   };
 
   // Custom titles
-  const loggedOutTitle = lang === 'pl' ? "Nie masz psychy" : "No guts";
+  const loggedOutTitle = lang === 'pl' ? "Nie masz psychy się zalogować" : "No guts";
   const loggedInTitle = "Ting Tong";
 
   return (
     <>
       <div
-        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10 px-6"
+        className="absolute top-0 left-0 w-full z-[60] flex items-center justify-between bg-black text-white border-b border-white/10 px-3"
         style={{
           height: 'var(--topbar-height)',
           paddingTop: 'var(--safe-area-top)',
@@ -135,49 +135,47 @@ const TopBar = () => {
         {!user ? (
           // --- WIDOK DLA UŻYTKOWNIKÓW NIEZALOGOWANYCH ---
           <>
-            <div className="flex justify-start w-10">
+            <div className="flex justify-start w-8">
               <motion.button
                 whileTap={{ scale: 0.9 }}
-                className="p-1 -ml-2 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
+                className="p-1 -ml-1 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
                 onClick={handleLoggedOutMenuClick}
                 aria-label={t('menuAriaLabel')}
               >
-                <MenuIcon className="w-8 h-8" />
+                <MenuIcon className="w-6 h-6" />
               </motion.button>
             </div>
             <div className="flex justify-center flex-1 text-center min-w-0">
               <button
                 onClick={handleToggleLoginPanel}
-                className="relative flex items-center justify-center font-bold text-xl tracking-widest text-red-500 uppercase transition-all duration-300 focus:outline-none outline-none px-1 overflow-hidden"
+                className="flex items-center justify-center font-bold text-sm tracking-wide text-white uppercase transition-all duration-300 focus:outline-none outline-none px-1 min-w-0"
               >
                 <span className="truncate">{loggedOutTitle}</span>
-                <div className="absolute left-full ml-0.5 flex items-center">
-                  <ChevronDown
-                    size={14}
-                    className={`transition-transform duration-200 ${isLoginPanelOpen ? 'rotate-180' : ''}`}
-                  />
-                </div>
+                <ChevronDown
+                  size={12}
+                  className={`ml-1 transition-transform duration-200 flex-shrink-0 ${isLoginPanelOpen ? 'rotate-180' : ''}`}
+                />
               </button>
             </div>
-            <div className="flex justify-end items-center w-10">
+            <div className="flex justify-end items-center w-8">
               <motion.button
                  whileTap={{ scale: 0.9 }}
-                 className="p-1 -mr-2 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
+                 className="p-1 -mr-1 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
                  onClick={handleBellClick}
                  aria-label={t('notificationAriaLabel')}
               >
-                <BellIcon className="w-8 h-8" />
+                <BellIcon className="w-6 h-6" />
               </motion.button>
             </div>
           </>
         ) : (
           // --- WIDOK DLA ZALOGOWANYCH UŻYTKOWNIKÓW ---
           <>
-            <div className="flex justify-start w-10">
+            <div className="flex justify-start w-8">
               <Popover open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <PopoverTrigger asChild>
                     <Button variant="ghost" size="icon" aria-label={t('menuAriaLabel')} className="-ml-1">
-                        <MenuIcon className="w-8 h-8" />
+                        <MenuIcon className="w-6 h-6" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent
@@ -256,12 +254,12 @@ const TopBar = () => {
 
             </div>
             <div className="flex justify-center flex-1 min-w-0">
-              <span className="font-bold text-xl tracking-widest text-white truncate px-1">{loggedInTitle}</span>
+              <span className="font-bold text-sm tracking-wide text-white truncate px-1">{loggedInTitle}</span>
             </div>
-            <div className="flex justify-end w-10">
+            <div className="flex justify-end w-8">
               <div className="relative">
-                <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="-mr-2 relative">
-                  <BellIcon className="w-8 h-8" />
+                <Button variant="ghost" size="icon" onClick={handleBellClick} aria-label={t('notificationAriaLabel')} className="-mr-1 relative">
+                  <BellIcon className="w-6 h-6" />
                   {unreadCount > 0 && (
                     <span className="absolute top-1 right-2 block h-2 w-2 rounded-full bg-primary ring-2 ring-black shadow-[0_0_8px_hsl(var(--primary)/0.6)]" />
                   )}
