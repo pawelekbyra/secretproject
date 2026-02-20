@@ -184,7 +184,6 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                       className={`w-full h-full object-cover rounded-full border-2 ${profile.role === 'patron' ? 'border-yellow-500' : 'border-white'}`}
                       id="userAvatar"
                       unoptimized={!!previewUrl}
-                      sizes="96px"
                     />
 
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">

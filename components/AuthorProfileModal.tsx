@@ -136,7 +136,6 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                                     width={96}
                                     height={96}
                                     className={cn("rounded-full object-cover w-24 h-24 border-2 shadow-[0_0_20px_rgba(255,255,255,0.3)]", avatarBorderColor)}
-                                    sizes="96px"
                                 />
                             </div>
 

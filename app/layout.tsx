@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
-import { Providers } from "@/components/Providers";
-import ServiceWorkerManager from "@/components/layout/ServiceWorkerManager";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,10 +32,7 @@ export default function RootLayout({
           <meta name="theme-color" content="#000000" />
       </head>
       <body className={cn("antialiased", inter.className)}>
-        <Providers>
-          <ServiceWorkerManager />
-          <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
-        </Providers>
+        <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
       </body>
     </html>
   );
