@@ -148,7 +148,7 @@ const TopBar = () => {
             <div className="flex justify-center flex-1 text-center min-w-0">
               <button
                 onClick={handleToggleLoginPanel}
-                className="flex items-center justify-center font-bold text-[11px] text-white uppercase transition-all duration-300 focus:outline-none outline-none px-1 min-w-0"
+                className="flex items-center justify-center font-bold text-[13px] text-white transition-all duration-300 focus:outline-none outline-none px-1 min-w-0"
               >
                 <span className="truncate">{loggedOutTitle}</span>
                 <ChevronDown
@@ -254,7 +254,7 @@ const TopBar = () => {
 
             </div>
             <div className="flex justify-center flex-1 min-w-0">
-              <span className="font-bold text-[11px] text-white truncate px-1">{loggedInTitle}</span>
+              <span className="font-bold text-[13px] text-white truncate px-1">{loggedInTitle}</span>
             </div>
             <div className="flex justify-end w-8">
               <div className="relative">
