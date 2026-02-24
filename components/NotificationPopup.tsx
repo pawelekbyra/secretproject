@@ -7,6 +7,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { pl } from 'date-fns/locale';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { Button, Avatar, ScrollShadow } from '@heroui/react';
 
 type NotificationType = 'like' | 'comment' | 'follow' | 'message' | 'system' | 'welcome';
 
@@ -27,11 +28,11 @@ interface Notification {
 
 const iconMap: Record<NotificationType, React.ReactNode> = {
   like: <Heart size={20} className="text-red-500 fill-current" />,
-  comment: <MessageSquare size={20} className="text-white/80" />,
-  follow: <UserPlus size={20} className="text-white/80" />,
-  message: <Mail size={20} className="text-white/80" />,
-  system: <Info size={20} className="text-blue-400" />,
-  welcome: <Rocket size={20} className="text-yellow-400" />,
+  comment: <MessageSquare size={20} className="text-zinc-400" />,
+  follow: <UserPlus size={20} className="text-zinc-400" />,
+  message: <Mail size={20} className="text-zinc-400" />,
+  system: <Info size={20} className="text-blue-500" />,
+  welcome: <Rocket size={20} className="text-amber-500" />,
 };
 
 const NotificationItem: React.FC<{
@@ -74,38 +75,37 @@ const NotificationItem: React.FC<{
       exit={{ opacity: 0, scale: 0.95 }}
       className={cn(
         "rounded-2xl cursor-pointer transition-all mb-2 border border-transparent",
-        isExpanded ? 'app-glass border-white/10' : 'hover:bg-white/5',
-        notification.unread && !isExpanded && "bg-white/5"
+        isExpanded ? 'bg-zinc-50 border-zinc-100 shadow-sm' : 'hover:bg-zinc-50/50',
+        notification.unread && !isExpanded && "bg-primary/5"
       )}
     >
-      <div className="flex items-start gap-3 p-3.5">
+      <div className="flex items-start gap-3 p-4">
         <div onClick={handleToggle} className="flex-shrink-0">
             {notification.type === 'system' || notification.type === 'welcome' ? (
-            <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center border border-zinc-200">
                 {iconMap[notification.type] || iconMap['system']}
             </div>
             ) : (
-            <Image
+            <Avatar
                 src={notification.user?.avatar || '/default-avatar.png'}
-                alt={t('userAvatar', { user: notification.user?.displayName || 'User' })}
-                width={40}
-                height={40}
-                className={cn("w-10 h-10 rounded-full object-cover border-2", avatarBorderClass)}
+                className="w-10 h-10"
+                isBordered
+                color={isPatron ? "warning" : (isAuthor ? "secondary" : "default")}
             />
             )}
         </div>
 
         <div className="flex-1 flex flex-col" onClick={handleToggle}>
-          <p className="text-sm leading-tight">
-            {notification.type !== 'system' && notification.type !== 'welcome' && <span className="font-bold text-white">{notification.user?.displayName}</span>} <span className="text-white/80">{notification.preview}</span>
+          <p className="text-sm leading-tight text-zinc-900">
+            {notification.type !== 'system' && notification.type !== 'welcome' && <span className="font-bold">{notification.user?.displayName}</span>} <span className="text-zinc-600 font-medium">{notification.preview}</span>
           </p>
-          <span className="text-[10px] font-medium text-white/40 mt-1 uppercase tracking-wider">{notification.time}</span>
+          <span className="text-[10px] font-bold text-zinc-400 mt-1 uppercase tracking-wider">{notification.time}</span>
         </div>
 
         <div className="flex items-center gap-2 pt-1">
-          {notification.unread && <div className="w-2 h-2 bg-primary rounded-full shadow-[0_0_8px_var(--primary-glow)]" />}
+          {notification.unread && <div className="w-2 h-2 bg-primary rounded-full" />}
 
-          <div onClick={handleToggle} className="text-white/30">
+          <div onClick={handleToggle} className="text-zinc-300 hover:text-zinc-900 transition-colors">
              <ChevronDown size={14} className={cn("transition-transform duration-300", isExpanded && "rotate-180")} />
           </div>
         </div>
@@ -118,17 +118,20 @@ const NotificationItem: React.FC<{
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            <div className="p-3.5 pt-0 border-t border-white/5 mt-1">
-                <p className="text-sm text-white/70 whitespace-pre-line leading-relaxed">
+            <div className="p-4 pt-0 border-t border-zinc-100 mt-1 bg-white/50">
+                <p className="text-sm text-zinc-600 whitespace-pre-line leading-relaxed font-medium">
                 {getFullText()}
                 </p>
                 <div className="mt-3 flex justify-end">
-                    <button
+                    <Button
+                        isIconOnly
+                        variant="light"
+                        size="sm"
                         onClick={(e) => { e.stopPropagation(); onDelete(notification.id); }}
-                        className="p-2 hover:bg-red-500/10 text-white/20 hover:text-red-400 transition-colors rounded-lg"
+                        className="text-zinc-300 hover:text-red-500"
                     >
-                        <Trash size={14} />
-                    </button>
+                        <Trash size={16} />
+                    </Button>
                 </div>
             </div>
           </motion.div>
@@ -251,13 +254,13 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ isOpen, onClose }
     }
     if (notifications.length === 0) {
       return (
-        <div className="p-10 text-center text-white/30 text-sm italic">
+        <div className="p-10 text-center text-zinc-400 text-sm font-medium italic">
             Brak nowych powiadomień
         </div>
       );
     }
     return (
-      <ul className="flex-grow p-3 max-h-[60vh] overflow-y-auto custom-scrollbar">
+      <ScrollShadow className="flex-grow p-3 max-h-[60vh]">
         <AnimatePresence>
           {notifications.map((notif) => (
             <NotificationItem
@@ -268,7 +271,7 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ isOpen, onClose }
             />
           ))}
         </AnimatePresence>
-      </ul>
+      </ScrollShadow>
     );
   };
 
@@ -276,23 +279,23 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ isOpen, onClose }
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="absolute inset-0 z-[80] flex items-start justify-center bg-black/60 backdrop-blur-sm pt-3 md:pt-5"
+          className="absolute inset-0 z-[80] flex items-start justify-center bg-black/40 backdrop-blur-[2px] pt-3 md:pt-5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="w-[380px] max-w-[calc(100vw-20px)] app-modal-glass border border-white/20 rounded-[2.5rem] shadow-2xl text-white flex flex-col overflow-hidden"
+            className="w-[380px] max-w-[calc(100vw-20px)] bg-white border border-zinc-100 rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden"
             initial={{ opacity: 0, y: -20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 flex justify-between items-center p-6 border-b border-white/5 bg-black/20">
-              <h3 className="font-bold text-lg tracking-tight">{t('notificationsTitle')}</h3>
-              <button onClick={onClose} className="p-2 -mr-2 text-white/40 hover:text-white transition-colors">
+            <div className="flex-shrink-0 flex justify-between items-center p-6 border-b border-zinc-100 bg-zinc-50/50">
+              <h3 className="font-bold text-lg tracking-tight text-zinc-900">{t('notificationsTitle')}</h3>
+              <button onClick={onClose} className="p-2 -mr-2 text-zinc-400 hover:text-zinc-900 transition-colors">
                 <X size={20} />
               </button>
             </div>

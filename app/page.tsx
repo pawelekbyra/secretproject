@@ -14,7 +14,7 @@ const queryClient = new QueryClient();
 // Dynamically import FeedSwiper to ensure it only runs on the client side.
 const DynamicFeedSwiper = dynamic(() => import('@/components/FeedSwiper'), {
   ssr: false,
-  loading: () => <div className="w-screen h-screen bg-black flex items-center justify-center"><Skeleton className="w-full h-full" /></div>,
+  loading: () => <div className="w-screen h-screen bg-white flex items-center justify-center"><Skeleton className="w-full h-full" /></div>,
 });
 
 // --- Main Page Export ---

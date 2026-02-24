@@ -13,8 +13,7 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday
 import { pl, enUS } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/context/ToastContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button, Input, Progress, Chip, Card, CardBody, Tabs, Tab } from "@heroui/react";
 
 interface Habit {
     id: string;
@@ -85,11 +84,9 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
             queryClient.invalidateQueries({ queryKey: ['habits'] });
             setIsAddingHabit(false);
             setCustomHabitName('');
-            addToast(lang === 'pl' ? 'Nawyk dodany! Do dzieła!' : 'Habit added! Let\'s go!', 'success');
+            addToast(lang === 'pl' ? 'Nawyk dodany!' : 'Habit added!', 'success');
         },
-        onError: () => {
-            addToast(lang === 'pl' ? 'Błąd podczas dodawania nawyku' : 'Error adding habit', 'error');
-        }
+        onError: () => addToast(lang === 'pl' ? 'Błąd' : 'Error', 'error')
     });
 
     const deleteHabitMutation = useMutation({
@@ -100,7 +97,7 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['habits'] });
             if (selectedHabitId) setSelectedHabitId(null);
-            addToast(lang === 'pl' ? 'Nawyk usunięty' : 'Habit deleted', 'success');
+            addToast(lang === 'pl' ? 'Usunięto' : 'Deleted', 'success');
         }
     });
 
@@ -112,12 +109,10 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ date: dateStr, isSuccess }),
             });
-            if (!res.ok) throw new Error('Failed to log habit');
+            if (!res.ok) throw new Error('Failed to log');
             return res.json();
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['habits'] });
-        }
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['habits'] })
     });
 
     const selectedHabit = useMemo(() => habits?.find(h => h.id === selectedHabitId), [habits, selectedHabitId]);
@@ -137,9 +132,9 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
         const existingLog = selectedHabit?.logs.find(l => l.date.startsWith(dateStr));
         let nextStatus: boolean | null = null;
 
-        if (!existingLog) nextStatus = true; // First click: Success
-        else if (existingLog.isSuccess) nextStatus = false; // Second click: Failure
-        else nextStatus = null; // Third click: Clear
+        if (!existingLog) nextStatus = true;
+        else if (existingLog.isSuccess) nextStatus = false;
+        else nextStatus = null;
 
         logMutation.mutate({ habitId: selectedHabitId, date, isSuccess: nextStatus });
     };
@@ -148,21 +143,14 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
         let streak = 0;
         const today = new Date();
         today.setHours(0,0,0,0);
-
         for (let i = 0; i < 365; i++) {
             const checkDate = new Date(today);
             checkDate.setDate(today.getDate() - i);
             const dateStr = toISODateString(checkDate);
             const log = habit.logs.find(l => l.date.startsWith(dateStr));
-
-            if (log && log.isSuccess) {
-                streak++;
-            } else if (isSameDay(checkDate, today)) {
-                // Ignore today if not logged yet
-                continue;
-            } else {
-                break;
-            }
+            if (log && log.isSuccess) streak++;
+            else if (isSameDay(checkDate, today)) continue;
+            else break;
         }
         return streak;
     };
@@ -171,89 +159,71 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
     const badHabits = useMemo(() => habits?.filter(h => h.type === 'bad') || [], [habits]);
 
     const renderHabitCard = (habit: Habit) => (
-        <motion.div
+        <Card
             key={habit.id}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => setSelectedHabitId(habit.id)}
-            className={cn(
-                "relative overflow-hidden bg-white/5 backdrop-blur-xl border p-4 rounded-3xl flex items-center justify-between group transition-all cursor-pointer shadow-xl",
-                habit.type === 'good'
-                    ? "border-emerald-500/20 hover:border-emerald-500/50 hover:shadow-emerald-500/10"
-                    : "border-rose-500/20 hover:border-rose-500/50 hover:shadow-rose-500/10"
-            )}
+            isPressable
+            onPress={() => setSelectedHabitId(habit.id)}
+            className="border border-zinc-100 shadow-sm rounded-[2rem] bg-white hover:bg-zinc-50 transition-colors"
         >
-            <div className="flex items-center gap-4 z-10">
-                <div className={cn(
-                    "w-12 h-12 rounded-xl flex items-center justify-center text-2xl shadow-inner",
-                    habit.type === 'good' ? "bg-emerald-500/10 text-emerald-500" : "bg-rose-500/10 text-rose-500"
-                )}>
-                    {habit.icon}
-                </div>
-                <div>
-                    <h3 className="font-bold text-white text-lg">{habit.name}</h3>
-                    <div className="flex items-center gap-1.5">
-                        {habit.type === 'good' ? (
-                            <CheckCircle2 size={12} className="text-emerald-500" />
-                        ) : (
-                            <AlertCircle size={12} className="text-rose-500" />
-                        )}
-                        <p className={cn(
-                            "text-[10px] tracking-widest font-bold",
-                            habit.type === 'good' ? "text-emerald-500/60" : "text-rose-500/60"
-                        )}>
-                            {habit.type === 'good' ? 'Pozytywne' : 'Wyzwanie'}
-                        </p>
+            <CardBody className="p-5 flex flex-row items-center justify-between">
+                <div className="flex items-center gap-4">
+                    <div className={cn(
+                        "w-12 h-12 rounded-2xl flex items-center justify-center text-2xl",
+                        habit.type === 'good' ? "bg-emerald-50 text-emerald-500" : "bg-rose-50 text-rose-500"
+                    )}>
+                        {habit.icon}
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-zinc-900 text-base italic uppercase tracking-tighter">{habit.name}</h3>
+                        <div className="flex items-center gap-1.5">
+                            <Chip
+                                size="sm"
+                                variant="flat"
+                                color={habit.type === 'good' ? "success" : "danger"}
+                                className="font-bold uppercase italic tracking-tighter text-[8px] h-4"
+                            >
+                                {habit.type === 'good' ? 'Zaleta' : 'Wyzwanie'}
+                            </Chip>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="flex items-center gap-4 z-10">
-                <div className="flex flex-col items-end">
+                <div className="flex items-center gap-2">
                     <div className={cn(
                         "flex items-center gap-1 font-black italic text-lg",
-                        habit.type === 'good' ? "text-emerald-400" : "text-rose-400"
+                        habit.type === 'good' ? "text-emerald-500" : "text-rose-500"
                     )}>
-                        <Flame size={16} className={calculateStreak(habit) > 0 ? "fill-current" : ""} />
+                        <Flame size={18} className={calculateStreak(habit) > 0 ? "fill-current" : ""} />
                         <span>{calculateStreak(habit)}</span>
                     </div>
+                    <ChevronRight size={18} className="text-zinc-300" />
                 </div>
-                <ChevronRight className="text-white/10 group-hover:text-white transition-colors" />
-            </div>
-
-            {/* Background Decorative Element */}
-            <div className={cn(
-                "absolute -right-4 -bottom-4 w-24 h-24 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity pointer-events-none",
-                habit.type === 'good' ? "text-emerald-500" : "text-rose-500"
-            )}>
-                {habit.type === 'good' ? <TrendingUp size={96} /> : <TrendingDown size={96} />}
-            </div>
-        </motion.div>
+            </CardBody>
+        </Card>
     );
 
     const renderCalendar = () => {
         if (!selectedHabit) return null;
-
         return (
             <div className="flex flex-col gap-6">
-                <div className="flex items-center justify-between bg-zinc-900/50 p-4 rounded-2xl border border-white/5">
-                    <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="p-2 hover:bg-white/10 rounded-full transition-colors text-white/60 hover:text-white">
+                <div className="flex items-center justify-between bg-zinc-50 p-4 rounded-2xl border border-zinc-100">
+                    <Button isIconOnly variant="light" onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>
                         <ChevronLeft size={24} />
-                    </button>
-                    <h3 className="text-xl font-black capitalize tracking-tighter italic">
+                    </Button>
+                    <h3 className="text-lg font-bold capitalize tracking-tighter italic uppercase text-zinc-900">
                         {format(currentMonth, 'MMMM yyyy', { locale: dateLocale })}
                     </h3>
-                    <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="p-2 hover:bg-white/10 rounded-full transition-colors text-white/60 hover:text-white">
+                    <Button isIconOnly variant="light" onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
                         <ChevronRight size={24} />
-                    </button>
+                    </Button>
                 </div>
 
-                <div className="bg-zinc-900/30 p-4 rounded-3xl border border-white/5">
+                <div className="bg-zinc-50 p-5 rounded-[2.5rem] border border-zinc-100 shadow-inner">
                     <div className="grid grid-cols-7 gap-2 mb-4">
                         {['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So', 'Nd'].map(d => (
-                            <div key={d} className="text-center text-[10px] text-white/20 font-black tracking-widest">{d}</div>
+                            <div key={d} className="text-center text-[10px] text-zinc-400 font-bold uppercase italic tracking-tighter">{d}</div>
                         ))}
                     </div>
                     <div className="grid grid-cols-7 gap-2">
-                        {/* Add empty slots for the first day of the month */}
                         {Array.from({ length: (startOfMonth(currentMonth).getDay() + 6) % 7 }).map((_, i) => (
                             <div key={`empty-${i}`} className="aspect-square" />
                         ))}
@@ -261,52 +231,41 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                             const dateStr = toISODateString(day);
                             const log = selectedHabit.logs.find(l => l.date.startsWith(dateStr));
                             const isFuture = isAfter(day, new Date()) && !isSameDay(day, new Date());
-
                             return (
                                 <button
                                     key={day.toISOString()}
                                     onClick={() => handleToggleDay(day)}
                                     disabled={isFuture}
                                     className={cn(
-                                        "aspect-square rounded-xl flex items-center justify-center text-xs font-black transition-all relative overflow-hidden group/day",
-                                        isToday(day) && "ring-2 ring-indigo-500 ring-offset-2 ring-offset-black",
-                                        !log && "bg-white/5 text-white/30 hover:bg-white/10",
-                                        log?.isSuccess && (selectedHabit.type === 'good'
-                                            ? "bg-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]"
-                                            : "bg-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]"), // Avoided bad habit = success (green)
-                                        log?.isSuccess === false && "bg-rose-500 text-white shadow-[0_0_15px_rgba(244,63,94,0.4)]",
-                                        isFuture && "opacity-10 cursor-not-allowed"
+                                        "aspect-square rounded-xl flex items-center justify-center text-xs font-bold transition-all relative",
+                                        isToday(day) && "ring-2 ring-blue-500 ring-offset-2 bg-white",
+                                        !log && "bg-white text-zinc-300 hover:bg-zinc-100",
+                                        log?.isSuccess && "bg-emerald-500 text-white shadow-lg",
+                                        log?.isSuccess === false && "bg-rose-500 text-white shadow-lg",
+                                        isFuture && "opacity-20 cursor-not-allowed"
                                     )}
                                 >
-                                    <span className="relative z-10">{format(day, 'd')}</span>
-                                    {log?.isSuccess && (
-                                        <motion.div
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            className="absolute inset-0 bg-white/20 blur-xl rounded-full"
-                                        />
-                                    )}
+                                    {format(day, 'd')}
                                 </button>
                             );
                         })}
                     </div>
                 </div>
 
-                {/* Stats Cards */}
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-zinc-900/50 rounded-2xl border border-white/5 flex flex-col gap-1">
+                    <div className="p-4 bg-zinc-50 rounded-2xl border border-zinc-100 flex flex-col gap-1">
                         <div className="flex items-center gap-2 text-orange-500">
                             <Flame size={16} className="fill-current" />
-                            <span className="text-[10px] font-black tracking-widest">Seria</span>
+                            <span className="text-[10px] font-bold uppercase italic tracking-tighter">Seria</span>
                         </div>
-                        <div className="text-2xl font-black italic">{calculateStreak(selectedHabit)} dni</div>
+                        <div className="text-xl font-bold italic uppercase tracking-tighter">{calculateStreak(selectedHabit)} dni</div>
                     </div>
-                    <div className="p-4 bg-zinc-900/50 rounded-2xl border border-white/5 flex flex-col gap-1">
-                        <div className="flex items-center gap-2 text-indigo-500">
+                    <div className="p-4 bg-zinc-50 rounded-2xl border border-zinc-100 flex flex-col gap-1">
+                        <div className="flex items-center gap-2 text-blue-500">
                             <Zap size={16} className="fill-current" />
-                            <span className="text-[10px] font-black tracking-widest">Skuteczność</span>
+                            <span className="text-[10px] font-bold uppercase italic tracking-tighter">Wynik</span>
                         </div>
-                        <div className="text-2xl font-black italic">
+                        <div className="text-xl font-bold italic uppercase tracking-tighter">
                             {selectedHabit.logs.length > 0
                                 ? Math.round((selectedHabit.logs.filter(l => l.isSuccess).length / selectedHabit.logs.length) * 100)
                                 : 0}%
@@ -319,235 +278,167 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
 
     return (
         <motion.div
-            className="fixed inset-0 z-[100] app-modal-glass flex flex-col"
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-[100] bg-white flex flex-col"
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 200 }}
         >
-            {/* Header */}
-            <div className="flex-shrink-0 flex items-center justify-between px-6 pt-12 pb-6 border-b border-white/10 bg-black/20">
+            <div className="flex-shrink-0 flex items-center justify-between px-6 pt-12 pb-6 border-b border-zinc-100 bg-zinc-50">
                 <div className="flex items-center gap-4">
                     {selectedHabitId && (
-                        <button onClick={() => setSelectedHabitId(null)} className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl transition-colors">
+                        <Button isIconOnly variant="flat" onClick={() => setSelectedHabitId(null)} className="rounded-xl">
                             <ChevronLeft size={24} />
-                        </button>
+                        </Button>
                     )}
                     <div>
-                        <h1 className="text-3xl font-black tracking-tighter italic leading-none">
+                        <h1 className="text-2xl font-bold tracking-tighter italic uppercase text-zinc-900 leading-none">
                             {selectedHabitId ? selectedHabit?.name : (lang === 'pl' ? 'Nawyki' : 'Habits')}
                         </h1>
-                        {selectedHabit && (
-                             <p className={cn(
-                                "text-[10px] font-bold tracking-widest mt-1",
-                                selectedHabit.type === 'good' ? "text-emerald-500" : "text-rose-500"
-                             )}>
-                                {selectedHabit.type === 'good' ? 'Dobry nawyk' : 'Zły nawyk'}
-                             </p>
-                        )}
                     </div>
                 </div>
-                <button onClick={onClose} className="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-2xl transition-colors">
-                    <X size={28} />
-                </button>
+                <Button isIconOnly variant="flat" onClick={onClose} className="rounded-xl">
+                    <X size={24} />
+                </Button>
             </div>
 
-            {/* Content */}
             <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
                 {!selectedHabitId ? (
                     <div className="flex flex-col gap-8 pb-10">
-                        {/* Summary Dashboard */}
-                        <div className="grid grid-cols-1 gap-4">
-                            <div className="bg-gradient-to-br from-primary via-primary/80 to-primary/60 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden border border-white/20">
-                                <div className="relative z-10">
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <Star size={16} className="fill-yellow-300 text-yellow-300" />
-                                        <h2 className="text-sm font-black tracking-widest opacity-80">Twój postęp</h2>
+                        <div className="bg-blue-600 rounded-[2.5rem] p-8 text-white shadow-xl relative overflow-hidden">
+                            <div className="relative z-10">
+                                <h3 className="text-2xl font-bold italic uppercase tracking-tighter mb-6">Twój postęp 🔥</h3>
+                                <div className="flex gap-8">
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] font-bold opacity-70 uppercase italic tracking-tighter mb-1">Dobre</span>
+                                        <span className="text-3xl font-bold">{goodHabits.length}</span>
                                     </div>
-                                    <h3 className="text-2xl font-black italic mb-6">Wykuj swą potęgę! 🔥</h3>
-
-                                    <div className="flex gap-8">
-                                        <div className="flex flex-col">
-                                            <span className="text-[10px] font-black opacity-60 tracking-wider mb-1">Dobre</span>
-                                            <span className="text-3xl font-black">{goodHabits.length}</span>
-                                        </div>
-                                        <div className="w-[1px] bg-white/10" />
-                                        <div className="flex flex-col">
-                                            <span className="text-[10px] font-black opacity-60 tracking-wider mb-1">Wyzwania</span>
-                                            <span className="text-3xl font-black">{badHabits.length}</span>
-                                        </div>
-                                        <div className="w-[1px] bg-white/10" />
-                                        <div className="flex flex-col">
-                                            <span className="text-[10px] font-black opacity-60 tracking-wider mb-1">Sukcesy</span>
-                                            <span className="text-3xl font-black text-emerald-300">
-                                                {habits?.reduce((acc, h) => acc + h.logs.filter(l => l.isSuccess).length, 0) || 0}
-                                            </span>
-                                        </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] font-bold opacity-70 uppercase italic tracking-tighter mb-1">Złe</span>
+                                        <span className="text-3xl font-bold">{badHabits.length}</span>
                                     </div>
                                 </div>
-                                <Trophy className="absolute right-[-20px] bottom-[-20px] w-48 h-48 opacity-10 rotate-12" />
                             </div>
+                            <Trophy className="absolute right-[-20px] bottom-[-20px] w-40 h-40 opacity-10 rotate-12" />
                         </div>
 
-                        {/* Good Habits Section */}
                         {goodHabits.length > 0 && (
                             <section className="flex flex-col gap-4">
-                                <div className="flex items-center gap-3 px-2">
-                                    <div className="h-[2px] flex-1 bg-emerald-500/20" />
-                                    <h2 className="text-xs font-black tracking-[0.3em] text-emerald-500/50">Zalety</h2>
-                                    <div className="h-[2px] flex-1 bg-emerald-500/20" />
-                                </div>
-                                <div className="grid grid-cols-1 gap-3">
+                                <h2 className="text-xs font-bold tracking-widest text-zinc-400 uppercase italic px-2">Zalety</h2>
+                                <div className="flex flex-col gap-3">
                                     {goodHabits.map(habit => renderHabitCard(habit))}
                                 </div>
                             </section>
                         )}
 
-                        {/* Bad Habits Section */}
                         {badHabits.length > 0 && (
                             <section className="flex flex-col gap-4">
-                                <div className="flex items-center gap-3 px-2">
-                                    <div className="h-[2px] flex-1 bg-rose-500/20" />
-                                    <h2 className="text-xs font-black tracking-[0.3em] text-rose-500/50">Wyzwania</h2>
-                                    <div className="h-[2px] flex-1 bg-rose-500/20" />
-                                </div>
-                                <div className="grid grid-cols-1 gap-3">
+                                <h2 className="text-xs font-bold tracking-widest text-zinc-400 uppercase italic px-2">Wyzwania</h2>
+                                <div className="flex flex-col gap-3">
                                     {badHabits.map(habit => renderHabitCard(habit))}
                                 </div>
                             </section>
                         )}
 
-                        {isLoading && <div className="text-center py-10 font-black italic text-white/20 animate-pulse">ŁADOWANIE...</div>}
-
-                        {!isLoading && habits?.length === 0 && (
-                            <div className="text-center py-20 flex flex-col items-center gap-4">
-                                <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center text-white/10 border border-white/5">
-                                    <Target size={40} />
-                                </div>
-                                <p className="text-white/30 italic font-medium">Brak nawyków. Czas coś zmienić!</p>
-                            </div>
-                        )}
-
-                        {/* Add Habit Button */}
-                        <button
+                        <Button
                             onClick={() => setIsAddingHabit(true)}
-                            className="w-full py-6 rounded-3xl border-2 border-dashed border-white/5 text-white/20 hover:text-white hover:border-white/20 transition-all flex items-center justify-center gap-3 font-black tracking-widest text-sm hover:bg-white/[0.02]"
+                            variant="flat"
+                            className="w-full py-10 rounded-[2rem] border-2 border-dashed border-zinc-200 bg-zinc-50 text-zinc-400 font-bold uppercase italic tracking-tighter hover:bg-zinc-100"
+                            startContent={<Plus size={24} />}
                         >
-                            <Plus size={24} />
                             Dodaj nowy cel
-                        </button>
+                        </Button>
                     </div>
                 ) : (
-                    <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="pb-10"
-                    >
+                    <div className="pb-10">
                         {renderCalendar()}
-
-                        <div className="mt-12 flex justify-between items-center px-4 py-6 bg-zinc-900/40 rounded-[2rem] border border-white/5">
-                             <div className="flex items-center gap-3 text-white/30 text-xs font-medium">
-                                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
-                                    <Info size={16} />
-                                 </div>
+                        <div className="mt-8 flex justify-between items-center p-6 bg-zinc-50 rounded-[2rem] border border-zinc-100">
+                             <div className="flex items-center gap-3 text-zinc-400 text-xs font-bold uppercase italic tracking-tighter">
+                                 <Info size={18} />
                                  <span>Klikaj dni, aby zmieniać status</span>
                              </div>
-                             <button
+                             <Button
+                                isIconOnly
+                                color="danger"
+                                variant="flat"
                                 onClick={() => {
-                                    if(confirm(lang === 'pl' ? 'Na pewno usunąć ten nawyk i wszystkie dane?' : 'Delete this habit and all logs?')) {
-                                        deleteHabitMutation.mutate(selectedHabitId!);
-                                    }
+                                    if(confirm('Usunąć?')) deleteHabitMutation.mutate(selectedHabitId!);
                                 }}
-                                className="w-12 h-12 flex items-center justify-center bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white rounded-2xl transition-all"
+                                className="rounded-xl"
                              >
                                 <Trash2 size={20} />
-                             </button>
+                             </Button>
                         </div>
-                    </motion.div>
+                    </div>
                 )}
             </div>
 
-            {/* Add Habit Modal Overlay */}
             <AnimatePresence>
                 {isAddingHabit && (
                     <motion.div
-                        className="fixed inset-0 z-[110] bg-black/95 backdrop-blur-md flex items-end sm:items-center justify-center p-4"
+                        className="fixed inset-0 z-[110] bg-black/40 backdrop-blur-sm flex items-end justify-center p-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={() => setIsAddingHabit(false)}
                     >
                         <motion.div
-                            className="w-full max-w-md app-modal-glass border border-white/20 rounded-[3rem] p-8 shadow-2xl overflow-hidden relative"
+                            className="w-full max-w-md bg-white rounded-[2.5rem] p-8 shadow-2xl overflow-hidden"
                             initial={{ y: '100%' }}
                             animate={{ y: 0 }}
                             exit={{ y: '100%' }}
-                            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
                             onClick={(e) => e.stopPropagation()}
                         >
                             <div className="app-handle !mt-0 !mb-6" />
-                            <h2 className="text-2xl font-black italic mb-8 tracking-tighter text-center">Nowy cel</h2>
+                            <h2 className="text-xl font-bold italic uppercase tracking-tighter text-zinc-900 mb-8 text-center">Nowy cel</h2>
 
-                            {/* Type Toggle */}
-                            <div className="flex p-1 bg-black rounded-2xl mb-8 border border-white/5">
-                                <button
-                                    onClick={() => setNewHabitType('good')}
-                                    className={cn(
-                                        "flex-1 py-3 rounded-xl text-xs font-black tracking-widest transition-all",
-                                        newHabitType === 'good' ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20" : "text-white/40 hover:text-white"
-                                    )}
-                                >
-                                    Pozytywny
-                                </button>
-                                <button
-                                    onClick={() => setNewHabitType('bad')}
-                                    className={cn(
-                                        "flex-1 py-3 rounded-xl text-xs font-black tracking-widest transition-all",
-                                        newHabitType === 'bad' ? "bg-rose-500 text-white shadow-lg shadow-rose-500/20" : "text-white/40 hover:text-white"
-                                    )}
-                                >
-                                    Wyzwanie
-                                </button>
-                            </div>
+                            <Tabs
+                                fullWidth
+                                color="primary"
+                                variant="solid"
+                                selectedKey={newHabitType}
+                                onSelectionChange={(key) => setNewHabitType(key as any)}
+                                classNames={{
+                                    tabList: "bg-zinc-100 rounded-2xl",
+                                    tabContent: "font-bold uppercase italic tracking-tighter text-xs"
+                                }}
+                            >
+                                <Tab key="good" title="Zaleta" />
+                                <Tab key="bad" title="Wyzwanie" />
+                            </Tabs>
 
-                            {/* Predefined Habits Grid */}
-                            <div className="grid grid-cols-3 gap-3 mb-8">
+                            <div className="grid grid-cols-3 gap-3 my-8">
                                 {PREDEFINED_HABITS.filter(h => h.type === newHabitType).slice(0, 6).map(ph => (
                                     <button
                                         key={ph.name}
                                         onClick={() => addHabitMutation.mutate(ph)}
-                                        className="aspect-square bg-white/5 border border-white/5 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white/10 transition-all group"
+                                        className="aspect-square bg-zinc-50 border border-zinc-100 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-zinc-100 transition-all group"
                                     >
                                         <span className="text-3xl group-hover:scale-125 transition-transform">{ph.icon}</span>
-                                        <span className="text-[10px] font-black tracking-tighter opacity-60">{ph.name}</span>
+                                        <span className="text-[10px] font-bold italic tracking-tighter uppercase text-zinc-400">{ph.name}</span>
                                     </button>
                                 ))}
                             </div>
 
-                            <div className="relative">
-                                <div className="text-[10px] text-white/20 font-black mb-3 ml-2 tracking-widest uppercase">Własna nazwa</div>
-                                <div className="flex gap-3">
-                                    <Input
-                                        type="text"
-                                        value={customHabitName}
-                                        onChange={(e) => setCustomHabitName(e.target.value)}
-                                        placeholder="Np. Zimny prysznic..."
-                                        className="flex-1 h-14 rounded-2xl"
-                                    />
-                                    <Button
-                                        size="icon"
-                                        onClick={() => addHabitMutation.mutate({ name: customHabitName, icon: newHabitType === 'good' ? '✨' : '🚫', type: newHabitType })}
-                                        disabled={!customHabitName || addHabitMutation.isPending}
-                                        className={cn(
-                                            "w-14 h-14 rounded-2xl transition-all shadow-xl",
-                                            newHabitType === 'good'
-                                                ? "bg-emerald-500 hover:bg-emerald-600 shadow-emerald-500/20"
-                                                : "bg-rose-500 hover:bg-rose-600 shadow-rose-500/20"
-                                        )}
-                                    >
-                                        <Plus size={32} strokeWidth={3} />
-                                    </Button>
-                                </div>
+                            <div className="flex gap-2">
+                                <Input
+                                    value={customHabitName}
+                                    onValueChange={setCustomHabitName}
+                                    placeholder="Własna nazwa..."
+                                    variant="flat"
+                                    classNames={{
+                                        inputWrapper: "bg-zinc-100 rounded-2xl h-14"
+                                    }}
+                                />
+                                <Button
+                                    isIconOnly
+                                    color="primary"
+                                    onClick={() => addHabitMutation.mutate({ name: customHabitName, icon: newHabitType === 'good' ? '✨' : '🚫', type: newHabitType })}
+                                    disabled={!customHabitName}
+                                    className="w-14 h-14 rounded-2xl"
+                                >
+                                    <Plus size={28} strokeWidth={3} />
+                                </Button>
                             </div>
                         </motion.div>
                     </motion.div>

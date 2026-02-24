@@ -11,7 +11,7 @@ import { shallow } from 'zustand/shallow';
 import LocalVideoPlayer from './LocalVideoPlayer';
 import { VideoSlideDTO, SlideDTO } from '@/lib/dto';
 import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
+import { Button } from '@heroui/react';
 
 const fetchSlides = async () => {
     const res = await fetch(`/api/slides?cursor=&limit=1`);
@@ -66,7 +66,7 @@ const Preloader: React.FC = () => {
     <AnimatePresence>
       {!isLangSelected && (
         <motion.div
-          className="absolute inset-0 bg-black z-[10000] overflow-hidden flex flex-col items-center"
+          className="absolute inset-0 bg-white z-[10000] overflow-hidden flex flex-col items-center"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.3, delay: 0.2 } }}
         >
@@ -121,17 +121,19 @@ const Preloader: React.FC = () => {
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="flex flex-col gap-3 w-full max-w-[320px] px-6">
+                <div className="flex flex-col gap-4 w-full max-w-[320px] px-6">
                   <Button
-                    variant="outlineWhite"
-                    className="w-full h-11 rounded-full text-sm font-bold active:scale-95 transition-all duration-300"
+                    variant="bordered"
+                    color="primary"
+                    className="w-full h-14 rounded-2xl text-lg font-black italic tracking-tighter uppercase border-2"
                     onClick={() => handleLangSelect('pl')}
                   >
                     Polski
                   </Button>
                   <Button
-                    variant="outlineWhite"
-                    className="w-full h-11 rounded-full text-sm font-bold active:scale-95 transition-all duration-300"
+                    variant="bordered"
+                    color="primary"
+                    className="w-full h-14 rounded-2xl text-lg font-black italic tracking-tighter uppercase border-2"
                     onClick={() => handleLangSelect('en')}
                   >
                     English
