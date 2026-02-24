@@ -42,14 +42,14 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
 
   return (
     <motion.div
-      className="absolute inset-0 bg-black/80 z-[9999]"
+      className="absolute inset-0 bg-black/20 z-[9999]"
       initial={{ opacity: 0, pointerEvents: 'none' }}
       animate={{ opacity: 1, pointerEvents: 'auto' }}
       exit={{ opacity: 0, pointerEvents: 'none' }}
       onClick={onClose} // Close on overlay click
     >
       <motion.div
-        className="absolute top-0 left-0 h-full w-full max-w-md app-modal-glass flex flex-col shadow-2xl border-r border-white/10"
+        className="absolute top-0 left-0 h-full w-full max-w-md app-modal-glass flex flex-col shadow-2xl border-r border-black/5"
         // Zaktualizowana animacja: taka sama jak AuthorProfileModal, ale z lewej strony (x: -100%)
         initial={{ x: '-100%' }}
         animate={{ x: '0%' }}
@@ -60,15 +60,15 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
         {/* Top Bar - styled to be distinct but integrated */}
         <div className="app-handle" />
         <div
-            className="relative flex-shrink-0 flex items-center justify-center border-b border-white/5 z-10"
+            className="relative flex-shrink-0 flex items-center justify-center border-b border-black/5 z-10 bg-secondary/30"
             style={{ height: 'calc(var(--topbar-height) - 10px)', paddingTop: '0'}}
         >
           <div className="flex flex-col items-center gap-1">
-             <h2 className="text-base font-semibold text-white tracking-wide">{t('account') || 'Konto'}</h2>
+             <h2 className="text-base font-black text-foreground tracking-tight italic">{t('account') || 'Konto'}</h2>
           </div>
           <button
             onClick={onClose}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-all active:scale-90"
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full text-foreground/20 hover:text-foreground hover:bg-black/5 transition-all active:scale-90"
             aria-label={t('closeAccountAriaLabel')}
           >
               <X size={20} />
@@ -76,25 +76,25 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
         </div>
 
         {/* Tabs Header */}
-        <div className="flex-shrink-0 flex bg-white/5 border-b border-white/5">
+        <div className="flex-shrink-0 flex bg-white border-b border-black/5">
           <button
             onClick={() => handleTabClick('profile')}
             aria-label={t('profileTab')}
-            className={`flex-1 py-4 text-sm font-bold border-b-2 transition-all ${activeTab === 'profile' ? 'text-primary border-primary bg-white/5 shadow-[inset_0_-10px_10px_-10px_hsl(var(--primary)/0.2)]' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-4 text-xs font-black uppercase tracking-widest border-b-[3px] transition-all ${activeTab === 'profile' ? 'text-primary border-primary bg-primary/5' : 'text-foreground/30 border-transparent hover:text-foreground/60 hover:bg-black/[0.02]'}`}
           >
             {t('profileTab')}
           </button>
           <button
             onClick={() => handleTabClick('password')}
             aria-label={t('passwordTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'password' ? 'text-primary border-primary bg-white/5 shadow-[inset_0_-10px_10px_-10px_hsl(var(--primary)/0.2)]' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-4 text-xs font-black uppercase tracking-widest border-b-[3px] transition-all ${activeTab === 'password' ? 'text-primary border-primary bg-primary/5' : 'text-foreground/30 border-transparent hover:text-foreground/60 hover:bg-black/[0.02]'}`}
           >
             {t('passwordTab')}
           </button>
           <button
             onClick={() => handleTabClick('delete')}
             aria-label={t('deleteTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'delete' ? 'text-primary border-primary bg-white/5 shadow-[inset_0_-10px_10px_-10px_hsl(var(--primary)/0.2)]' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-4 text-xs font-black uppercase tracking-widest border-b-[3px] transition-all ${activeTab === 'delete' ? 'text-primary border-primary bg-primary/5' : 'text-foreground/30 border-transparent hover:text-foreground/60 hover:bg-black/[0.02]'}`}
           >
             {t('deleteTab')}
           </button>

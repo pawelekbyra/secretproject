@@ -149,11 +149,11 @@ const FeedSwiper = () => {
   }, []);
 
   if (isLoading && slides.length === 0) {
-    return <div className="w-screen h-screen bg-black flex items-center justify-center"><Skeleton className="w-full h-full" /></div>;
+    return <div className="w-screen h-screen bg-background flex items-center justify-center"><Skeleton className="w-full h-full" /></div>;
   }
 
   if (isError) {
-    return <div className="w-screen h-screen bg-black flex items-center justify-center text-white">Error loading slides.</div>;
+    return <div className="w-screen h-screen bg-background flex items-center justify-center text-foreground font-bold italic uppercase tracking-tighter">Error loading slides.</div>;
   }
 
   return (

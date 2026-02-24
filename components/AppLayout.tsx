@@ -62,7 +62,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         className="
             relative flex flex-col
             w-full h-full
-            bg-black
+            bg-background
         "
     >
       <Preloader />

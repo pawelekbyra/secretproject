@@ -173,29 +173,29 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
       <form action={handleSubmit} id="profileForm" className="space-y-4">
 
         {/* Avatar Section */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col items-center text-center">
-            <div className="relative w-24 h-24 mb-4 group cursor-pointer" onClick={handleAvatarEditClick}>
-                <div className="w-full h-full rounded-full overflow-hidden shadow-lg bg-gray-800 flex items-center justify-center relative">
+        <div className="bg-secondary/50 border border-black/5 rounded-[2rem] p-8 flex flex-col items-center text-center shadow-sm">
+            <div className="relative w-28 h-28 mb-4 group cursor-pointer" onClick={handleAvatarEditClick}>
+                <div className="w-full h-full rounded-full overflow-hidden shadow-xl bg-white flex items-center justify-center relative border-4 border-white">
                     <Image
                       src={currentAvatar}
                       alt={t('avatarAlt')}
-                      width={96}
-                      height={96}
-                      className={`w-full h-full object-cover rounded-full border-2 ${profile.role === 'patron' ? 'border-yellow-500' : 'border-white'}`}
+                      width={112}
+                      height={112}
+                      className={`w-full h-full object-cover rounded-full ${profile.role === 'patron' ? 'ring-2 ring-amber-500 ring-offset-2 ring-offset-white' : ''}`}
                       id="userAvatar"
                       unoptimized={!!previewUrl}
                     />
 
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                         <Camera className="text-white w-8 h-8" />
                     </div>
                 </div>
                 <button
                   type="button"
-                  className="absolute bottom-0 right-0 w-8 h-8 bg-emerald-600 border-2 border-white rounded-full text-white flex items-center justify-center hover:bg-emerald-500 transition-colors shadow-lg"
+                  className="absolute bottom-1 right-1 w-9 h-9 bg-primary border-2 border-white rounded-full text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg"
                   title={t('changeAvatarTitle')}
                 >
-                   <Camera size={16} />
+                   <Camera size={18} />
                 </button>
 
                 <input
@@ -209,10 +209,10 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
             </div>
 
             <div className="flex flex-col items-center gap-1">
-                <h3 className="text-xl font-bold text-white" id="displayName">{profile.displayName}</h3>
-                <UserBadge role={profile.role} className="mb-1" />
-                {(profile as any).bio && <p className="text-xs text-white/70 max-w-[240px] text-center">{(profile as any).bio}</p>}
-                <p className="text-sm text-white/50" id="userEmail">{profile.email}</p>
+                <h3 className="text-xl font-black text-foreground tracking-tight" id="displayName">{profile.displayName}</h3>
+                <UserBadge role={profile.role} className="mb-2" />
+                {(profile as any).bio && <p className="text-xs font-medium text-foreground/60 max-w-[240px] text-center leading-relaxed">{(profile as any).bio}</p>}
+                <p className="text-sm font-bold text-foreground/30 mt-1" id="userEmail">{profile.email}</p>
             </div>
 
             {/* Avatar Section Feedback */}
@@ -225,15 +225,15 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
         </div>
 
         {/* Combined Form Fields */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-          <h3 className="text-lg font-bold mb-5 flex items-center gap-3 text-white">
-            <span className="w-1 h-6 bg-gradient-to-b from-primary to-primary/40 rounded-full shadow-[0_0_8px_hsl(var(--primary)/0.4)]"></span>
+        <div className="bg-white border border-black/5 rounded-[2.5rem] p-6 shadow-sm">
+          <h3 className="text-lg font-black italic mb-6 flex items-center gap-3 text-foreground">
+            <span className="w-1.5 h-6 bg-primary rounded-full shadow-lg shadow-primary/20"></span>
             {t('accountSettings')}
           </h3>
 
-          <div className="space-y-5">
+          <div className="space-y-6">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 ml-1">{t('displayName') || 'Display Name'}</label>
+              <label className="text-xs font-black uppercase tracking-widest text-foreground/40 ml-2">{t('displayName') || 'Display Name'}</label>
               <Input
                 type="text"
                 name="displayName"
@@ -243,18 +243,18 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 ml-1">{t('bio') || 'Coś o sobie'}</label>
+              <label className="text-xs font-black uppercase tracking-widest text-foreground/40 ml-2">{t('bio') || 'Coś o sobie'}</label>
               <textarea
                 name="bio"
                 defaultValue={(profile as any).bio || ''}
                 placeholder={t('bioPlaceholder') || 'Napisz coś o sobie...'}
                 rows={3}
-                className="w-full bg-zinc-950/50 border border-white/10 rounded-xl p-3 text-sm text-white focus:border-primary/50 focus:outline-none transition-all resize-none placeholder:text-zinc-500 shadow-inner"
+                className="w-full bg-secondary border border-black/5 rounded-2xl p-4 text-sm text-foreground font-medium focus:border-primary/30 focus:bg-white focus:shadow-xl focus:outline-none transition-all resize-none placeholder:text-foreground/30"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 ml-1">{t('email')}</label>
+              <label className="text-xs font-black uppercase tracking-widest text-foreground/40 ml-2">{t('email')}</label>
               <Input
                 type="email"
                 name="email"
@@ -263,11 +263,11 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
               />
             </div>
 
-            <div className="pt-4 border-t border-white/10">
-                <div className="flex items-center justify-between mb-4">
+            <div className="pt-6 border-t border-black/5">
+                <div className="flex items-center justify-between mb-6">
                     <div className="flex flex-col">
-                        <label className="text-sm font-medium text-white/90">{t('emailConsent')}</label>
-                        <span className="text-xs text-white/50">{t('emailConsentDesc') || 'Receive updates and notifications via email'}</span>
+                        <label className="text-sm font-black text-foreground">{t('emailConsent')}</label>
+                        <span className="text-xs font-medium text-foreground/40">{t('emailConsentDesc') || 'Receive updates and notifications via email'}</span>
                     </div>
                     <ToggleSwitch isActive={emailConsent} onToggle={() => setEmailConsent(p => !p)} />
                     <input type="hidden" name="emailConsent" value={emailConsent.toString()} />
@@ -275,15 +275,15 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
 
                 {emailConsent && (
                     <div className="space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
-                         <label className="text-sm font-medium text-white/80 ml-1">{t('emailLanguage')}</label>
-                         <div className="flex gap-2">
+                         <label className="text-xs font-black uppercase tracking-widest text-foreground/40 ml-2">{t('emailLanguage')}</label>
+                         <div className="flex gap-3">
                             <button
                                 type="button"
                                 onClick={() => setEmailLanguage('pl')}
-                                className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all border ${
+                                className={`flex-1 py-3 px-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all border ${
                                     emailLanguage === 'pl'
-                                    ? 'bg-primary/10 border-primary text-primary shadow-[0_0_10px_-2px_hsl(var(--primary)/0.2)]'
-                                    : 'bg-white/5 border-transparent text-white/60 hover:bg-white/10'
+                                    ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20'
+                                    : 'bg-secondary border-black/5 text-foreground/40 hover:bg-secondary/80'
                                 }`}
                             >
                                 {t('polish')}
@@ -291,10 +291,10 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onClose }) => {
                             <button
                                 type="button"
                                 onClick={() => setEmailLanguage('en')}
-                                className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all border ${
+                                className={`flex-1 py-3 px-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all border ${
                                     emailLanguage === 'en'
-                                    ? 'bg-primary/10 border-primary text-primary shadow-[0_0_10px_-2px_hsl(var(--primary)/0.2)]'
-                                    : 'bg-white/5 border-transparent text-white/60 hover:bg-white/10'
+                                    ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20'
+                                    : 'bg-secondary border-black/5 text-foreground/40 hover:bg-secondary/80'
                                 }`}
                             >
                                 {t('english')}

@@ -60,14 +60,14 @@ const PasswordTab: React.FC = () => {
 
   return (
     <div className="tab-pane active p-4" id="password-tab">
-      <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-        <h3 className="text-lg font-bold mb-5 flex items-center gap-3 text-white">
-            <span className="w-1 h-6 bg-gradient-to-b from-primary to-primary/40 rounded-full shadow-[0_0_8px_hsl(var(--primary)/0.4)]"></span>
+      <div className="bg-white border border-black/5 rounded-[2rem] p-6 shadow-sm">
+        <h3 className="text-lg font-black italic mb-6 flex items-center gap-3 text-foreground">
+            <span className="w-1.5 h-6 bg-primary rounded-full shadow-lg shadow-primary/20"></span>
             {t('changePasswordTitle')}
         </h3>
-        <form id="passwordForm" onSubmit={handlePasswordSubmit} className="space-y-4">
+        <form id="passwordForm" onSubmit={handlePasswordSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white/80 ml-1">{t('currentPasswordLabel')}</label>
+            <label className="text-xs font-black uppercase tracking-widest text-foreground/40 ml-2">{t('currentPasswordLabel')}</label>
             <Input
                 type="password"
                 name="currentPassword"
@@ -77,7 +77,7 @@ const PasswordTab: React.FC = () => {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white/80 ml-1">{t('newPasswordLabel')}</label>
+            <label className="text-xs font-black uppercase tracking-widest text-foreground/40 ml-2">{t('newPasswordLabel')}</label>
             <Input
                 type="password"
                 name="newPassword"
@@ -89,7 +89,7 @@ const PasswordTab: React.FC = () => {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white/80 ml-1">{t('confirmPasswordLabel')}</label>
+            <label className="text-xs font-black uppercase tracking-widest text-foreground/40 ml-2">{t('confirmPasswordLabel')}</label>
             <Input
                 type="password"
                 name="confirmPassword"
@@ -106,7 +106,7 @@ const PasswordTab: React.FC = () => {
                 </p>
             )}
             {!error && (
-                <p className="text-xs text-white/50 mt-1 ml-1">
+                <p className="text-xs text-foreground/30 mt-1 ml-2 font-medium">
                   {t('passwordMinLength')}
                 </p>
             )}

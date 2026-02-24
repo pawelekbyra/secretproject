@@ -181,43 +181,43 @@ const TopBar = () => {
                   <PopoverContent
                     align="start"
                     sideOffset={5}
-                    className="w-auto min-w-[180px] p-2 app-glass border-white/10 text-white shadow-2xl rounded-2xl data-[state=closed]:slide-out-to-top-5 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
+                    className="w-auto min-w-[200px] p-2 app-glass-strong border-black/5 text-foreground shadow-[0_20px_50px_rgba(0,0,0,0.2)] rounded-[2rem] data-[state=closed]:slide-out-to-top-5 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
                   >
-                      <div className="flex flex-col gap-1.5">
+                      <div className="flex flex-col gap-1.5 p-1">
                           {/* Admin Button */}
                           {user.role === 'admin' && (
                               <button
                                   onClick={handleOpenAdmin}
-                                  className="flex flex-row items-center gap-3 p-3 bg-primary/10 hover:bg-primary/20 rounded-xl transition-all w-full mb-1 border border-primary/30 group"
+                                  className="flex flex-row items-center gap-3 p-3.5 bg-primary/5 hover:bg-primary/10 rounded-2xl transition-all w-full mb-1 border border-primary/10 group"
                               >
                                   <Settings size={18} className="text-primary group-hover:rotate-45 transition-transform" />
-                                  <span className="text-sm font-semibold whitespace-nowrap text-white/90 neon-text-primary">Zarządzaj</span>
+                                  <span className="text-sm font-black whitespace-nowrap text-primary italic">Zarządzaj</span>
                               </button>
                           )}
                           <button
                             onClick={handleOpenAccount}
-                            className="flex flex-row items-center gap-3 p-3 hover:bg-white/10 rounded-xl transition-all w-full group"
+                            className="flex flex-row items-center gap-3 p-3.5 hover:bg-secondary rounded-2xl transition-all w-full group font-bold"
                           >
-                              <User size={18} className="text-blue-400 group-hover:scale-110 transition-transform" />
-                              <span className="text-sm font-medium whitespace-nowrap">{t('account')}</span>
+                              <User size={18} className="text-blue-500 group-hover:scale-110 transition-transform" />
+                              <span className="text-sm whitespace-nowrap">{t('account')}</span>
                           </button>
                           <button
                             onClick={handleLogout}
-                            className="flex flex-row items-center gap-3 p-3 hover:bg-white/10 rounded-xl transition-all w-full group"
+                            className="flex flex-row items-center gap-3 p-3.5 hover:bg-secondary rounded-2xl transition-all w-full group font-bold"
                           >
-                              <LogOut size={18} className="text-red-400 group-hover:translate-x-0.5 transition-transform" />
-                              <span className="text-sm font-medium whitespace-nowrap">{t('logout')}</span>
+                              <LogOut size={18} className="text-rose-500 group-hover:translate-x-0.5 transition-transform" />
+                              <span className="text-sm whitespace-nowrap">{t('logout')}</span>
                           </button>
 
                           {/* Apki Section */}
-                          <div className="mt-1 pt-1 border-t border-white/5 flex flex-col gap-1">
+                          <div className="mt-1 pt-1 border-t border-black/5 flex flex-col gap-1">
                               <button
                                 onClick={() => setIsAppsExpanded(!isAppsExpanded)}
-                                className="px-3 py-2 flex items-center justify-between text-white/40 hover:text-white transition-colors"
+                                className="px-4 py-3 flex items-center justify-between text-foreground/30 hover:text-foreground transition-colors"
                               >
                                   <div className="flex items-center gap-2">
                                       <LayoutGrid size={12} />
-                                      <span className="text-[10px] font-bold tracking-wider uppercase">{t('apps') || 'Apki'}</span>
+                                      <span className="text-[10px] font-black tracking-widest uppercase">{t('apps') || 'Apki'}</span>
                                   </div>
                                   <ChevronDown size={14} className={cn("transition-transform", isAppsExpanded && "rotate-180")} />
                               </button>
@@ -232,17 +232,17 @@ const TopBar = () => {
                                       >
                                           <button
                                             onClick={() => { setActiveModal('financial'); setIsMenuOpen(false); }}
-                                            className="flex flex-row items-center gap-3 p-3 hover:bg-white/10 rounded-xl transition-all w-full group"
+                                            className="flex flex-row items-center gap-3 p-3.5 hover:bg-secondary rounded-2xl transition-all w-full group font-bold"
                                           >
-                                              <Wallet size={18} className="text-emerald-400 group-hover:scale-110 transition-transform" />
-                                              <span className="text-sm font-medium whitespace-nowrap">{t('financialJournal') || 'Dziennik Finansowy'}</span>
+                                              <Wallet size={18} className="text-emerald-500 group-hover:scale-110 transition-transform" />
+                                              <span className="text-sm whitespace-nowrap">{t('financialJournal') || 'Finanse'}</span>
                                           </button>
                                           <button
                                             onClick={() => { setActiveModal('habits'); setIsMenuOpen(false); }}
-                                            className="flex flex-row items-center gap-3 p-3 hover:bg-white/10 rounded-xl transition-all w-full group"
+                                            className="flex flex-row items-center gap-3 p-3.5 hover:bg-secondary rounded-2xl transition-all w-full group font-bold"
                                           >
-                                              <CheckCircle size={18} className="text-orange-400 group-hover:scale-110 transition-transform" />
-                                              <span className="text-sm font-medium whitespace-nowrap">{t('habits') || 'Nawyki'}</span>
+                                              <CheckCircle size={18} className="text-orange-500 group-hover:scale-110 transition-transform" />
+                                              <span className="text-sm whitespace-nowrap">{t('habits') || 'Nawyki'}</span>
                                           </button>
                                       </motion.div>
                                   )}

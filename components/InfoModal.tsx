@@ -55,47 +55,47 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="absolute inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="absolute inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="modal-content app-modal-glass text-white rounded-[2.5rem] max-w-md w-full max-h-[80vh] flex flex-col border border-white/20 shadow-2xl overflow-hidden"
+            className="modal-content bg-white text-foreground rounded-[3rem] max-w-md w-full max-h-[80vh] flex flex-col border border-black/5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden"
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 flex items-center justify-between p-7 border-b border-white/5 bg-black/20">
-              <h2 id="infoTitle" className="text-xl font-bold tracking-tight">
+            <div className="flex-shrink-0 flex items-center justify-between p-8 border-b border-black/5 bg-secondary/50">
+              <h2 id="infoTitle" className="text-2xl font-black italic tracking-tighter uppercase text-foreground">
                 {t('infoModalTitle') || 'Information'}
               </h2>
               <button
                 onClick={onClose}
-                className="p-2 -mr-2 text-white/40 hover:text-white transition-colors"
+                className="p-2 -mr-2 text-foreground/20 hover:text-foreground transition-colors"
                 aria-label={t('closeInfoAriaLabel') || 'Close information'}
               >
-                <X size={24} />
+                <X size={26} />
               </button>
             </div>
-            <div className="modal-body flex-1 overflow-y-auto p-7 space-y-5 text-sm leading-relaxed text-white/70">
+            <div className="modal-body flex-1 overflow-y-auto p-8 space-y-6 text-sm leading-relaxed text-foreground/60 font-medium">
               <p>{t('infoModalBodyP1') || 'Lorem ipsum dolor sit amet...'}</p>
               <p>{t('infoModalBodyP2') || 'Ut in nulla enim...'}</p>
 
-              <div className="tip-cta bg-white/5 border border-white/10 rounded-3xl p-7 text-center shadow-inner relative overflow-hidden group">
+              <div className="tip-cta bg-secondary/50 border border-black/5 rounded-[2rem] p-8 text-center shadow-inner relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <Coffee className="mx-auto text-primary w-12 h-12 mb-3 drop-shadow-[0_0_10px_hsl(var(--primary)/0.3)]" />
-                <p className="text-sm font-medium text-white/90 relative z-10">
+                <Coffee className="mx-auto text-primary w-14 h-14 mb-4 drop-shadow-xl" />
+                <p className="text-sm font-black italic text-foreground tracking-tight relative z-10">
                   {t('infoModalBodyTip') || 'Enjoying the app? Leave a tip...'}
                 </p>
                 <Button
                     onClick={handleShowTipJar}
-                    className="mt-5 w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 shadow-lg shadow-primary/20 relative z-10"
+                    className="mt-6 w-full bg-primary text-white font-black italic uppercase h-14 rounded-2xl shadow-xl shadow-primary/30 relative z-10"
                 >
-                  {t('tipText') || 'Tip'}
+                  {t('tipText') || 'Napiwek'}
                 </Button>
               </div>
 

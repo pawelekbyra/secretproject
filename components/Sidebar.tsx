@@ -107,8 +107,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Shared styles
   const iconSize = 26;
   const buttonClass = "flex flex-col items-center gap-1 justify-center cursor-pointer group";
-  const labelClass = "text-[10px] leading-none text-center font-medium text-white/80 group-hover:text-white transition-colors drop-shadow-sm";
-  const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 app-glass border-white/10 hover:border-white/20 active:scale-95";
+  const labelClass = "text-[10px] leading-none text-center font-black uppercase tracking-widest text-white/80 group-hover:text-white transition-colors drop-shadow-lg";
+  const iconWrapClass = "w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 app-glass border-white/20 hover:border-white/40 active:scale-90 group-hover:translate-x-[-2px]";
 
   // Determine avatar border color
   // In Sidebar, this is the Author's avatar.
@@ -117,19 +117,18 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className="absolute right-0 flex flex-col items-center gap-[12px] z-20 pointer-events-auto"
+      className="absolute right-0 flex flex-col items-center gap-[16px] z-20 pointer-events-auto pr-2"
       style={{
         top: 'calc((var(--app-height) - var(--topbar-height) - var(--bottombar-height)) / 2 + var(--topbar-height))',
         transform: 'translateY(-50%)',
-        textShadow: '0 0 4px rgba(0, 0, 0, 0.8)',
       }}
     >
       {/* Avatar / Author Profile */}
-      <div className="relative w-12 h-12 mb-1.5">
+      <div className="relative w-14 h-14 mb-2">
         <button
             onClick={handleOpenAuthorProfile}
             className={cn(
-                "w-full h-full flex items-center justify-center text-white bg-gray-600 rounded-full overflow-hidden border-2 shadow-[0_0_15px_rgba(255,255,255,0.5)] active:scale-95 transition-transform",
+                "w-full h-full flex items-center justify-center text-white bg-slate-200 rounded-[1.25rem] overflow-hidden border-2 shadow-2xl active:scale-90 transition-all group-hover:translate-x-[-2px]",
                 avatarBorderColor
             )}
         >
@@ -159,8 +158,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div className={iconWrapClass}>
           <Heart
             size={iconSize}
-            strokeWidth={1.8}
-            className={`transition-all duration-200 ${(isLiked && isLoggedIn) ? 'fill-[var(--accent-color,theme(colors.rose.500))] stroke-white drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]' : 'fill-transparent stroke-white/90'}`}
+            strokeWidth={2.2}
+            className={`transition-all duration-300 ${(isLiked && isLoggedIn) ? 'fill-rose-500 stroke-rose-500 drop-shadow-[0_0_12px_rgba(244,63,94,0.8)]' : 'fill-transparent stroke-white'}`}
           />
         </div>
         <span className={labelClass}>{formatCount(currentLikes)}</span>
@@ -175,7 +174,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         whileTap={{ scale: 0.85 }}
       >
         <div className={iconWrapClass}>
-          <MessageSquare size={iconSize} strokeWidth={1.8} className="stroke-white/90" />
+          <MessageSquare size={iconSize} strokeWidth={2.2} className="stroke-white" />
         </div>
         <span className={labelClass}>{formatCount(currentCommentCount)}</span>
       </motion.button>
