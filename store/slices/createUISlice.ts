@@ -25,6 +25,9 @@ export interface UISlice {
   tippingModalOptions: { fromLeft?: boolean };
   openTippingModal: (options?: { fromLeft?: boolean }) => void;
   closeTippingModal: () => void;
+
+  isImmersionMode: boolean;
+  setImmersionMode: (mode: boolean) => void;
 }
 
 export const createUISlice: StateCreator<UISlice> = (set, get) => ({
@@ -40,6 +43,8 @@ export const createUISlice: StateCreator<UISlice> = (set, get) => ({
   isTippingModalOpen: false,
   tippingModalOptions: {},
 
+  isImmersionMode: false,
+
   setActiveModal: (modal) => set({ activeModal: modal }),
   isAnyModalOpen: () => get().activeModal !== null,
 
@@ -54,4 +59,6 @@ export const createUISlice: StateCreator<UISlice> = (set, get) => ({
 
   openTippingModal: (options = {}) => set({ isTippingModalOpen: true, tippingModalOptions: options }),
   closeTippingModal: () => set({ isTippingModalOpen: false, tippingModalOptions: {} }),
+
+  setImmersionMode: (mode) => set({ isImmersionMode: mode }),
 });
