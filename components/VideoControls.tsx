@@ -62,34 +62,49 @@ const VideoControls: React.FC<VideoControlsProps> = ({
 
   return (
     <div
-        className="flex items-center gap-2 text-white bg-black/30 p-2 rounded-lg mt-2 backdrop-blur-sm max-w-full"
+        className="flex items-center gap-4 text-white bg-white/10 p-3 rounded-2xl backdrop-blur-md border border-white/20 max-w-full shadow-2xl transition-all hover:bg-white/15"
         onClick={(e) => e.stopPropagation()}
     >
-      <button onClick={onTogglePlay} className="p-1 hover:text-primary transition-colors shrink-0">
-        {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+      <button onClick={onTogglePlay} className="p-1 hover:text-primary transition-all active:scale-90 shrink-0">
+        {isPlaying ? <Pause size={22} fill="currentColor" /> : <Play size={22} fill="currentColor" />}
       </button>
 
-      <span className="text-xs font-mono w-10 text-center">{formatTime(currentTime)}</span>
+      <span className="text-[10px] font-bold font-mono w-9 text-center opacity-80">{formatTime(currentTime)}</span>
 
-      <input
-        ref={progressRef}
-        type="range"
-        min="0"
-        max={duration || 100}
-        step="0.1"
-        value={currentTime}
-        onMouseDown={handleSeekStart}
-        onTouchStart={handleSeekStart}
-        onChange={handleSeekChange}
-        onMouseUp={handleSeekEnd}
-        onTouchEnd={handleSeekEnd}
-        className="flex-1 h-1 bg-white/30 rounded-lg appearance-none cursor-pointer hover:bg-white/50 transition-colors accent-primary"
-      />
+      <div className="flex-1 relative flex items-center h-5 group">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden relative">
+              <div
+                className="absolute inset-y-0 left-0 bg-primary transition-all duration-100 ease-out shadow-[0_0_15px_hsl(var(--primary)/0.6)]"
+                style={{ width: `${(currentTime / (duration || 100)) * 100}%` }}
+              />
+            </div>
+          </div>
+          <input
+            ref={progressRef}
+            type="range"
+            min="0"
+            max={duration || 100}
+            step="0.1"
+            value={currentTime}
+            onMouseDown={handleSeekStart}
+            onTouchStart={handleSeekStart}
+            onChange={handleSeekChange}
+            onMouseUp={handleSeekEnd}
+            onTouchEnd={handleSeekEnd}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+          />
+          {/* Enhanced Glow Effect for the Progress Bar */}
+          <div
+            className="absolute inset-y-0 left-0 bg-primary/40 blur-lg pointer-events-none rounded-full transition-all duration-100 ease-out"
+            style={{ width: `${(currentTime / (duration || 100)) * 100}%` }}
+          />
+      </div>
 
-      <span className="text-xs font-mono w-10 text-center">{formatTime(duration)}</span>
+      <span className="text-[10px] font-bold font-mono w-9 text-center opacity-80">{formatTime(duration)}</span>
 
-      <button onClick={onToggleMute} className="p-1 hover:text-primary transition-colors">
-        {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+      <button onClick={onToggleMute} className="p-1 hover:text-primary transition-all active:scale-90 shrink-0">
+        {isMuted ? <VolumeX size={22} /> : <Volume2 size={22} />}
       </button>
     </div>
   );

@@ -105,6 +105,18 @@ const LocalVideoPlayer = ({ slide, isActive, shouldLoad = false }: LocalVideoPla
         }
     }, [isMuted]);
 
+    // 5. Progress Reporting
+    const handleTimeUpdate = () => {
+        const video = videoRef.current;
+        if (!video) return;
+        window.dispatchEvent(new CustomEvent('video-progress', {
+            detail: {
+                currentTime: video.currentTime,
+                duration: video.duration || 0
+            }
+        }));
+    };
+
     return (
         <div className="absolute inset-0 z-0 bg-black">
              <video
@@ -114,6 +126,8 @@ const LocalVideoPlayer = ({ slide, isActive, shouldLoad = false }: LocalVideoPla
                 playsInline
                 muted={isMuted}
                 poster={slide.data.poster}
+                onTimeUpdate={handleTimeUpdate}
+                onLoadedMetadata={handleTimeUpdate}
             />
         </div>
     );

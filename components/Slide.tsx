@@ -12,6 +12,7 @@ import PauseIcon from './icons/PauseIcon';
 import Sidebar from './Sidebar';
 import { useUser } from '@/context/UserContext';
 import { cn } from '@/lib/utils';
+import { EyeOff } from 'lucide-react';
 import SecretOverlay from './SecretOverlay';
 import PwaOverlay from './PwaOverlay';
 import { DEFAULT_AVATAR_URL } from '@/lib/constants';
@@ -34,13 +35,17 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
         isPlaying,
         isMuted,
         seekTo,
-        setIsMuted
+        setIsMuted,
+        isImmersionMode,
+        setImmersionMode
     } = useStore(state => ({
         togglePlay: state.togglePlay,
         isPlaying: state.isPlaying,
         isMuted: state.isMuted,
         seekTo: state.seekTo,
         setIsMuted: state.setIsMuted,
+        isImmersionMode: state.isImmersionMode,
+        setImmersionMode: state.setImmersionMode
     }), shallow);
 
     const [showPlaybackIcon, setShowPlaybackIcon] = useState(false);
@@ -82,6 +87,19 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
         )}
         onClick={handleContainerClick}
       >
+        {/* Immersion Exit Overlay */}
+        <AnimatePresence>
+            {isImmersionMode && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute inset-0 z-10 cursor-pointer pointer-events-auto"
+                    onClick={() => setImmersionMode(false)}
+                />
+            )}
+        </AnimatePresence>
+
         {/* Top gradient */}
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
         {/* Bottom gradient */}
@@ -90,7 +108,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
         <AnimatePresence>
             {!isLocked && showPlaybackIcon && (
                 <motion.div
-                    className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                    className="absolute inset-0 flex items-center justify-center pointer-events-none z-30"
                     initial={{ opacity: 0, scale: 1.5 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 1.2 }}
@@ -107,44 +125,84 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
             )}
         </AnimatePresence>
 
-        {/* UI Controls Container - Added bottom padding/margin to lift it up */}
-        <div className="relative z-20 pointer-events-none w-full max-w-[calc(100%-60px)] flex flex-col items-start text-left mb-2 pb-[calc(env(safe-area-inset-bottom)+24px)]">
-            <div className="flex items-center gap-2 mb-2 pointer-events-auto max-w-full">
-                <Image
-                    src={slide.avatar || DEFAULT_AVATAR_URL}
-                    alt={slide.username || 'User'}
-                    width={40}
-                    height={40}
-                    className="rounded-full border-2 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)] shrink-0"
-                />
-                <p className="font-bold text-lg truncate min-w-0">{slide.username}</p>
+        {/* Coordinated UI Animation Wrapper */}
+        <motion.div
+            className="w-full flex flex-col items-start z-20 pointer-events-none"
+            initial={false}
+            animate={{
+                y: isImmersionMode ? 100 : 0,
+                opacity: isImmersionMode ? 0 : 1,
+            }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        >
+            {/* UI Controls Container */}
+            <div className="relative w-full max-w-[calc(100%-60px)] flex flex-col items-start text-left mb-2 pb-[calc(max(env(safe-area-inset-bottom),24px)+8px)]">
+                <div className="flex items-center gap-2 mb-2 pointer-events-auto max-w-full">
+                    <Image
+                        src={slide.avatar || DEFAULT_AVATAR_URL}
+                        alt={slide.username || 'User'}
+                        width={40}
+                        height={40}
+                        className="rounded-full border-2 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)] shrink-0"
+                    />
+                    <div className="flex items-center gap-2 truncate">
+                        <p className="font-black italic uppercase tracking-tighter text-lg truncate min-w-0 drop-shadow-lg">{slide.username}</p>
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setImmersionMode(true);
+                            }}
+                            className="p-1.5 bg-white/10 hover:bg-white/30 backdrop-blur-md border border-white/20 rounded-full transition-all active:scale-90 pointer-events-auto group"
+                            title="Tryb immersyjny"
+                        >
+                            <EyeOff size={14} className="text-white/80 group-hover:text-white" />
+                        </button>
+                    </div>
+                </div>
+
+                {slide.data && 'title' in slide.data && (
+                    <h2 className="text-2xl font-black italic uppercase tracking-tighter mb-1 truncate w-full drop-shadow-xl text-white">
+                        {slide.data.title}
+                    </h2>
+                )}
+                {slide.data && 'description' in slide.data && (
+                    <p className="text-sm font-medium opacity-90 truncate w-full drop-shadow-md text-white/90">
+                        {slide.data.description}
+                    </p>
+                )}
             </div>
 
-            {slide.data && 'title' in slide.data && <h2 className="text-xl font-semibold mb-1 truncate w-full">{slide.data.title}</h2>}
-            {slide.data && 'description' in slide.data && <p className="text-sm opacity-90 truncate w-full">{slide.data.description}</p>}
-        </div>
+            {/* Hide video controls if locked? Usually yes. */}
+            {isVideoSlide && !isLocked && (
+                <div className="pointer-events-auto w-full px-2 pb-[calc(env(safe-area-inset-bottom)+32px)]">
+                    <VideoControls
+                        isPlaying={isPlaying}
+                        isMuted={isMuted}
+                        onTogglePlay={togglePlay}
+                        onToggleMute={() => setIsMuted(!isMuted)}
+                        onSeek={seekTo}
+                    />
+                </div>
+            )}
+        </motion.div>
 
-        <Sidebar
-            slideId={slide.id}
-            initialLikes={slide.initialLikes}
-            initialIsLiked={slide.isLiked}
-            commentsCount={slide.initialComments}
-            authorId={slide.userId}
-            authorAvatar={slide.avatar || DEFAULT_AVATAR_URL}
-        />
-
-        {/* Hide video controls if locked? Usually yes. */}
-        {isVideoSlide && !isLocked && (
-            <div className="pointer-events-auto w-full px-2">
-                <VideoControls
-                    isPlaying={isPlaying}
-                    isMuted={isMuted}
-                    onTogglePlay={togglePlay}
-                    onToggleMute={() => setIsMuted(!isMuted)}
-                    onSeek={seekTo}
-                />
-            </div>
-        )}
+        <motion.div
+            className="absolute right-0 z-20"
+            animate={{
+                x: isImmersionMode ? 100 : 0,
+                opacity: isImmersionMode ? 0 : 1,
+            }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        >
+            <Sidebar
+                slideId={slide.id}
+                initialLikes={slide.initialLikes}
+                initialIsLiked={slide.isLiked}
+                commentsCount={slide.initialComments}
+                authorId={slide.userId}
+                authorAvatar={slide.avatar || DEFAULT_AVATAR_URL}
+            />
+        </motion.div>
       </div>
     );
 };
