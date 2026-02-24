@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Input, Button } from '@heroui/react';
 import { useTranslation } from '@/context/LanguageContext';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -36,25 +35,17 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         body: JSON.stringify({ login, password }),
       });
 
-      // Parsowanie odpowiedzi
       let data;
       try {
         data = await res.json();
       } catch (e) {
-        // Fallback jeśli JSON nieprawidłowy (np. redirect HTML)
         data = { success: false, message: 'Invalid server response' };
       }
 
       if (res.ok && data.success) {
-        // 1. Update Context immediately
         setUser(data.user);
-
-        // 2. Redirect
         router.push('/');
-
-        // 3. Refresh in background
         router.refresh();
-
         if (onLoginSuccess) {
           onLoginSuccess();
         }
@@ -77,7 +68,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         placeholder="Email"
         required
         autoComplete="username"
-        variant="white"
+        variant="flat"
+        classNames={{
+          inputWrapper: "bg-zinc-100 border-zinc-200",
+          input: "text-zinc-900"
+        }}
       />
       <Input
         type="password"
@@ -85,17 +80,20 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         placeholder={t('passwordPlaceholder')}
         required
         autoComplete="current-password"
-        variant="white"
+        variant="flat"
+        classNames={{
+          inputWrapper: "bg-zinc-100 border-zinc-200",
+          input: "text-zinc-900"
+        }}
       />
 
       <Button
         type="submit"
-        variant="default"
-        disabled={isLoading}
-        className="mt-2 flex items-center justify-center gap-2"
+        color="primary"
+        isLoading={isLoading}
+        className="mt-2 font-bold"
       >
-        {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-        {isLoading ? t('loggingIn') : 'ENTER.'}
+        ENTER.
       </Button>
 
       {errorMessage && (

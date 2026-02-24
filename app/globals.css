@@ -4,18 +4,17 @@
 
 @layer base {
   :root {
-    /* Szklane UI dla sidebara */
-    --glass-bg: rgba(255, 255, 255, 0.06);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-bg-strong: rgba(0, 0, 0, 0.75);
-    --glass-border-light: rgba(255, 255, 255, 0.15);
-    --surface-elevated: rgba(255, 255, 255, 0.08);
+    /* Nowoczesne Light Mode UI */
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --glass-bg-strong: rgba(255, 255, 255, 0.95);
+    --glass-border-light: rgba(0, 0, 0, 0.1);
+    --surface-elevated: #ffffff;
 
-    /* Ujednolicone zmienne z prototypu tingtong.txt */
     --app-height: 100vh;
-    --main-ui-bg-color: #696969;
-    --transition-speed: 0.4s;
-    --transition-timing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --main-ui-bg-color: #f4f4f5;
+    --transition-speed: 0.3s;
+    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
     --topbar-base-height: 56px;
     --bottombar-base-height: 100px;
     --sidebar-width: 90px;
@@ -24,41 +23,37 @@
     --topbar-height: calc(var(--topbar-base-height) + var(--safe-area-top));
     --bottombar-height: calc(var(--bottombar-base-height) + var(--safe-area-bottom));
 
-    /* Shadcn/ui variables - adapted for the prototype's theme */
-    --background: 0 0% 0%; /* Black background */
-    --foreground: 0 0% 100%; /* White text */
+    /* HeroUI/Shadcn hybrid - Modern Light Theme */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
 
-    --primary: 345 80% 40%; /* Accent color (Burgundy/Maroon) */
+    --primary: 221.2 83.2% 53.3%; /* Blue primary accent */
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 336 100% 50%; /* Accent color */
-    --accent-foreground: 210 40% 98%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 262 83% 58%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 221.2 83.2% 53.3%;
 
-    --radius: 1rem;
+    --radius: 1.25rem;
 
-    /* Neon & Premium Gloss */
-    --primary-glow: 0 0 10px hsla(262, 83%, 58%, 0.5), 0 0 20px hsla(262, 83%, 58%, 0.3);
-    --neon-glow: 0 0 15px -3px hsl(var(--primary) / 0.5), 0 0 10px -4px hsl(var(--primary) / 0.3);
-    --neon-glow-strong: 0 0 25px -2px hsl(var(--primary) / 0.6), 0 0 15px -3px hsl(var(--primary) / 0.4);
     --glass-blur: blur(12px) saturate(160%);
     --glass-blur-heavy: blur(24px) saturate(180%);
   }
@@ -86,12 +81,13 @@
   }
 
   body {
-    background-color: #000000;
+    background-color: #ffffff;
+    color: #000000;
   }
 
   @media (min-width: 768px) {
     body {
-      background-color: #09090b;
+      background-color: #f4f4f5;
     }
     #app-layout {
       margin: 0;
@@ -167,13 +163,12 @@
     scroll-snap-align: start;
   }
   .app-modal-glass {
-    background-color: var(--glass-bg-strong);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-color: var(--glass-border-light);
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
   }
   .app-handle {
-    @apply w-12 h-1.5 bg-white/20 rounded-full mx-auto my-3 flex-shrink-0;
+    @apply w-12 h-1.5 bg-black/10 rounded-full mx-auto my-3 flex-shrink-0;
   }
 }
 

@@ -5,13 +5,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useUser } from '@/context/UserContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button, Input, Switch } from '@heroui/react';
 import { checkDisplayNameAvailability, completeFirstLoginSetup } from '@/lib/setup-actions';
 import { Loader2, Check, X, ShieldCheck, Mail, ChevronRight, Lock } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import ToggleSwitch from '@/components/ui/ToggleSwitch';
+import { cn } from '@/lib/utils';
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -65,10 +64,10 @@ export default function SetupPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-black p-4 relative overflow-hidden font-sans text-white">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#f4f4f5] p-4 relative overflow-hidden font-sans text-zinc-900">
         {/* Background Atmosphere */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] -mr-32 -mt-32 pointer-events-none opacity-50" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] -ml-32 -mb-32 pointer-events-none opacity-50" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -mr-32 -mt-32 pointer-events-none opacity-50" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[120px] -ml-32 -mb-32 pointer-events-none opacity-50" />
 
         <div className="w-full max-w-md relative z-10">
             <AnimatePresence mode="wait">
@@ -218,15 +217,15 @@ function Step1({ onNext, initialData }: { onNext: (data: any) => void, initialDa
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="bg-[#121212] border border-white/10 rounded-3xl p-8 shadow-2xl"
+            className="bg-white border border-zinc-100 rounded-[2.5rem] p-10 shadow-2xl"
         >
-             <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/5 mb-4 border border-white/10 text-primary">
-                    <Lock size={32} />
+             <div className="text-center mb-10">
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-primary/10 mb-6 text-primary shadow-sm border border-primary/20">
+                    <Lock size={36} strokeWidth={2.5} />
                 </div>
-                <h2 className="text-2xl font-bold mb-2">Bezpieczeństwo</h2>
-                <p className="text-white/60 text-sm">
-                    Do logowania będziesz używać adresu email, na który założono konto. Ustal teraz nowe, bezpieczne hasło.
+                <h2 className="text-3xl font-black italic tracking-tighter mb-3 uppercase">Bezpieczeństwo</h2>
+                <p className="text-zinc-500 font-medium leading-relaxed">
+                    Ustal teraz nowe, bezpieczne hasło do swojego konta.
                 </p>
             </div>
 
@@ -236,39 +235,48 @@ function Step1({ onNext, initialData }: { onNext: (data: any) => void, initialDa
                         <Input
                             type="password"
                             {...register('newPassword')}
-                            className={`bg-black/40 border-white/10 text-white h-14 px-4 text-lg rounded-xl focus:border-primary focus:ring-0 transition-all ${errors.newPassword ? 'border-red-500' : ''}`}
+                            variant="bordered"
                             placeholder="Nowe hasło"
+                            classNames={{
+                                inputWrapper: cn("h-14 rounded-2xl border-2 focus-within:!border-primary", errors.newPassword ? "border-danger" : "border-zinc-100"),
+                                input: "text-lg font-bold"
+                            }}
                         />
-                         <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1 pointer-events-none">
-                             <div className={`w-2 h-2 rounded-full transition-colors ${watchedPassword ? (passwordStrength === 'weak' ? 'bg-red-500' : (passwordStrength === 'medium' ? 'bg-yellow-500' : 'bg-green-500')) : 'bg-white/10'}`} />
+                         <div className="absolute right-4 top-1/2 -translate-y-1/2 flex gap-1.5 pointer-events-none">
+                             <div className={`w-2.5 h-2.5 rounded-full transition-colors ${watchedPassword ? (passwordStrength === 'weak' ? 'bg-danger' : (passwordStrength === 'medium' ? 'bg-warning' : 'bg-success')) : 'bg-zinc-100'}`} />
                         </div>
                     </div>
 
                     {/* Visual Strength Bar */}
-                    <div className="flex gap-1 h-1 px-1 opacity-70">
-                        <div className={`flex-1 rounded-full transition-all duration-500 ${watchedPassword && ['weak','medium','strong'].includes(passwordStrength) ? (passwordStrength === 'weak' ? 'bg-red-500' : passwordStrength === 'medium' ? 'bg-yellow-500' : 'bg-green-500') : 'bg-white/10'}`}></div>
-                        <div className={`flex-1 rounded-full transition-all duration-500 ${watchedPassword && ['medium','strong'].includes(passwordStrength) ? (passwordStrength === 'medium' ? 'bg-yellow-500' : 'bg-green-500') : 'bg-white/10'}`}></div>
-                        <div className={`flex-1 rounded-full transition-all duration-500 ${watchedPassword && ['strong'].includes(passwordStrength) ? 'bg-green-500' : 'bg-white/10'}`}></div>
+                    <div className="flex gap-1.5 h-1.5 px-1 opacity-80">
+                        <div className={`flex-1 rounded-full transition-all duration-500 ${watchedPassword && ['weak','medium','strong'].includes(passwordStrength) ? (passwordStrength === 'weak' ? 'bg-danger' : passwordStrength === 'medium' ? 'bg-warning' : 'bg-success') : 'bg-zinc-100'}`}></div>
+                        <div className={`flex-1 rounded-full transition-all duration-500 ${watchedPassword && ['medium','strong'].includes(passwordStrength) ? (passwordStrength === 'medium' ? 'bg-warning' : 'bg-success') : 'bg-zinc-100'}`}></div>
+                        <div className={`flex-1 rounded-full transition-all duration-500 ${watchedPassword && ['strong'].includes(passwordStrength) ? 'bg-success' : 'bg-zinc-100'}`}></div>
                     </div>
-                    {errors.newPassword && <p className="text-xs text-red-400 pl-1">{errors.newPassword.message}</p>}
+                    {errors.newPassword && <p className="text-xs text-danger font-bold pl-1">{errors.newPassword.message}</p>}
                 </div>
 
                 <div className="space-y-2">
                     <Input
                         type="password"
                         {...register('newPasswordConfirm')}
-                        className={`bg-black/40 border-white/10 text-white h-14 px-4 text-lg rounded-xl focus:border-primary focus:ring-0 transition-all ${errors.newPasswordConfirm ? 'border-red-500' : ''}`}
+                        variant="bordered"
                         placeholder="Potwierdź hasło"
+                        classNames={{
+                            inputWrapper: cn("h-14 rounded-2xl border-2 focus-within:!border-primary", errors.newPasswordConfirm ? "border-danger" : "border-zinc-100"),
+                            input: "text-lg font-bold"
+                        }}
                     />
-                    {errors.newPasswordConfirm && <p className="text-xs text-red-400 pl-1">{errors.newPasswordConfirm.message}</p>}
+                    {errors.newPasswordConfirm && <p className="text-xs text-danger font-bold pl-1">{errors.newPasswordConfirm.message}</p>}
                 </div>
 
                 <Button
                     type="submit"
+                    color="primary"
                     disabled={!isValid}
-                    className="w-full h-14 bg-white text-black hover:bg-gray-200 font-bold text-lg rounded-xl flex items-center justify-center gap-2 group"
+                    className="w-full h-16 font-black text-xl rounded-2xl flex items-center justify-center gap-2 group shadow-lg shadow-primary/20 mt-4"
                 >
-                    Dalej <ChevronRight className="group-hover:translate-x-1 transition-transform" />
+                    Dalej <ChevronRight className="group-hover:translate-x-1 transition-transform" strokeWidth={3} />
                 </Button>
             </form>
         </motion.div>
@@ -321,52 +329,57 @@ function Step2({
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="bg-[#121212] border border-white/10 rounded-3xl p-8 shadow-2xl"
+            className="bg-white border border-zinc-100 rounded-[2.5rem] p-10 shadow-2xl"
         >
-             <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/5 mb-4 border border-white/10 text-primary">
-                    <ShieldCheck size={32} />
+             <div className="text-center mb-10">
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-blue-50 mb-6 text-blue-600 shadow-sm border border-blue-100">
+                    <ShieldCheck size={36} strokeWidth={2.5} />
                 </div>
-                <h2 className="text-2xl font-bold mb-2">Tożsamość</h2>
-                <p className="text-white/60 text-sm">
-                    Nazwa użytkownika jest tylko wyświetlana w aplikacji. Możesz wpisać co chcesz.
+                <h2 className="text-3xl font-black italic tracking-tighter mb-3 uppercase">Tożsamość</h2>
+                <p className="text-zinc-500 font-medium leading-relaxed">
+                    Jak mamy Cię nazywać? Twoja ksywka będzie widoczna dla innych.
                 </p>
             </div>
 
             <form onSubmit={handleSubmit(onNext)} className="space-y-8">
                 <div className="space-y-2">
-                    <label className="text-xs uppercase font-bold text-white/30 pl-1">Twoja ksywka</label>
+                    <label className="text-xs uppercase font-black text-zinc-400 tracking-widest pl-1">Twoja ksywka</label>
                     <div className="relative">
                         <Input
                             type="text"
                             {...register('displayName')}
-                            className={`bg-black/40 border-white/10 text-white h-14 px-4 text-lg rounded-xl pr-12 focus:border-primary focus:ring-0 transition-all ${displayNameAvailable === false ? 'border-red-500' : (displayNameAvailable === true ? 'border-green-500' : '')}`}
+                            variant="bordered"
                             placeholder="Np. PolutekMaster"
                             autoComplete="off"
+                            classNames={{
+                                inputWrapper: cn("h-16 rounded-2xl border-2 focus-within:!border-primary", displayNameAvailable === false ? "border-danger" : (displayNameAvailable === true ? "border-success" : "border-zinc-100")),
+                                input: "text-xl font-black"
+                            }}
                         />
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                        <div className="absolute right-5 top-1/2 -translate-y-1/2">
                             {isCheckingName ? (
-                                <Loader2 className="w-5 h-5 text-white/40 animate-spin" />
+                                <Loader2 className="w-6 h-6 text-zinc-300 animate-spin" />
                             ) : displayNameAvailable === true ? (
-                                <Check className="w-5 h-5 text-green-500" />
+                                <Check className="w-6 h-6 text-success" strokeWidth={3} />
                             ) : displayNameAvailable === false ? (
-                                <X className="w-5 h-5 text-red-500" />
+                                <X className="w-6 h-6 text-danger" strokeWidth={3} />
                             ) : null}
                         </div>
                     </div>
                     {errors.displayName ? (
-                        <p className="text-xs text-red-400 pl-1">{errors.displayName.message}</p>
+                        <p className="text-xs text-danger font-bold pl-1">{errors.displayName.message}</p>
                     ) : displayNameAvailable === false ? (
-                        <p className="text-xs text-red-400 pl-1">Ta nazwa jest już zajęta.</p>
+                        <p className="text-xs text-danger font-bold pl-1">Ta nazwa jest już zajęta.</p>
                     ) : null}
                 </div>
 
                 <Button
                     type="submit"
+                    color="primary"
                     disabled={!isValid || displayNameAvailable === false || isCheckingName}
-                    className="w-full h-14 bg-white text-black hover:bg-gray-200 font-bold text-lg rounded-xl flex items-center justify-center gap-2 group"
+                    className="w-full h-16 font-black text-xl rounded-2xl flex items-center justify-center gap-2 group shadow-lg shadow-primary/20"
                 >
-                    Dalej <ChevronRight className="group-hover:translate-x-1 transition-transform" />
+                    Dalej <ChevronRight className="group-hover:translate-x-1 transition-transform" strokeWidth={3} />
                 </Button>
             </form>
         </motion.div>
@@ -386,22 +399,22 @@ function Step3({ onNext, initialData, isSubmitting }: { onNext: (data: any) => v
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="bg-[#121212] border border-white/10 rounded-3xl p-8 shadow-2xl"
+            className="bg-white border border-zinc-100 rounded-[2.5rem] p-10 shadow-2xl"
         >
-             <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/5 mb-4 border border-white/10 text-primary">
-                    <Mail size={32} />
+             <div className="text-center mb-10">
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-amber-50 mb-6 text-amber-600 shadow-sm border border-amber-100">
+                    <Mail size={36} strokeWidth={2.5} />
                 </div>
-                <h2 className="text-2xl font-bold mb-2">Kontakt</h2>
-                <p className="text-white/60 text-sm">
-                    Czy chcesz otrzymywać powiadomienia o nowościach i statusie konta na maila?
+                <h2 className="text-3xl font-black italic tracking-tighter mb-3 uppercase">Kontakt</h2>
+                <p className="text-zinc-500 font-medium leading-relaxed">
+                    Czy chcesz otrzymywać ważne powiadomienia na maila?
                 </p>
             </div>
 
             <div className="space-y-8">
-                <div className="bg-white/5 rounded-2xl p-4 border border-white/5 flex items-center justify-between">
-                    <span className="font-medium">Zgoda na mailing</span>
-                    <ToggleSwitch isActive={emailConsent} onToggle={() => setEmailConsent(!emailConsent)} />
+                <div className="bg-zinc-50 rounded-[1.5rem] p-6 border border-zinc-100 flex items-center justify-between shadow-inner">
+                    <span className="font-bold text-zinc-700">Zgoda na mailing</span>
+                    <Switch isSelected={emailConsent} onValueChange={setEmailConsent} color="primary" />
                 </div>
 
                 <AnimatePresence>
@@ -412,20 +425,24 @@ function Step3({ onNext, initialData, isSubmitting }: { onNext: (data: any) => v
                             exit={{ height: 0, opacity: 0 }}
                             className="overflow-hidden"
                         >
-                            <label className="text-xs uppercase font-bold text-white/30 pl-1 mb-2 block">Język wiadomości</label>
+                            <label className="text-xs uppercase font-black text-zinc-400 tracking-widest pl-1 mb-3 block">Język wiadomości</label>
                             <div className="flex gap-3">
-                                <button
+                                <Button
                                     onClick={() => setEmailLanguage('pl')}
-                                    className={`flex-1 h-12 rounded-xl border font-bold transition-all ${emailLanguage === 'pl' ? 'bg-primary/20 border-primary text-primary' : 'bg-black/20 border-white/10 text-white/40 hover:bg-white/5'}`}
+                                    variant={emailLanguage === 'pl' ? 'solid' : 'flat'}
+                                    color={emailLanguage === 'pl' ? 'primary' : 'default'}
+                                    className="flex-1 h-12 font-bold rounded-xl"
                                 >
                                     Polski 🇵🇱
-                                </button>
-                                <button
+                                </Button>
+                                <Button
                                     onClick={() => setEmailLanguage('en')}
-                                    className={`flex-1 h-12 rounded-xl border font-bold transition-all ${emailLanguage === 'en' ? 'bg-primary/20 border-primary text-primary' : 'bg-black/20 border-white/10 text-white/40 hover:bg-white/5'}`}
+                                    variant={emailLanguage === 'en' ? 'solid' : 'flat'}
+                                    color={emailLanguage === 'en' ? 'primary' : 'default'}
+                                    className="flex-1 h-12 font-bold rounded-xl"
                                 >
                                     English 🇬🇧
-                                </button>
+                                </Button>
                             </div>
                         </motion.div>
                     )}
@@ -434,9 +451,11 @@ function Step3({ onNext, initialData, isSubmitting }: { onNext: (data: any) => v
                 <Button
                     onClick={handleEnter}
                     disabled={isSubmitting}
-                    className="w-full h-16 bg-gradient-to-r from-primary to-purple-600 hover:from-primary hover:to-purple-500 text-white font-black text-2xl tracking-widest rounded-xl shadow-lg shadow-primary/30 active:scale-[0.98] transition-all"
+                    isLoading={isSubmitting}
+                    color="primary"
+                    className="w-full h-20 font-black text-3xl tracking-tight rounded-[1.5rem] shadow-xl shadow-primary/20 mt-4 uppercase italic"
                 >
-                    {isSubmitting ? <Loader2 className="animate-spin" /> : 'ENTER.'}
+                    Zakończ setup
                 </Button>
             </div>
         </motion.div>

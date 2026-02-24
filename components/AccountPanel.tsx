@@ -8,100 +8,80 @@ import PasswordTab from './PasswordTab';
 import DeleteTab from './DeleteTab';
 import { useTranslation } from '@/context/LanguageContext';
 import { X } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button, Tabs, Tab } from "@heroui/react";
 import { useRouter } from 'next/navigation';
 
 interface AccountPanelProps {
   onClose: () => void;
 }
 
-type Tab = 'profile' | 'password' | 'delete';
+type TabKey = 'profile' | 'password' | 'delete';
 
 const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
-  const [activeTab, setActiveTab] = useState<Tab>('profile');
+  const [activeTab, setActiveTab] = useState<TabKey>('profile');
   const { t } = useTranslation();
   const { user } = useUser();
   const router = useRouter();
 
   useEffect(() => {
-    // If the user logs out while this panel is open, close it automatically.
     if (!user) {
       onClose();
     }
   }, [user, onClose]);
 
-  const handleTabClick = (tab: Tab) => {
-      setActiveTab(tab);
-  }
-
-  const handlePublishClick = () => {
-      router.push('/admin/slides');
-  }
-
-  const canPublish = user?.role === 'admin' || user?.role === 'author';
-
   return (
     <motion.div
-      className="absolute inset-0 bg-black/80 z-[9999]"
-      initial={{ opacity: 0, pointerEvents: 'none' }}
-      animate={{ opacity: 1, pointerEvents: 'auto' }}
-      exit={{ opacity: 0, pointerEvents: 'none' }}
-      onClick={onClose} // Close on overlay click
+      className="absolute inset-0 bg-black/40 backdrop-blur-sm z-[9999]"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
     >
       <motion.div
-        className="absolute top-0 left-0 h-full w-full max-w-md app-modal-glass flex flex-col shadow-2xl border-r border-white/10"
-        // Zaktualizowana animacja: taka sama jak AuthorProfileModal, ale z lewej strony (x: -100%)
+        className="absolute top-0 left-0 h-full w-full max-w-md bg-white flex flex-col shadow-2xl"
         initial={{ x: '-100%' }}
         animate={{ x: '0%' }}
         exit={{ x: '-100%' }}
         transition={{ type: 'spring', damping: 30, stiffness: 200 }}
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the panel
+        onClick={(e) => e.stopPropagation()}
       >
-        {/* Top Bar - styled to be distinct but integrated */}
         <div className="app-handle" />
         <div
-            className="relative flex-shrink-0 flex items-center justify-center border-b border-white/5 z-10"
-            style={{ height: 'calc(var(--topbar-height) - 10px)', paddingTop: '0'}}
+            className="relative flex-shrink-0 flex items-center justify-center border-b border-zinc-100 z-10"
+            style={{ height: '50px' }}
         >
-          <div className="flex flex-col items-center gap-1">
-             <h2 className="text-base font-semibold text-white tracking-wide">{t('account') || 'Konto'}</h2>
-          </div>
-          <button
+          <h2 className="text-base font-bold italic tracking-tighter uppercase text-zinc-900">{t('account') || 'Konto'}</h2>
+          <Button
+            isIconOnly
+            variant="light"
             onClick={onClose}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-all active:scale-90"
+            className="absolute right-2"
             aria-label={t('closeAccountAriaLabel')}
           >
               <X size={20} />
-          </button>
+          </Button>
         </div>
 
-        {/* Tabs Header */}
-        <div className="flex-shrink-0 flex bg-white/5 border-b border-white/5">
-          <button
-            onClick={() => handleTabClick('profile')}
-            aria-label={t('profileTab')}
-            className={`flex-1 py-4 text-sm font-bold border-b-2 transition-all ${activeTab === 'profile' ? 'text-primary border-primary bg-white/5 shadow-[inset_0_-10px_10px_-10px_hsl(var(--primary)/0.2)]' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+        <div className="flex-shrink-0">
+          <Tabs
+            variant="underlined"
+            color="primary"
+            fullWidth
+            selectedKey={activeTab}
+            onSelectionChange={(key) => setActiveTab(key as TabKey)}
+            classNames={{
+              tabList: "rounded-none border-b border-zinc-100 p-0 gap-0",
+              tab: "h-12",
+              tabContent: "font-bold uppercase italic tracking-tighter text-xs"
+            }}
           >
-            {t('profileTab')}
-          </button>
-          <button
-            onClick={() => handleTabClick('password')}
-            aria-label={t('passwordTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'password' ? 'text-primary border-primary bg-white/5 shadow-[inset_0_-10px_10px_-10px_hsl(var(--primary)/0.2)]' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
-          >
-            {t('passwordTab')}
-          </button>
-          <button
-            onClick={() => handleTabClick('delete')}
-            aria-label={t('deleteTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'delete' ? 'text-primary border-primary bg-white/5 shadow-[inset_0_-10px_10px_-10px_hsl(var(--primary)/0.2)]' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
-          >
-            {t('deleteTab')}
-          </button>
+            <Tab key="profile" title={t('profileTab')} />
+            <Tab key="password" title={t('passwordTab')} />
+            <Tab key="delete" title={t('deleteTab')} />
+          </Tabs>
         </div>
 
-        {/* Content Area */}
-        <div className="flex-1 overflow-y-auto scrollbar-hide">
+        <div className="flex-1 overflow-y-auto custom-scrollbar">
             {activeTab === 'profile' && <ProfileTab onClose={onClose} />}
             {activeTab === 'password' && <PasswordTab />}
             {activeTab === 'delete' && <DeleteTab onClose={onClose} />}

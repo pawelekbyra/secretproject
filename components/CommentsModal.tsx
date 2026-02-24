@@ -14,14 +14,13 @@ import { useStore } from '@/store/useStore';
 import { CommentWithRelations } from '@/lib/dto';
 import { formatDistanceToNow } from 'date-fns';
 import { pl, enUS } from 'date-fns/locale';
-import { Skeleton } from "@/components/ui/skeleton";
 import { DEFAULT_AVATAR_URL } from '@/lib/constants';
 import UserBadge from './UserBadge';
 import { fetchComments } from '@/lib/queries';
-import { cn } from '@/lib/utils';
+import { cn, formatCount } from '@/lib/utils';
+import { Button, Avatar, Input, Textarea } from "@heroui/react";
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import * as Tooltip from '@radix-ui/react-tooltip';
 
 interface CommentsModalProps {
   isOpen: boolean;
@@ -64,10 +63,9 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onLike, onDelete, on
     queryFn: ({ pageParam }) => fetch(`/api/comments/replies?parentId=${comment.id}&cursor=${pageParam || ''}`).then(res => res.json()),
     initialPageParam: '',
     getNextPageParam: (lastPage) => lastPage.nextCursor,
-    enabled: areRepliesVisible, // Only fetch when the accordion is open
+    enabled: areRepliesVisible,
   });
 
-  // Defensive: ensure page.replies is an array before flattening to prevent crashes
   const replies = repliesData?.pages.flatMap(page => page.replies || []) ?? [];
 
   const isLiked = comment.isLiked;
@@ -85,7 +83,6 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onLike, onDelete, on
   const isL0 = level === 0;
   const isL1Plus = level >= 1;
 
-  // Safe access to author, handling potential undefined/null
   const safeAuthor = author || {
       id: 'unknown',
       displayName: 'Unknown',
@@ -104,32 +101,25 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onLike, onDelete, on
     onLike(comment.id);
   };
 
-  // Determine avatar border color based on role
-  // Patron = Yellow, Author = Purple (though author logic usually checks slideId matches userId, here we just check role 'patron')
-  const isPatron = safeAuthor.role === 'patron';
-  const isAuthor = safeAuthor.role === 'author'; // Or maybe check against slide author? For now just role.
-
-  let avatarBorderClass = 'border-white/80';
-  if (isPatron) avatarBorderClass = 'border-yellow-500';
-  else if (isAuthor) avatarBorderClass = 'border-primary'; // "zajebisty fioletowy"
+  let avatarBorderClass = 'border-white';
+  if (safeAuthor.role === 'patron') avatarBorderClass = 'border-yellow-500';
+  else if (safeAuthor.role === 'author') avatarBorderClass = 'border-primary';
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
-      className={cn("flex items-start gap-2 group", isL1Plus && "pl-8")}
+      className={cn("flex items-start gap-3 group px-4", isL1Plus && "pl-12")}
     >
       <div
         onClick={() => onAvatarClick(safeAuthor.id)}
         className="cursor-pointer flex-shrink-0 flex flex-col items-center gap-1"
       >
-        <Image
+        <Avatar
           src={safeAuthor.avatar || DEFAULT_AVATAR_URL}
-          alt={t('userAvatar', { user: safeAuthor.displayName || 'User' })}
-          width={isL0 ? 36 : 28}
-          height={isL0 ? 36 : 28}
-          className={cn("rounded-full object-cover border", avatarBorderClass)}
+          size={isL0 ? "md" : "sm"}
+          className={cn("border-2", avatarBorderClass)}
         />
         <UserBadge role={safeAuthor.role} />
       </div>
@@ -137,50 +127,50 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onLike, onDelete, on
       <div className="flex-1 min-w-0">
         <div className="bg-transparent rounded-lg">
            <div className="flex items-center gap-2">
-             <p className="text-xs font-semibold text-[#A6A6A6] cursor-pointer hover:underline" onClick={() => onAvatarClick(safeAuthor.id)}>
+             <p className="text-xs font-bold text-zinc-500 cursor-pointer hover:underline" onClick={() => onAvatarClick(safeAuthor.id)}>
                 {safeAuthor.displayName || safeAuthor.username || 'User'}
               </p>
            </div>
-          <p className="text-[13px] text-white whitespace-pre-wrap break-words">
+          <p className="text-[14px] text-zinc-900 leading-snug break-words">
             {isL1Plus && comment.parentAuthorUsername && (
                 <span
-                  className="text-primary font-semibold mr-1 cursor-pointer"
+                  className="text-primary font-bold mr-1 cursor-pointer"
                   onClick={() => comment.parentAuthorId && onAvatarClick(comment.parentAuthorId)}
                 >
-                  {comment.parentAuthorUsername}
+                  @{comment.parentAuthorUsername}
                 </span>
             )}
             {comment.text}
           </p>
           {comment.imageUrl && (
             <div className="mt-2">
-              <Image src={comment.imageUrl} alt="Comment image" width={200} height={200} className="rounded-lg object-cover" />
+              <Image src={comment.imageUrl} alt="Comment image" width={200} height={200} className="rounded-xl object-cover border border-zinc-100" />
             </div>
           )}
         </div>
 
-        <div className="flex items-center gap-3 text-xs text-[#808080] mt-[-1px]">
+        <div className="flex items-center gap-3 text-[11px] font-bold text-zinc-400 mt-1">
           <span>{formattedTime}</span>
           {currentUserId && (
-            <button onClick={() => onStartReply(comment)} className="font-semibold hover:text-white transition-colors">
+            <button onClick={() => onStartReply(comment)} className="hover:text-zinc-600 transition-colors uppercase italic tracking-tighter">
               {t('reply')}
             </button>
           )}
           {currentUserId && (
             <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild>
-                <button className="text-white/40 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity p-1">
+                <button className="text-zinc-300 hover:text-zinc-500 opacity-0 group-hover:opacity-100 transition-opacity p-1">
                   <MoreHorizontal size={14} />
                 </button>
               </DropdownMenu.Trigger>
               <DropdownMenu.Portal>
-                <DropdownMenu.Content className="min-w-[150px] bg-[#282828] rounded-md p-1 shadow-xl z-[60] border border-white/10" align="end">
+                <DropdownMenu.Content className="min-w-[150px] bg-white rounded-xl p-1 shadow-2xl z-[60] border border-zinc-100" align="end">
                   {currentUserId === comment.authorId ? (
-                    <DropdownMenu.Item className="flex items-center gap-2 px-2 py-1.5 text-sm text-[#FF4D4D] hover:bg-white/10 rounded cursor-pointer outline-none" onSelect={() => { if (confirm(t('deleteConfirmation'))) onDelete(comment.id); }}>
+                    <DropdownMenu.Item className="flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-lg cursor-pointer outline-none font-bold italic tracking-tighter uppercase" onSelect={() => { if (confirm(t('deleteConfirmation'))) onDelete(comment.id); }}>
                       <Trash size={14} />{t('delete') || 'Usuń'}
                     </DropdownMenu.Item>
                   ) : (
-                    <DropdownMenu.Item className="flex items-center gap-2 px-2 py-1.5 text-sm text-white hover:bg-white/10 rounded cursor-pointer outline-none" onSelect={() => onReport(comment.id)}>
+                    <DropdownMenu.Item className="flex items-center gap-2 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50 rounded-lg cursor-pointer outline-none font-bold italic tracking-tighter uppercase" onSelect={() => onReport(comment.id)}>
                       <Flag size={14} />{t('report') || 'Zgłoś'}
                     </DropdownMenu.Item>
                   )}
@@ -192,8 +182,8 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onLike, onDelete, on
 
         {replyCount > 0 && (
           <div className="mt-2">
-            <button onClick={handleToggleReplies} className="flex items-center gap-1.5 text-xs text-[#8F8F8F] font-semibold mb-2">
-              <ChevronDown size={16} className={cn("transition-transform duration-200", areRepliesVisible && "rotate-180")} />
+            <button onClick={handleToggleReplies} className="flex items-center gap-1.5 text-[11px] text-zinc-500 font-bold uppercase italic tracking-tighter mb-2">
+              <div className="w-8 h-[1px] bg-zinc-200 mr-1" />
               {areRepliesVisible ? t('hideReplies') : t('viewReplies', { count: replyCount.toString() })}
             </button>
             <AnimatePresence>
@@ -211,7 +201,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onLike, onDelete, on
                   <MemoizedCommentItem key={reply.id} slideId={slideId} comment={reply} onLike={onLike} onDelete={onDelete} onReport={onReport} onAvatarClick={onAvatarClick} onStartReply={onStartReply} currentUserId={currentUserId} lang={lang} level={level + 1} lastRepliedParentId={lastRepliedParentId} />
                 ))}
                 {hasMoreReplies && (
-                   <button onClick={() => fetchReplies()} disabled={isLoadingReplies} className="text-xs text-[#8F8F8F] font-semibold flex items-center gap-2">
+                   <button onClick={() => fetchReplies()} disabled={isLoadingReplies} className="text-[11px] text-primary font-bold uppercase italic tracking-tighter pl-12 flex items-center gap-2">
                       {isLoadingReplies ? <Loader2 className="animate-spin h-3 w-3" /> : t('loadMore')}
                    </button>
                 )}
@@ -222,11 +212,11 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onLike, onDelete, on
         )}
       </div>
 
-      <div className="flex flex-col items-center gap-0.5 text-[#808080] pt-2">
+      <div className="flex flex-col items-center gap-0.5 text-zinc-400 pt-1">
         <button onClick={handleLikeClick} className="group/like">
-          <Heart size={18} className={cn("transition-colors", isLiked ? 'text-[#FE2C55] fill-current' : 'group-hover/like:text-white')} />
+          <Heart size={20} className={cn("transition-colors", isLiked ? 'text-red-500 fill-current' : 'group-hover/like:text-zinc-600')} />
         </button>
-        <span className="text-[11px] font-semibold">{likeCount > 0 ? likeCount : ''}</span>
+        <span className="text-[11px] font-bold">{likeCount > 0 ? formatCount(likeCount) : ''}</span>
       </div>
     </motion.div>
   );
@@ -291,7 +281,6 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
 
   useEffect(() => {
     if (!isOpen) {
-      // Reset state when the modal is closed
       setNewComment('');
       setReplyingTo(null);
       setImageFile(null);
@@ -302,47 +291,11 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Calculate static height on mount to prevent squishing when keyboard opens
   const [modalHeight, setModalHeight] = useState<string>('75vh');
 
   useEffect(() => {
-      // Set height to 75% of the initial window height and keep it there.
-      // This prevents the modal background from shrinking when address bar toggles or keyboard opens (if viewport resizes).
-      // We set a fixed pixel height so the list doesn't resize/squish.
       setModalHeight(`${window.innerHeight * 0.75}px`);
   }, []);
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
-  }, [newComment]);
-
-  useEffect(() => {
-    const textarea = textareaRef.current;
-    const modal = modalRef.current;
-
-    const handleFocus = () => {
-        modal?.classList.add('is-focused');
-    };
-
-    const handleBlur = () => {
-        modal?.classList.remove('is-focused');
-    };
-
-    if (textarea) {
-        textarea.addEventListener('focus', handleFocus);
-        textarea.addEventListener('blur', handleBlur);
-    }
-
-    return () => {
-        if (textarea) {
-            textarea.removeEventListener('focus', handleFocus);
-            textarea.removeEventListener('blur', handleBlur);
-        }
-    };
-  }, [isOpen]);
 
   const likeMutation = useMutation({
     mutationFn: (commentId: string) => fetch('/api/comments/like', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ commentId }) }),
@@ -420,29 +373,15 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
       };
 
       if (parentId) {
-        // Optimistic update for a reply
         await queryClient.cancelQueries({ queryKey: ['comments', slideId, 'replies', parentId] });
         const previousReplies = queryClient.getQueryData(['comments', slideId, 'replies', parentId]);
         queryClient.setQueryData(['comments', slideId, 'replies', parentId], (old: any) => {
             const newPages = old ? [...old.pages] : [{ replies: [], nextCursor: null }];
-
-            // Ensure first page exists and has replies array
             if (!newPages[0]) newPages[0] = { replies: [], nextCursor: null };
-
             const newFirstPageReplies = [optimisticComment, ...(newPages[0].replies || [])];
-
-            newPages[0] = {
-                ...newPages[0],
-                replies: newFirstPageReplies,
-            };
-
-            return {
-                ...old,
-                pages: newPages,
-                pageParams: old?.pageParams || [null],
-            };
+            newPages[0] = { ...newPages[0], replies: newFirstPageReplies };
+            return { ...old, pages: newPages, pageParams: old?.pageParams || [null] };
         });
-        // Also, manually update the reply count on the parent comment in the main comments query
         queryClient.setQueryData(['comments', slideId, sortBy], (old: any) => {
             if (!old) return old;
             const newPages = old.pages.map((page: any) => {
@@ -454,18 +393,13 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
             });
             return { ...old, pages: newPages };
         });
-
         return { previousReplies };
       } else {
-        // Optimistic update for a root comment
         await queryClient.cancelQueries({ queryKey: ['comments', slideId, sortBy] });
         const previousComments = queryClient.getQueryData(['comments', slideId, sortBy]);
         queryClient.setQueryData(['comments', slideId, sortBy], (old: any) => {
           const newPages = old ? [...old.pages] : [];
-          if (newPages.length === 0) {
-            newPages.push({ comments: [], nextCursor: null });
-          }
-          // Defensive check for comments array
+          if (newPages.length === 0) newPages.push({ comments: [], nextCursor: null });
           const currentComments = newPages[0].comments || [];
           newPages[0] = { ...newPages[0], comments: [optimisticComment, ...currentComments] };
           return { ...old, pages: newPages, pageParams: old?.pageParams || [null] };
@@ -473,13 +407,11 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
         return { previousComments };
       }
     },
-    onError: (err, { parentId }, context) => {
+    onError: () => {
       addToast(t('commentPostError'), 'error');
-      // Revert both optimistic updates
       queryClient.invalidateQueries({ queryKey: ['comments', slideId], exact: false });
     },
     onSuccess: (data, variables) => {
-      // Delay invalidation for replies to prevent race condition where new reply isn't in DB result yet
       if (variables.parentId) {
           setLastRepliedParentId(variables.parentId);
           setTimeout(() => {
@@ -488,10 +420,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
       } else {
         setSortBy('newest');
         queryClient.invalidateQueries({ queryKey: ['comments', slideId, 'newest'] });
-        if (sortBy !== 'newest') {
-             queryClient.invalidateQueries({ queryKey: ['comments', slideId, sortBy] });
-        }
-        // Increment comment count in global state only for root comments
+        if (sortBy !== 'newest') queryClient.invalidateQueries({ queryKey: ['comments', slideId, sortBy] });
         useStore.getState().incrementCommentCount(slideId!, initialCommentsCount);
       }
       setNewComment('');
@@ -518,7 +447,6 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
         return;
     }
     setReplyingTo(comment);
-    textareaRef.current?.focus();
   };
 
   const handleCancelReply = () => {
@@ -533,7 +461,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      if (file.size > 2 * 1024 * 1024) { // 2MB limit
+      if (file.size > 2 * 1024 * 1024) {
         addToast(t('imageTooLarge'), 'error');
         return;
       }
@@ -549,12 +477,12 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
         </div>
       );
     }
-    if (error) return <div className="flex-1 flex items-center justify-center text-red-400 p-4 h-full">{t('commentsError')}</div>;
-    if (comments.length === 0) return <div className="flex-1 flex items-center justify-center text-white/60 p-4 h-full text-center">{t('noCommentsYet')}</div>;
+    if (error) return <div className="flex-1 flex items-center justify-center text-red-500 p-4 h-full">{t('commentsError')}</div>;
+    if (comments.length === 0) return <div className="flex-1 flex items-center justify-center text-zinc-400 p-4 h-full text-center">{t('noCommentsYet')}</div>;
 
     return (
-      <div className="px-2 pt-2 custom-scrollbar flex-1">
-        <div className="space-y-3">
+      <div className="pt-2 custom-scrollbar flex-1">
+        <div className="space-y-6 pb-20">
           {comments.map((comment) => (
             <MemoizedCommentItem
               key={comment.id}
@@ -574,11 +502,16 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
             />
           ))}
           {hasNextPage && (
-            <div className="flex justify-center py-2">
-              <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage} className="text-sm text-primary hover:text-primary/80 disabled:opacity-50 flex items-center gap-2">
-                {isFetchingNextPage && <Loader2 className="animate-spin h-3 w-3" />}
+            <div className="flex justify-center py-4">
+              <Button
+                variant="light"
+                color="primary"
+                onClick={() => fetchNextPage()}
+                isLoading={isFetchingNextPage}
+                className="font-bold uppercase italic tracking-tighter"
+              >
                 {t('loadMore')}
-              </button>
+              </Button>
             </div>
           )}
         </div>
@@ -589,10 +522,10 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div className="absolute inset-0 bg-black/60 z-50 flex items-end" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={onClose}>
+        <motion.div className="absolute inset-0 bg-black/40 z-50 flex items-end" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={onClose}>
           <motion.div
             ref={modalRef}
-            className="w-full app-modal-glass rounded-t-[2.5rem] flex flex-col border-t comments-modal overflow-hidden"
+            className="w-full bg-white rounded-t-[2.5rem] flex flex-col overflow-hidden shadow-2xl"
             style={{ height: modalHeight }}
             initial={{ y: '100%' }}
             animate={{ y: '0%' }}
@@ -601,85 +534,72 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
             onClick={(e) => e.stopPropagation()}
           >
             <div className="app-handle" />
-            <div className="flex-shrink-0 relative text-center pb-4 pt-1 border-b border-white/5">
-              <h2 className="text-base font-bold text-white tracking-tight">{t('commentsTitle', { count: totalCommentCount.toString() })}</h2>
-              <button onClick={onClose} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"><X size={24} /></button>
+            <div className="flex-shrink-0 relative text-center pb-4 pt-1 border-b border-zinc-100">
+              <h2 className="text-base font-bold italic tracking-tighter uppercase text-zinc-900">{t('commentsTitle', { count: totalCommentCount.toString() })}</h2>
+              <Button isIconOnly variant="light" onClick={onClose} className="absolute right-2 top-1/2 -translate-y-1/2">
+                <X size={24} />
+              </Button>
             </div>
 
-            <div className="flex-shrink-0 px-4 pt-3 pb-2 flex items-center gap-4 text-sm">
-                <button onClick={() => setSortBy('top')} className={cn("font-semibold", sortBy === 'top' ? 'text-white' : 'text-white/40')}>{t('top')}</button>
-                <button onClick={() => setSortBy('newest')} className={cn("font-semibold", sortBy === 'newest' ? 'text-white' : 'text-white/40')}>{t('newest')}</button>
+            <div className="flex-shrink-0 px-6 pt-4 pb-2 flex items-center gap-6 text-xs">
+                <button onClick={() => setSortBy('top')} className={cn("font-bold uppercase italic tracking-tighter transition-colors", sortBy === 'top' ? 'text-zinc-900 underline underline-offset-4' : 'text-zinc-400')}>{t('top')}</button>
+                <button onClick={() => setSortBy('newest')} className={cn("font-bold uppercase italic tracking-tighter transition-colors", sortBy === 'newest' ? 'text-zinc-900 underline underline-offset-4' : 'text-zinc-400')}>{t('newest')}</button>
             </div>
 
-            <div className="flex-1 overflow-y-auto min-h-0 flex flex-col pb-20">{renderContent()}</div>
+            <div className="flex-1 overflow-y-auto min-h-0 flex flex-col">{renderContent()}</div>
 
-            {/* Footer / Input Area - Fixed at bottom */}
-            <div
-                className="absolute bottom-0 left-0 right-0 border-t border-white/10 bg-black/80 backdrop-blur-xl pb-[calc(0.5rem+env(safe-area-inset-bottom))] z-20"
-            >
+            <div className="absolute bottom-0 left-0 right-0 border-t border-zinc-100 bg-white/80 backdrop-blur-xl pb-[calc(0.5rem+env(safe-area-inset-bottom))] z-20">
               {replyingTo && (
-                <div className="bg-[#282828] px-4 py-1.5 text-xs text-[#A6A6A6] flex justify-between items-center">
-                  <span>{t('replyingTo', { user: replyingTo.author?.displayName || replyingTo.author?.username || '' })}</span>
-                  <button onClick={handleCancelReply}><X size={14} /></button>
+                <div className="bg-zinc-50 px-6 py-2 text-[11px] font-bold text-zinc-500 flex justify-between items-center border-b border-zinc-100">
+                  <span className="uppercase italic tracking-tighter">{t('replyingTo', { user: replyingTo.author?.displayName || replyingTo.author?.username || '' })}</span>
+                  <button onClick={handleCancelReply} className="p-1 hover:bg-zinc-200 rounded-full transition-colors"><X size={12} /></button>
                 </div>
               )}
               {user ? (
-                <form onSubmit={handleSubmit} className="flex items-center gap-2 p-2">
-                  <Image
+                <form onSubmit={handleSubmit} className="flex items-end gap-2 p-3">
+                  <Avatar
                     src={user.avatar || DEFAULT_AVATAR_URL}
-                    alt={t('yourAvatar')}
-                    width={36}
-                    height={36}
-                    className={cn("w-9 h-9 rounded-full object-cover border", user.role === 'patron' ? 'border-yellow-500' : (user.role === 'author' ? 'border-primary' : 'border-white/80'))}
+                    className={cn("w-10 h-10 border-2", user.role === 'patron' ? 'border-yellow-500' : (user.role === 'author' ? 'border-primary' : 'border-white'))}
                   />
-                  <div className="flex-1 relative flex items-center bg-zinc-950/50 border border-white/10 rounded-2xl transition-all focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20 focus-within:shadow-[0_0_15px_-3px_hsl(var(--primary)/0.3)]">
-                    <input
-                      type="file"
-                      ref={imageInputRef}
-                      onChange={handleImageChange}
-                      className="hidden"
-                      accept="image/*"
-                    />
-                    <textarea
-                      ref={textareaRef}
+                  <div className="flex-1 relative flex items-end bg-zinc-100 rounded-2xl border border-transparent focus-within:border-primary/20 transition-all">
+                    <input type="file" ref={imageInputRef} onChange={handleImageChange} className="hidden" accept="image/*" />
+                    <Textarea
                       value={newComment}
                       onChange={(e) => setNewComment(e.target.value)}
                       placeholder={replyingTo ? t('replyTo', { user: replyingTo.author?.displayName || replyingTo.author?.username || '' }) : t('addCommentPlaceholder')}
-                      className="w-full pl-4 pr-20 py-2 bg-transparent text-white focus:outline-none text-sm resize-none min-h-[40px] max-h-[120px]"
-                      disabled={replyMutation.isPending}
-                      rows={1}
+                      minRows={1}
+                      maxRows={4}
+                      variant="flat"
+                      classNames={{
+                        inputWrapper: "bg-transparent shadow-none",
+                        input: "text-sm text-zinc-900"
+                      }}
                     />
-                    <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                       <button type="button" className="text-white/40 hover:text-white" title="Add image" onClick={() => imageInputRef.current?.click()}><ImageIcon size={20} /></button>
-                       <button type="button" className="text-white/40 hover:text-white" title="Emoji" onClick={() => setShowEmojiPicker(!showEmojiPicker)}><Smile size={20} /></button>
+                    <div className="flex items-center gap-1 p-1 pr-2">
+                       <Button isIconOnly variant="light" size="sm" onClick={() => imageInputRef.current?.click()} className="text-zinc-400"><ImageIcon size={18} /></Button>
+                       <Button isIconOnly variant="light" size="sm" onClick={() => setShowEmojiPicker(!showEmojiPicker)} className="text-zinc-400"><Smile size={18} /></Button>
                     </div>
                   </div>
                    {showEmojiPicker && (
-                      <div className="absolute bottom-16 right-2 z-20">
-                         <EmojiPicker onEmojiClick={onEmojiClick} theme={Theme.DARK} previewConfig={{ showPreview: false }} />
+                      <div className="absolute bottom-20 right-4 z-50 shadow-2xl rounded-2xl overflow-hidden">
+                         <EmojiPicker onEmojiClick={onEmojiClick} theme={Theme.LIGHT} previewConfig={{ showPreview: false }} />
                       </div>
                    )}
-                   <button type="submit" className="p-2 disabled:opacity-50 flex items-center justify-center transition-all active:scale-90" disabled={(!newComment.trim() && !imageFile) || replyMutation.isPending}>
-                    {replyMutation.isPending ? (
-                        <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                    ) : (
-                        <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center text-white shadow-[0_0_15px_-3px_hsl(var(--primary)/0.5)]">
-                            <ArrowUp size={20} strokeWidth={3} />
-                        </div>
-                    )}
-                  </button>
+                   <Button
+                      isIconOnly
+                      type="submit"
+                      color="primary"
+                      className="min-w-10 h-10 rounded-xl shadow-lg"
+                      isLoading={replyMutation.isPending}
+                      disabled={(!newComment.trim() && !imageFile)}
+                   >
+                     <ArrowUp size={20} strokeWidth={3} />
+                   </Button>
                 </form>
               ) : (
-                <div className="flex items-center justify-center h-12 text-center px-4 text-[#8F8F8F] text-sm">
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={() => { setActiveModal('login'); }}
-                      className="text-[#8F8F8F] font-semibold underline active:opacity-70 transition-opacity"
-                    >
-                      Zaloguj się
-                    </button>
-                    <span>, aby skomentować</span>
-                  </div>
+                <div className="flex items-center justify-center h-14 text-center px-4 text-zinc-400 text-xs font-bold uppercase italic tracking-tighter">
+                  <button onClick={() => setActiveModal('login')} className="text-primary underline mr-1">Zaloguj się</button>
+                   aby skomentować
                 </div>
               )}
             </div>
