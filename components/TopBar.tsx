@@ -174,8 +174,7 @@ const TopBar = () => {
                   <PopoverContent
                     align="start"
                     side="bottom"
-                    sideOffset={-48}
-                    alignOffset={-8}
+                    sideOffset={8}
                     className="w-auto min-w-[220px] p-2 bg-slate-800/95 backdrop-blur-md border border-slate-700 shadow-[0_10px_40px_rgba(0,0,0,0.6)] rounded-2xl z-[100] data-[state=closed]:slide-out-to-top-5 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
                   >
                       <div className="flex flex-col gap-1.5">
