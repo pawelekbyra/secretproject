@@ -176,21 +176,21 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
             whileTap={{ scale: 0.98 }}
             onClick={() => setSelectedHabitId(habit.id)}
             className={cn(
-                "relative overflow-hidden bg-white/5 backdrop-blur-xl border p-4 rounded-3xl flex items-center justify-between group transition-all cursor-pointer shadow-xl",
+                "relative overflow-hidden bg-white border p-4 rounded-[2rem] flex items-center justify-between group transition-all cursor-pointer shadow-lg hover:shadow-xl",
                 habit.type === 'good'
-                    ? "border-emerald-500/20 hover:border-emerald-500/50 hover:shadow-emerald-500/10"
-                    : "border-rose-500/20 hover:border-rose-500/50 hover:shadow-rose-500/10"
+                    ? "border-emerald-500/10 hover:border-emerald-500/30"
+                    : "border-rose-500/10 hover:border-rose-500/30"
             )}
         >
             <div className="flex items-center gap-4 z-10">
                 <div className={cn(
-                    "w-12 h-12 rounded-xl flex items-center justify-center text-2xl shadow-inner",
-                    habit.type === 'good' ? "bg-emerald-500/10 text-emerald-500" : "bg-rose-500/10 text-rose-500"
+                    "w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-sm",
+                    habit.type === 'good' ? "bg-emerald-50 text-emerald-600" : "bg-rose-50 text-rose-600"
                 )}>
                     {habit.icon}
                 </div>
                 <div>
-                    <h3 className="font-bold text-white text-lg">{habit.name}</h3>
+                    <h3 className="font-black text-foreground text-lg tracking-tight">{habit.name}</h3>
                     <div className="flex items-center gap-1.5">
                         {habit.type === 'good' ? (
                             <CheckCircle2 size={12} className="text-emerald-500" />
@@ -198,10 +198,10 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                             <AlertCircle size={12} className="text-rose-500" />
                         )}
                         <p className={cn(
-                            "text-[10px] tracking-widest font-bold",
+                            "text-[10px] tracking-widest font-black uppercase",
                             habit.type === 'good' ? "text-emerald-500/60" : "text-rose-500/60"
                         )}>
-                            {habit.type === 'good' ? 'Pozytywne' : 'Wyzwanie'}
+                            {habit.type === 'good' ? 'Zaleta' : 'Wyzwanie'}
                         </p>
                     </div>
                 </div>
@@ -209,14 +209,14 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
             <div className="flex items-center gap-4 z-10">
                 <div className="flex flex-col items-end">
                     <div className={cn(
-                        "flex items-center gap-1 font-black italic text-lg",
-                        habit.type === 'good' ? "text-emerald-400" : "text-rose-400"
+                        "flex items-center gap-1 font-black italic text-xl",
+                        habit.type === 'good' ? "text-emerald-500" : "text-rose-500"
                     )}>
-                        <Flame size={16} className={calculateStreak(habit) > 0 ? "fill-current" : ""} />
+                        <Flame size={18} className={calculateStreak(habit) > 0 ? "fill-current" : ""} />
                         <span>{calculateStreak(habit)}</span>
                     </div>
                 </div>
-                <ChevronRight className="text-white/10 group-hover:text-white transition-colors" />
+                <ChevronRight className="text-foreground/10 group-hover:text-foreground transition-colors" />
             </div>
 
             {/* Background Decorative Element */}
@@ -234,22 +234,22 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
 
         return (
             <div className="flex flex-col gap-6">
-                <div className="flex items-center justify-between bg-zinc-900/50 p-4 rounded-2xl border border-white/5">
-                    <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="p-2 hover:bg-white/10 rounded-full transition-colors text-white/60 hover:text-white">
+                <div className="flex items-center justify-between bg-secondary p-4 rounded-2xl border border-black/5">
+                    <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="p-2 hover:bg-black/5 rounded-full transition-colors text-foreground/40 hover:text-foreground">
                         <ChevronLeft size={24} />
                     </button>
-                    <h3 className="text-xl font-black capitalize tracking-tighter italic">
+                    <h3 className="text-xl font-black capitalize tracking-tighter italic text-foreground">
                         {format(currentMonth, 'MMMM yyyy', { locale: dateLocale })}
                     </h3>
-                    <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="p-2 hover:bg-white/10 rounded-full transition-colors text-white/60 hover:text-white">
+                    <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="p-2 hover:bg-black/5 rounded-full transition-colors text-foreground/40 hover:text-foreground">
                         <ChevronRight size={24} />
                     </button>
                 </div>
 
-                <div className="bg-zinc-900/30 p-4 rounded-3xl border border-white/5">
+                <div className="bg-white p-6 rounded-[2.5rem] border border-black/5 shadow-xl">
                     <div className="grid grid-cols-7 gap-2 mb-4">
                         {['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So', 'Nd'].map(d => (
-                            <div key={d} className="text-center text-[10px] text-white/20 font-black tracking-widest">{d}</div>
+                            <div key={d} className="text-center text-[10px] text-foreground/20 font-black tracking-widest">{d}</div>
                         ))}
                     </div>
                     <div className="grid grid-cols-7 gap-2">
@@ -268,13 +268,13 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                                     onClick={() => handleToggleDay(day)}
                                     disabled={isFuture}
                                     className={cn(
-                                        "aspect-square rounded-xl flex items-center justify-center text-xs font-black transition-all relative overflow-hidden group/day",
-                                        isToday(day) && "ring-2 ring-indigo-500 ring-offset-2 ring-offset-black",
-                                        !log && "bg-white/5 text-white/30 hover:bg-white/10",
+                                        "aspect-square rounded-2xl flex items-center justify-center text-xs font-black transition-all relative overflow-hidden group/day",
+                                        isToday(day) && "ring-2 ring-primary ring-offset-2 ring-offset-white",
+                                        !log && "bg-secondary text-foreground/30 hover:bg-secondary/80",
                                         log?.isSuccess && (selectedHabit.type === 'good'
-                                            ? "bg-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]"
-                                            : "bg-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]"), // Avoided bad habit = success (green)
-                                        log?.isSuccess === false && "bg-rose-500 text-white shadow-[0_0_15px_rgba(244,63,94,0.4)]",
+                                            ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/30"
+                                            : "bg-emerald-500 text-white shadow-lg shadow-emerald-500/30"), // Avoided bad habit = success (green)
+                                        log?.isSuccess === false && "bg-rose-500 text-white shadow-lg shadow-rose-500/30",
                                         isFuture && "opacity-10 cursor-not-allowed"
                                     )}
                                 >
@@ -283,7 +283,7 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                                         <motion.div
                                             initial={{ scale: 0 }}
                                             animate={{ scale: 1 }}
-                                            className="absolute inset-0 bg-white/20 blur-xl rounded-full"
+                                            className="absolute inset-0 bg-white/10 blur-xl rounded-full"
                                         />
                                     )}
                                 </button>
@@ -294,19 +294,19 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-zinc-900/50 rounded-2xl border border-white/5 flex flex-col gap-1">
+                    <div className="p-5 bg-white rounded-3xl border border-black/5 flex flex-col gap-1 shadow-md">
                         <div className="flex items-center gap-2 text-orange-500">
                             <Flame size={16} className="fill-current" />
-                            <span className="text-[10px] font-black tracking-widest">Seria</span>
+                            <span className="text-[10px] font-black tracking-widest uppercase">Seria</span>
                         </div>
-                        <div className="text-2xl font-black italic">{calculateStreak(selectedHabit)} dni</div>
+                        <div className="text-2xl font-black italic text-foreground">{calculateStreak(selectedHabit)} dni</div>
                     </div>
-                    <div className="p-4 bg-zinc-900/50 rounded-2xl border border-white/5 flex flex-col gap-1">
-                        <div className="flex items-center gap-2 text-indigo-500">
+                    <div className="p-5 bg-white rounded-3xl border border-black/5 flex flex-col gap-1 shadow-md">
+                        <div className="flex items-center gap-2 text-primary">
                             <Zap size={16} className="fill-current" />
-                            <span className="text-[10px] font-black tracking-widest">Skuteczność</span>
+                            <span className="text-[10px] font-black tracking-widest uppercase">Moc</span>
                         </div>
-                        <div className="text-2xl font-black italic">
+                        <div className="text-2xl font-black italic text-foreground">
                             {selectedHabit.logs.length > 0
                                 ? Math.round((selectedHabit.logs.filter(l => l.isSuccess).length / selectedHabit.logs.length) * 100)
                                 : 0}%
@@ -326,29 +326,29 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
         >
             {/* Header */}
-            <div className="flex-shrink-0 flex items-center justify-between px-6 pt-12 pb-6 border-b border-white/10 bg-black/20">
+            <div className="flex-shrink-0 flex items-center justify-between px-6 pt-12 pb-6 border-b border-black/5 bg-secondary/50">
                 <div className="flex items-center gap-4">
                     {selectedHabitId && (
-                        <button onClick={() => setSelectedHabitId(null)} className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl transition-colors">
-                            <ChevronLeft size={24} />
+                        <button onClick={() => setSelectedHabitId(null)} className="w-10 h-10 flex items-center justify-center bg-white hover:bg-white/80 rounded-xl transition-colors shadow-sm">
+                            <ChevronLeft size={24} className="text-foreground" />
                         </button>
                     )}
                     <div>
-                        <h1 className="text-3xl font-black tracking-tighter italic leading-none">
+                        <h1 className="text-3xl font-black tracking-tighter italic leading-none text-foreground">
                             {selectedHabitId ? selectedHabit?.name : (lang === 'pl' ? 'Nawyki' : 'Habits')}
                         </h1>
                         {selectedHabit && (
                              <p className={cn(
-                                "text-[10px] font-bold tracking-widest mt-1",
+                                "text-[10px] font-black tracking-widest mt-1 uppercase",
                                 selectedHabit.type === 'good' ? "text-emerald-500" : "text-rose-500"
                              )}>
-                                {selectedHabit.type === 'good' ? 'Dobry nawyk' : 'Zły nawyk'}
+                                {selectedHabit.type === 'good' ? 'Pozytywny' : 'Wyzwanie'}
                              </p>
                         )}
                     </div>
                 </div>
-                <button onClick={onClose} className="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-2xl transition-colors">
-                    <X size={28} />
+                <button onClick={onClose} className="w-12 h-12 flex items-center justify-center bg-white hover:bg-white/80 rounded-2xl transition-colors shadow-sm">
+                    <X size={28} className="text-foreground" />
                 </button>
             </div>
 
@@ -358,28 +358,28 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                     <div className="flex flex-col gap-8 pb-10">
                         {/* Summary Dashboard */}
                         <div className="grid grid-cols-1 gap-4">
-                            <div className="bg-gradient-to-br from-primary via-primary/80 to-primary/60 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden border border-white/20">
+                            <div className="bg-primary rounded-[3rem] p-8 text-primary-foreground shadow-2xl relative overflow-hidden">
                                 <div className="relative z-10">
                                     <div className="flex items-center gap-2 mb-2">
-                                        <Star size={16} className="fill-yellow-300 text-yellow-300" />
-                                        <h2 className="text-sm font-black tracking-widest opacity-80">Twój postęp</h2>
+                                        <Star size={16} className="fill-amber-300 text-amber-300" />
+                                        <h2 className="text-xs font-black tracking-[0.2em] uppercase opacity-60">Twój postęp</h2>
                                     </div>
-                                    <h3 className="text-2xl font-black italic mb-6">Wykuj swą potęgę! 🔥</h3>
+                                    <h3 className="text-3xl font-black italic mb-8 tracking-tighter">Wykuj swą potęgę! 🔥</h3>
 
                                     <div className="flex gap-8">
                                         <div className="flex flex-col">
-                                            <span className="text-[10px] font-black opacity-60 tracking-wider mb-1">Dobre</span>
-                                            <span className="text-3xl font-black">{goodHabits.length}</span>
+                                            <span className="text-[10px] font-black opacity-40 uppercase tracking-widest mb-1">Dobre</span>
+                                            <span className="text-4xl font-black">{goodHabits.length}</span>
                                         </div>
                                         <div className="w-[1px] bg-white/10" />
                                         <div className="flex flex-col">
-                                            <span className="text-[10px] font-black opacity-60 tracking-wider mb-1">Wyzwania</span>
-                                            <span className="text-3xl font-black">{badHabits.length}</span>
+                                            <span className="text-[10px] font-black opacity-40 uppercase tracking-widest mb-1">Wyzwania</span>
+                                            <span className="text-4xl font-black">{badHabits.length}</span>
                                         </div>
                                         <div className="w-[1px] bg-white/10" />
                                         <div className="flex flex-col">
-                                            <span className="text-[10px] font-black opacity-60 tracking-wider mb-1">Sukcesy</span>
-                                            <span className="text-3xl font-black text-emerald-300">
+                                            <span className="text-[10px] font-black opacity-40 uppercase tracking-widest mb-1">Sukcesy</span>
+                                            <span className="text-4xl font-black text-emerald-300">
                                                 {habits?.reduce((acc, h) => acc + h.logs.filter(l => l.isSuccess).length, 0) || 0}
                                             </span>
                                         </div>
@@ -417,21 +417,21 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                             </section>
                         )}
 
-                        {isLoading && <div className="text-center py-10 font-black italic text-white/20 animate-pulse">ŁADOWANIE...</div>}
+                        {isLoading && <div className="text-center py-10 font-black italic text-foreground/10 animate-pulse uppercase tracking-[0.3em]">Ładowanie...</div>}
 
                         {!isLoading && habits?.length === 0 && (
                             <div className="text-center py-20 flex flex-col items-center gap-4">
-                                <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center text-white/10 border border-white/5">
+                                <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center text-foreground/10 border border-black/5">
                                     <Target size={40} />
                                 </div>
-                                <p className="text-white/30 italic font-medium">Brak nawyków. Czas coś zmienić!</p>
+                                <p className="text-foreground/30 italic font-medium">Brak nawyków. Czas coś zmienić!</p>
                             </div>
                         )}
 
                         {/* Add Habit Button */}
                         <button
                             onClick={() => setIsAddingHabit(true)}
-                            className="w-full py-6 rounded-3xl border-2 border-dashed border-white/5 text-white/20 hover:text-white hover:border-white/20 transition-all flex items-center justify-center gap-3 font-black tracking-widest text-sm hover:bg-white/[0.02]"
+                            className="w-full py-8 rounded-[2rem] border-2 border-dashed border-black/5 text-foreground/20 hover:text-primary hover:border-primary/30 transition-all flex items-center justify-center gap-3 font-black tracking-[0.2em] uppercase text-xs hover:bg-primary/[0.02]"
                         >
                             <Plus size={24} />
                             Dodaj nowy cel
@@ -445,10 +445,10 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                     >
                         {renderCalendar()}
 
-                        <div className="mt-12 flex justify-between items-center px-4 py-6 bg-zinc-900/40 rounded-[2rem] border border-white/5">
-                             <div className="flex items-center gap-3 text-white/30 text-xs font-medium">
-                                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
-                                    <Info size={16} />
+                        <div className="mt-12 flex justify-between items-center px-6 py-8 bg-secondary/50 rounded-[2.5rem] border border-black/5">
+                             <div className="flex items-center gap-3 text-foreground/40 text-xs font-bold">
+                                 <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
+                                    <Info size={18} className="text-primary" />
                                  </div>
                                  <span>Klikaj dni, aby zmieniać status</span>
                              </div>
@@ -471,14 +471,14 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
             <AnimatePresence>
                 {isAddingHabit && (
                     <motion.div
-                        className="fixed inset-0 z-[110] bg-black/95 backdrop-blur-md flex items-end sm:items-center justify-center p-4"
+                        className="fixed inset-0 z-[110] bg-black/40 backdrop-blur-md flex items-end sm:items-center justify-center p-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={() => setIsAddingHabit(false)}
                     >
                         <motion.div
-                            className="w-full max-w-md app-modal-glass border border-white/20 rounded-[3rem] p-8 shadow-2xl overflow-hidden relative"
+                            className="w-full max-w-md bg-white border border-black/5 rounded-[3rem] p-8 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden relative"
                             initial={{ y: '100%' }}
                             animate={{ y: 0 }}
                             exit={{ y: '100%' }}
@@ -486,27 +486,27 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                             onClick={(e) => e.stopPropagation()}
                         >
                             <div className="app-handle !mt-0 !mb-6" />
-                            <h2 className="text-2xl font-black italic mb-8 tracking-tighter text-center">Nowy cel</h2>
+                            <h2 className="text-2xl font-black italic mb-8 tracking-tighter text-center text-foreground">Nowy cel</h2>
 
                             {/* Type Toggle */}
-                            <div className="flex p-1 bg-black rounded-2xl mb-8 border border-white/5">
+                            <div className="flex p-1 bg-secondary rounded-2xl mb-8 border border-black/5">
                                 <button
                                     onClick={() => setNewHabitType('good')}
                                     className={cn(
                                         "flex-1 py-3 rounded-xl text-xs font-black tracking-widest transition-all",
-                                        newHabitType === 'good' ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20" : "text-white/40 hover:text-white"
+                                        newHabitType === 'good' ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20" : "text-foreground/40 hover:text-foreground"
                                     )}
                                 >
-                                    Pozytywny
+                                    POZYTYWNY
                                 </button>
                                 <button
                                     onClick={() => setNewHabitType('bad')}
                                     className={cn(
                                         "flex-1 py-3 rounded-xl text-xs font-black tracking-widest transition-all",
-                                        newHabitType === 'bad' ? "bg-rose-500 text-white shadow-lg shadow-rose-500/20" : "text-white/40 hover:text-white"
+                                        newHabitType === 'bad' ? "bg-rose-500 text-white shadow-lg shadow-rose-500/20" : "text-foreground/40 hover:text-foreground"
                                     )}
                                 >
-                                    Wyzwanie
+                                    WYZWANIE
                                 </button>
                             </div>
 
@@ -516,16 +516,16 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                                     <button
                                         key={ph.name}
                                         onClick={() => addHabitMutation.mutate(ph)}
-                                        className="aspect-square bg-white/5 border border-white/5 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white/10 transition-all group"
+                                        className="aspect-square bg-secondary border border-black/5 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white hover:shadow-md transition-all group"
                                     >
                                         <span className="text-3xl group-hover:scale-125 transition-transform">{ph.icon}</span>
-                                        <span className="text-[10px] font-black tracking-tighter opacity-60">{ph.name}</span>
+                                        <span className="text-[10px] font-black tracking-tighter opacity-60 text-foreground">{ph.name}</span>
                                     </button>
                                 ))}
                             </div>
 
                             <div className="relative">
-                                <div className="text-[10px] text-white/20 font-black mb-3 ml-2 tracking-widest uppercase">Własna nazwa</div>
+                                <div className="text-[10px] text-foreground/20 font-black mb-3 ml-2 tracking-[0.2em] uppercase">Własna nazwa</div>
                                 <div className="flex gap-3">
                                     <Input
                                         type="text"

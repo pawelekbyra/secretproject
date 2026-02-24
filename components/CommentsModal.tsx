@@ -137,11 +137,11 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onLike, onDelete, on
       <div className="flex-1 min-w-0">
         <div className="bg-transparent rounded-lg">
            <div className="flex items-center gap-2">
-             <p className="text-xs font-semibold text-[#A6A6A6] cursor-pointer hover:underline" onClick={() => onAvatarClick(safeAuthor.id)}>
+             <p className="text-xs font-bold text-foreground/50 cursor-pointer hover:underline" onClick={() => onAvatarClick(safeAuthor.id)}>
                 {safeAuthor.displayName || safeAuthor.username || 'User'}
               </p>
            </div>
-          <p className="text-[13px] text-white whitespace-pre-wrap break-words">
+          <p className="text-[13px] text-foreground font-medium whitespace-pre-wrap break-words">
             {isL1Plus && comment.parentAuthorUsername && (
                 <span
                   className="text-primary font-semibold mr-1 cursor-pointer"
@@ -169,18 +169,18 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onLike, onDelete, on
           {currentUserId && (
             <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild>
-                <button className="text-white/40 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity p-1">
+                <button className="text-foreground/20 hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity p-1">
                   <MoreHorizontal size={14} />
                 </button>
               </DropdownMenu.Trigger>
               <DropdownMenu.Portal>
-                <DropdownMenu.Content className="min-w-[150px] bg-[#282828] rounded-md p-1 shadow-xl z-[60] border border-white/10" align="end">
+                <DropdownMenu.Content className="min-w-[150px] bg-white rounded-xl p-1 shadow-2xl z-[60] border border-black/5" align="end">
                   {currentUserId === comment.authorId ? (
-                    <DropdownMenu.Item className="flex items-center gap-2 px-2 py-1.5 text-sm text-[#FF4D4D] hover:bg-white/10 rounded cursor-pointer outline-none" onSelect={() => { if (confirm(t('deleteConfirmation'))) onDelete(comment.id); }}>
+                    <DropdownMenu.Item className="flex items-center gap-2 px-3 py-2 text-sm font-bold text-rose-500 hover:bg-rose-50 rounded-lg cursor-pointer outline-none transition-colors" onSelect={() => { if (confirm(t('deleteConfirmation'))) onDelete(comment.id); }}>
                       <Trash size={14} />{t('delete') || 'Usuń'}
                     </DropdownMenu.Item>
                   ) : (
-                    <DropdownMenu.Item className="flex items-center gap-2 px-2 py-1.5 text-sm text-white hover:bg-white/10 rounded cursor-pointer outline-none" onSelect={() => onReport(comment.id)}>
+                    <DropdownMenu.Item className="flex items-center gap-2 px-3 py-2 text-sm font-bold text-foreground/70 hover:bg-secondary rounded-lg cursor-pointer outline-none transition-colors" onSelect={() => onReport(comment.id)}>
                       <Flag size={14} />{t('report') || 'Zgłoś'}
                     </DropdownMenu.Item>
                   )}
@@ -550,7 +550,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
       );
     }
     if (error) return <div className="flex-1 flex items-center justify-center text-red-400 p-4 h-full">{t('commentsError')}</div>;
-    if (comments.length === 0) return <div className="flex-1 flex items-center justify-center text-white/60 p-4 h-full text-center">{t('noCommentsYet')}</div>;
+    if (comments.length === 0) return <div className="flex-1 flex items-center justify-center text-foreground/40 p-4 h-full text-center font-medium">{t('noCommentsYet')}</div>;
 
     return (
       <div className="px-2 pt-2 custom-scrollbar flex-1">
@@ -589,10 +589,10 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div className="absolute inset-0 bg-black/60 z-50 flex items-end" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={onClose}>
+        <motion.div className="absolute inset-0 bg-black/20 z-50 flex items-end" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={onClose}>
           <motion.div
             ref={modalRef}
-            className="w-full app-modal-glass rounded-t-[2.5rem] flex flex-col border-t comments-modal overflow-hidden"
+            className="w-full app-modal-glass rounded-t-[2.5rem] flex flex-col border-t border-black/5 comments-modal overflow-hidden"
             style={{ height: modalHeight }}
             initial={{ y: '100%' }}
             animate={{ y: '0%' }}
@@ -601,38 +601,38 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
             onClick={(e) => e.stopPropagation()}
           >
             <div className="app-handle" />
-            <div className="flex-shrink-0 relative text-center pb-4 pt-1 border-b border-white/5">
-              <h2 className="text-base font-bold text-white tracking-tight">{t('commentsTitle', { count: totalCommentCount.toString() })}</h2>
-              <button onClick={onClose} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"><X size={24} /></button>
+            <div className="flex-shrink-0 relative text-center pb-4 pt-1 border-b border-black/5">
+              <h2 className="text-base font-black text-foreground tracking-tight italic">{t('commentsTitle', { count: totalCommentCount.toString() })}</h2>
+              <button onClick={onClose} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/20 hover:text-foreground transition-colors"><X size={24} /></button>
             </div>
 
-            <div className="flex-shrink-0 px-4 pt-3 pb-2 flex items-center gap-4 text-sm">
-                <button onClick={() => setSortBy('top')} className={cn("font-semibold", sortBy === 'top' ? 'text-white' : 'text-white/40')}>{t('top')}</button>
-                <button onClick={() => setSortBy('newest')} className={cn("font-semibold", sortBy === 'newest' ? 'text-white' : 'text-white/40')}>{t('newest')}</button>
+            <div className="flex-shrink-0 px-6 pt-3 pb-2 flex items-center gap-6 text-sm">
+                <button onClick={() => setSortBy('top')} className={cn("font-black uppercase tracking-widest text-[10px] transition-colors", sortBy === 'top' ? 'text-primary' : 'text-foreground/30')}>{t('top')}</button>
+                <button onClick={() => setSortBy('newest')} className={cn("font-black uppercase tracking-widest text-[10px] transition-colors", sortBy === 'newest' ? 'text-primary' : 'text-foreground/30')}>{t('newest')}</button>
             </div>
 
             <div className="flex-1 overflow-y-auto min-h-0 flex flex-col pb-20">{renderContent()}</div>
 
             {/* Footer / Input Area - Fixed at bottom */}
             <div
-                className="absolute bottom-0 left-0 right-0 border-t border-white/10 bg-black/80 backdrop-blur-xl pb-[calc(0.5rem+env(safe-area-inset-bottom))] z-20"
+                className="absolute bottom-0 left-0 right-0 border-t border-black/5 bg-white/95 backdrop-blur-xl pb-[calc(0.5rem+env(safe-area-inset-bottom))] z-20"
             >
               {replyingTo && (
-                <div className="bg-[#282828] px-4 py-1.5 text-xs text-[#A6A6A6] flex justify-between items-center">
-                  <span>{t('replyingTo', { user: replyingTo.author?.displayName || replyingTo.author?.username || '' })}</span>
-                  <button onClick={handleCancelReply}><X size={14} /></button>
+                <div className="bg-secondary/50 px-4 py-2 text-[10px] font-bold text-foreground/40 flex justify-between items-center border-b border-black/5">
+                  <span className="uppercase tracking-wider">{t('replyingTo', { user: replyingTo.author?.displayName || replyingTo.author?.username || '' })}</span>
+                  <button onClick={handleCancelReply} className="hover:text-foreground"><X size={14} /></button>
                 </div>
               )}
               {user ? (
-                <form onSubmit={handleSubmit} className="flex items-center gap-2 p-2">
+                <form onSubmit={handleSubmit} className="flex items-center gap-2 p-3">
                   <Image
                     src={user.avatar || DEFAULT_AVATAR_URL}
                     alt={t('yourAvatar')}
                     width={36}
                     height={36}
-                    className={cn("w-9 h-9 rounded-full object-cover border", user.role === 'patron' ? 'border-yellow-500' : (user.role === 'author' ? 'border-primary' : 'border-white/80'))}
+                    className={cn("w-9 h-9 rounded-full object-cover border-2", user.role === 'patron' ? 'border-amber-500' : (user.role === 'author' ? 'border-primary' : 'border-white shadow-sm'))}
                   />
-                  <div className="flex-1 relative flex items-center bg-zinc-950/50 border border-white/10 rounded-2xl transition-all focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20 focus-within:shadow-[0_0_15px_-3px_hsl(var(--primary)/0.3)]">
+                  <div className="flex-1 relative flex items-center bg-secondary border border-black/5 rounded-2xl transition-all focus-within:border-primary/30 focus-within:bg-white focus-within:shadow-lg">
                     <input
                       type="file"
                       ref={imageInputRef}
@@ -645,18 +645,18 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
                       value={newComment}
                       onChange={(e) => setNewComment(e.target.value)}
                       placeholder={replyingTo ? t('replyTo', { user: replyingTo.author?.displayName || replyingTo.author?.username || '' }) : t('addCommentPlaceholder')}
-                      className="w-full pl-4 pr-20 py-2 bg-transparent text-white focus:outline-none text-sm resize-none min-h-[40px] max-h-[120px]"
+                      className="w-full pl-4 pr-20 py-3 bg-transparent text-foreground focus:outline-none text-sm resize-none min-h-[44px] max-h-[120px] font-medium"
                       disabled={replyMutation.isPending}
                       rows={1}
                     />
-                    <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                       <button type="button" className="text-white/40 hover:text-white" title="Add image" onClick={() => imageInputRef.current?.click()}><ImageIcon size={20} /></button>
-                       <button type="button" className="text-white/40 hover:text-white" title="Emoji" onClick={() => setShowEmojiPicker(!showEmojiPicker)}><Smile size={20} /></button>
+                    <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                       <button type="button" className="text-foreground/20 hover:text-primary p-1.5 transition-colors" title="Add image" onClick={() => imageInputRef.current?.click()}><ImageIcon size={18} /></button>
+                       <button type="button" className="text-foreground/20 hover:text-primary p-1.5 transition-colors" title="Emoji" onClick={() => setShowEmojiPicker(!showEmojiPicker)}><Smile size={18} /></button>
                     </div>
                   </div>
                    {showEmojiPicker && (
-                      <div className="absolute bottom-16 right-2 z-20">
-                         <EmojiPicker onEmojiClick={onEmojiClick} theme={Theme.DARK} previewConfig={{ showPreview: false }} />
+                      <div className="absolute bottom-20 right-2 z-20 shadow-2xl">
+                         <EmojiPicker onEmojiClick={onEmojiClick} theme={Theme.LIGHT} previewConfig={{ showPreview: false }} />
                       </div>
                    )}
                    <button type="submit" className="p-2 disabled:opacity-50 flex items-center justify-center transition-all active:scale-90" disabled={(!newComment.trim() && !imageFile) || replyMutation.isPending}>

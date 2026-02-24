@@ -28,7 +28,7 @@ export function PatronProfileModal({ patronId, onClose }: PatronProfileModalProp
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 z-[10100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 z-[10100] flex items-center justify-center bg-black/20 backdrop-blur-sm"
             onClick={onClose}
         >
             <motion.div
@@ -36,17 +36,17 @@ export function PatronProfileModal({ patronId, onClose }: PatronProfileModalProp
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
                 transition={{ type: 'spring', damping: 20, stiffness: 250 }}
-                className="relative flex flex-col w-full max-w-sm app-modal-glass text-white rounded-[2.5rem] shadow-2xl border border-white/20 mx-4 overflow-hidden"
+                className="relative flex flex-col w-full max-w-sm bg-white text-foreground rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] border border-black/5 mx-4 overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
-                    <header className="relative flex items-center justify-center p-5 border-b border-white/5 shrink-0 bg-black/20">
-                        <h2 className="text-lg font-bold tracking-tight">Profil Użytkownika</h2>
-                        <button onClick={onClose} className="absolute p-1 right-3 top-3 rounded-full hover:bg-neutral-700">
-                            <X size={20} />
+                    <header className="relative flex items-center justify-center p-6 border-b border-black/5 shrink-0 bg-secondary/50">
+                        <h2 className="text-lg font-black italic tracking-tight uppercase">Profil Użytkownika</h2>
+                        <button onClick={onClose} className="absolute p-2 right-4 top-1/2 -translate-y-1/2 rounded-full hover:bg-black/5 text-foreground/20 hover:text-foreground transition-all">
+                            <X size={22} />
                         </button>
                     </header>
 
-                    <main className="p-6">
+                    <main className="p-8">
                         {isLoading ? (
                             <PatronProfileSkeleton />
                         ) : isError ? (
@@ -64,12 +64,12 @@ export function PatronProfileModal({ patronId, onClose }: PatronProfileModalProp
                                       className="rounded-full border-2 border-white shadow-[0_0_15px_rgba(255,255,255,0.5)]"
                                     />
                                 </div>
-                                <h3 className="text-2xl font-bold">{profile.username}</h3>
-                                <UserBadge role={profile.role} className="mb-2" />
+                                <h3 className="text-3xl font-black italic tracking-tighter text-foreground mb-1">{profile.username}</h3>
+                                <UserBadge role={profile.role} className="mb-4" />
                                 {profile.bio ? (
-                                    <p className="text-neutral-400 text-sm leading-relaxed mt-2">{profile.bio}</p>
+                                    <p className="text-foreground/60 text-sm leading-relaxed mt-2 font-medium">{profile.bio}</p>
                                 ) : (
-                                    <p className="text-neutral-600 text-sm italic">Brak opisu.</p>
+                                    <p className="text-foreground/20 text-sm italic font-bold">Brak opisu.</p>
                                 )}
                             </div>
                         ) : null}

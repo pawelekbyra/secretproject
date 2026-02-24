@@ -43,22 +43,22 @@ export default function AdminModal() {
     };
 
     return (
-        <div className="absolute inset-0 z-[10300] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+        <div className="absolute inset-0 z-[10300] flex items-center justify-center bg-black/20 backdrop-blur-sm p-4">
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ type: "spring", duration: 0.4, bounce: 0.2 }}
-                className="w-full max-w-2xl app-modal-glass rounded-[2rem] shadow-2xl border border-white/20 overflow-hidden flex flex-col max-h-[90vh]"
+                className="w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl border border-black/5 overflow-hidden flex flex-col max-h-[90vh]"
             >
-                <div className="flex items-center justify-between p-6 border-b border-white/5 bg-black/20">
-                    <h2 className="text-xl font-bold text-white tracking-tight">Panel Administratora</h2>
-                    <button onClick={closeAdminModal} className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-full transition-colors">
-                        <X size={20} />
+                <div className="flex items-center justify-between p-8 border-b border-black/5 bg-secondary/50">
+                    <h2 className="text-2xl font-black text-foreground italic tracking-tighter uppercase">Panel Administratora</h2>
+                    <button onClick={closeAdminModal} className="p-2 text-foreground/20 hover:text-foreground hover:bg-black/5 rounded-full transition-colors">
+                        <X size={24} />
                     </button>
                 </div>
 
-                <div className="flex p-4 gap-4 border-b border-white/10">
+                <div className="flex p-4 gap-4 border-b border-black/5 bg-white">
                     <Button variant={activeTab === 'users' ? 'default' : 'ghost'} size="sm" onClick={() => setActiveTab('users')} className="flex items-center gap-2">
                         <Users size={16} />
                         Użytkownicy
@@ -69,16 +69,16 @@ export default function AdminModal() {
                     </Button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-6 bg-black/10">
+                <div className="flex-1 overflow-y-auto p-8 bg-secondary/20">
                     {activeTab === 'users' && (
-                        <div className="space-y-8">
-                            <div className="bg-white/5 p-6 rounded-xl border border-white/5">
-                                <h3 className="text-lg font-semibold text-white mb-4">Dodaj nowego użytkownika</h3>
-                                <form onSubmit={handleCreateUser} className="space-y-4 max-w-md">
+                        <div className="space-y-12">
+                            <div className="bg-white p-8 rounded-[2rem] border border-black/5 shadow-sm">
+                                <h3 className="text-lg font-black italic text-foreground mb-6 uppercase tracking-tighter">Dodaj nowego użytkownika</h3>
+                                <form onSubmit={handleCreateUser} className="space-y-6 max-w-md">
                                     <div className="space-y-2">
-                                        <label className="text-xs font-medium text-white/70 uppercase">Adres Email</label>
+                                        <label className="text-xs font-black uppercase tracking-widest text-foreground/40 ml-2">Adres Email</label>
                                         <div className="relative">
-                                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 z-10" size={18} />
+                                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/20 z-10" size={18} />
                                             <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="user@example.com" className="pl-12" required />
                                         </div>
                                     </div>
@@ -86,21 +86,21 @@ export default function AdminModal() {
                                         {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : "Utwórz użytkownika"}
                                     </Button>
                                 </form>
-                                <div className="mt-4 flex items-start gap-3 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg text-blue-200 text-xs">
-                                    <Info size={16} className="shrink-0 mt-0.5" />
+                                <div className="mt-6 flex items-start gap-3 p-4 bg-blue-50 border border-blue-100 rounded-2xl text-blue-700/70 text-xs font-medium leading-relaxed">
+                                    <Info size={18} className="shrink-0 mt-0.5 text-blue-500" />
                                     <p>System automatycznie utworzy konto i wyśle link do ustawienia hasła. Jeśli użytkownik już istnieje, zostanie mu przypisana rola &apos;user&apos; (jeśli nie jest adminem).</p>
                                 </div>
                             </div>
-                            <div className="pt-4 border-t border-white/10">
-                                <h3 className="text-lg font-semibold text-white mb-4">Zarządzaj Użytkownikami</h3>
+                            <div className="pt-8 border-t border-black/5">
+                                <h3 className="text-lg font-black italic text-foreground mb-6 uppercase tracking-tighter">Zarządzaj Użytkownikami</h3>
                                 <UserManagementTable />
                             </div>
                         </div>
                     )}
                     {activeTab === 'slides' && (
-                        <div className="flex flex-col items-center justify-center h-full text-white/50 space-y-4">
-                            <Film size={48} strokeWidth={1} className="opacity-50" />
-                            <p>Zarządzanie slajdami - w przygotowaniu</p>
+                        <div className="flex flex-col items-center justify-center h-full text-foreground/20 space-y-4 py-20">
+                            <Film size={64} strokeWidth={1} className="opacity-20" />
+                            <p className="font-bold italic">Zarządzanie slajdami - w przygotowaniu</p>
                         </div>
                     )}
                 </div>

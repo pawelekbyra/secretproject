@@ -116,29 +116,29 @@ export default function UserManagementTable() {
     ];
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-6">
             {/* Filters */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-between bg-white/5 p-4 rounded-xl border border-white/5">
+            <div className="flex flex-col sm:flex-row gap-4 justify-between bg-white p-5 rounded-[2rem] border border-black/5 shadow-sm">
                 <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" size={18} />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/20" size={18} />
                     <input
                         type="text"
                         placeholder="Szukaj po emailu, nazwie..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-black/40 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-white placeholder:text-white/20 focus:outline-none focus:border-primary transition-all"
+                        className="w-full bg-secondary border border-black/5 rounded-2xl pl-12 pr-4 py-3 text-foreground font-medium placeholder:text-foreground/20 focus:outline-none focus:border-primary/30 focus:bg-white transition-all shadow-inner focus:shadow-xl"
                     />
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 no-scrollbar">
                     {roles.map((r) => (
                         <button
                             key={r.value}
                             onClick={() => setRoleFilter(r.value)}
                             className={cn(
-                                "px-3 py-2 rounded-lg text-xs font-medium transition-colors border",
+                                "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border whitespace-nowrap",
                                 roleFilter === r.value
-                                    ? "bg-primary/20 border-primary text-primary"
-                                    : "bg-black/40 border-white/10 text-white/60 hover:text-white hover:bg-white/5"
+                                    ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
+                                    : "bg-secondary border-black/5 text-foreground/30 hover:text-foreground hover:bg-black/5"
                             )}
                         >
                             {r.label}
@@ -148,38 +148,38 @@ export default function UserManagementTable() {
             </div>
 
             {/* Table */}
-            <div className="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
+            <div className="bg-white rounded-[2rem] border border-black/5 overflow-hidden shadow-sm">
                 {isLoading ? (
-                    <div className="p-20 flex flex-col items-center justify-center text-white/50">
-                        <Loader2 size={32} className="animate-spin mb-4 text-primary" />
-                        <p>Ładowanie użytkowników...</p>
+                    <div className="p-24 flex flex-col items-center justify-center text-foreground/20">
+                        <Loader2 size={40} className="animate-spin mb-4 text-primary" />
+                        <p className="font-bold italic">Ładowanie użytkowników...</p>
                     </div>
                 ) : isError ? (
-                    <div className="p-20 flex flex-col items-center justify-center text-red-400">
-                        <AlertCircle size={32} className="mb-4" />
-                        <p>Wystąpił błąd podczas pobierania danych.</p>
+                    <div className="p-24 flex flex-col items-center justify-center text-rose-500">
+                        <AlertCircle size={40} className="mb-4" />
+                        <p className="font-bold italic">Wystąpił błąd podczas pobierania danych.</p>
                     </div>
                 ) : (data?.users || []).length === 0 ? (
-                    <div className="p-20 text-center text-white/30">
+                    <div className="p-24 text-center text-foreground/20 font-bold italic">
                         Brak użytkowników spełniających kryteria.
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
-                            <thead className="bg-black/40 text-xs uppercase text-white/40 font-medium">
+                            <thead className="bg-secondary/50 text-[10px] uppercase text-foreground/30 font-black tracking-widest">
                                 <tr>
-                                    <th className="px-6 py-4">Użytkownik</th>
-                                    <th className="px-6 py-4">Rola</th>
-                                    <th className="px-6 py-4">Data dołączenia</th>
-                                    <th className="px-6 py-4 text-right">Akcje</th>
+                                    <th className="px-8 py-5">Użytkownik</th>
+                                    <th className="px-8 py-5">Rola</th>
+                                    <th className="px-8 py-5">Dołączył</th>
+                                    <th className="px-8 py-5 text-right">Akcje</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-white/5">
+                            <tbody className="divide-y divide-black/5">
                                 {(data?.users || []).map((user: any) => (
-                                    <tr key={user.id} className="hover:bg-white/5 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-full bg-white/10 overflow-hidden relative border border-white/10 flex-shrink-0">
+                                    <tr key={user.id} className="hover:bg-secondary/30 transition-colors group">
+                                        <td className="px-8 py-5">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-12 h-12 rounded-full bg-secondary overflow-hidden relative border-2 border-white shadow-md flex-shrink-0 group-hover:scale-110 transition-transform">
                                                     {user.avatar ? (
                                                         <Image
                                                             src={user.avatar}
@@ -194,65 +194,65 @@ export default function UserManagementTable() {
                                                     )}
                                                 </div>
                                                 <div>
-                                                    <div className="font-medium text-white">{user.displayName || user.username}</div>
-                                                    <div className="text-xs text-white/50">{user.email}</div>
-                                                    <div className="text-[10px] text-white/30 font-mono mt-0.5 opacity-50">{user.id}</div>
+                                                    <div className="font-black text-foreground italic tracking-tight">{user.displayName || user.username}</div>
+                                                    <div className="text-xs font-bold text-foreground/30">{user.email}</div>
+                                                    <div className="text-[9px] text-foreground/10 font-mono mt-1 uppercase">{user.id}</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-8 py-5">
                                             <span className={cn(
-                                                "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border",
-                                                user.role === 'admin' ? "bg-red-500/10 text-red-500 border-red-500/20" :
-                                                user.role === 'author' ? "bg-yellow-500/10 text-yellow-500 border-yellow-500/20" :
-                                                user.role === 'patron' ? "bg-purple-500/10 text-purple-500 border-purple-500/20" :
-                                                "bg-blue-500/10 text-blue-500 border-blue-500/20"
+                                                "inline-flex items-center px-3 py-1 rounded-xl text-[10px] font-black uppercase tracking-widest border",
+                                                user.role === 'admin' ? "bg-rose-50 text-rose-500 border-rose-100" :
+                                                user.role === 'author' ? "bg-primary/5 text-primary border-primary/20" :
+                                                user.role === 'patron' ? "bg-amber-50 text-amber-600 border-amber-100" :
+                                                "bg-secondary text-foreground/40 border-black/5"
                                             )}>
                                                 {user.role}
                                                 {user.role === 'author' && <BadgeCheck size={12} className="ml-1" />}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-sm text-white/60">
+                                        <td className="px-8 py-5 text-xs font-black text-foreground/40 italic">
                                             {new Date(user.createdAt).toLocaleDateString('pl-PL')}
                                         </td>
-                                        <td className="px-6 py-4 text-right">
+                                        <td className="px-8 py-5 text-right">
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
-                                                    <button className="p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-lg transition-colors">
-                                                        <MoreVertical size={16} />
+                                                    <button className="p-2 text-foreground/20 hover:text-foreground hover:bg-black/5 rounded-xl transition-all">
+                                                        <MoreVertical size={18} />
                                                     </button>
                                                 </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end" className="bg-[#1c1c1e] border-white/10 text-white min-w-[160px]">
-                                                    <DropdownMenuLabel>Zarządzaj</DropdownMenuLabel>
-                                                    <DropdownMenuSeparator className="bg-white/10" />
+                                                <DropdownMenuContent align="end" className="bg-white border-black/5 text-foreground min-w-[180px] rounded-2xl shadow-2xl p-1">
+                                                    <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-widest text-foreground/30 px-3 py-2">Zarządzaj</DropdownMenuLabel>
+                                                    <DropdownMenuSeparator className="bg-black/5" />
                                                     <DropdownMenuItem
                                                         onClick={() => handleRoleChange(user.id, 'user')}
-                                                        className="hover:bg-white/10 cursor-pointer text-xs"
+                                                        className="hover:bg-secondary cursor-pointer text-xs font-bold rounded-xl px-3 py-2"
                                                     >
                                                         Ustaw jako: User
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
                                                         onClick={() => handleRoleChange(user.id, 'patron')}
-                                                        className="hover:bg-white/10 cursor-pointer text-xs"
+                                                        className="hover:bg-secondary cursor-pointer text-xs font-bold rounded-xl px-3 py-2"
                                                     >
                                                         Ustaw jako: Patron
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
                                                         onClick={() => handleRoleChange(user.id, 'author')}
-                                                        className="hover:bg-white/10 cursor-pointer text-xs"
+                                                        className="hover:bg-secondary cursor-pointer text-xs font-bold rounded-xl px-3 py-2"
                                                     >
                                                         Ustaw jako: Twórca
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
                                                         onClick={() => handleRoleChange(user.id, 'admin')}
-                                                        className="text-red-400 hover:bg-red-500/10 cursor-pointer text-xs"
+                                                        className="text-rose-500 hover:bg-rose-50 cursor-pointer text-xs font-black rounded-xl px-3 py-2"
                                                     >
                                                         Ustaw jako: Admin
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuSeparator className="bg-white/10" />
+                                                    <DropdownMenuSeparator className="bg-black/5" />
                                                     <DropdownMenuItem
                                                         onClick={() => handleDelete(user.id)}
-                                                        className="text-red-500 hover:bg-red-500/10 cursor-pointer focus:bg-red-500/10 focus:text-red-500"
+                                                        className="text-rose-600 font-black hover:bg-rose-50 cursor-pointer rounded-xl px-3 py-2"
                                                     >
                                                         <Trash2 size={14} className="mr-2" />
                                                         Usuń konto
@@ -270,23 +270,23 @@ export default function UserManagementTable() {
 
             {/* Pagination */}
             {data && (data.pages || 0) > 1 && (
-                <div className="flex items-center justify-center gap-4 mt-6">
+                <div className="flex items-center justify-center gap-6 mt-8">
                     <button
                         onClick={() => setPage(p => Math.max(1, p - 1))}
                         disabled={page === 1}
-                        className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white disabled:opacity-30 disabled:hover:bg-white/5 transition-colors"
+                        className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border border-black/5 hover:bg-secondary text-foreground disabled:opacity-30 transition-all shadow-sm"
                     >
-                        <ChevronLeft size={20} />
+                        <ChevronLeft size={24} />
                     </button>
-                    <span className="text-sm text-white/60">
-                        Strona {page} z {data.pages || 1}
+                    <span className="text-xs font-black uppercase tracking-widest text-foreground/40">
+                        Strona {page} / {data.pages || 1}
                     </span>
                     <button
                         onClick={() => setPage(p => Math.min(data.pages || 1, p + 1))}
                         disabled={page === (data.pages || 1)}
-                        className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white disabled:opacity-30 disabled:hover:bg-white/5 transition-colors"
+                        className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border border-black/5 hover:bg-secondary text-foreground disabled:opacity-30 transition-all shadow-sm"
                     >
-                        <ChevronRight size={20} />
+                        <ChevronRight size={24} />
                     </button>
                 </div>
             )}

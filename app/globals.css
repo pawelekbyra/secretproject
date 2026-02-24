@@ -4,18 +4,16 @@
 
 @layer base {
   :root {
-    /* Szklane UI dla sidebara */
-    --glass-bg: rgba(255, 255, 255, 0.06);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-bg-strong: rgba(0, 0, 0, 0.75);
-    --glass-border-light: rgba(255, 255, 255, 0.15);
-    --surface-elevated: rgba(255, 255, 255, 0.08);
+    /* Nowoczesny Light Mode - App Style */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --glass-bg-strong: rgba(255, 255, 255, 0.95);
+    --glass-border-light: rgba(0, 0, 0, 0.08);
+    --surface-elevated: #ffffff;
 
-    /* Ujednolicone zmienne z prototypu tingtong.txt */
     --app-height: 100vh;
-    --main-ui-bg-color: #696969;
-    --transition-speed: 0.4s;
-    --transition-timing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-speed: 0.3s;
+    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
     --topbar-base-height: 56px;
     --bottombar-base-height: 100px;
     --sidebar-width: 90px;
@@ -24,43 +22,41 @@
     --topbar-height: calc(var(--topbar-base-height) + var(--safe-area-top));
     --bottombar-height: calc(var(--bottombar-base-height) + var(--safe-area-bottom));
 
-    /* Shadcn/ui variables - adapted for the prototype's theme */
-    --background: 0 0% 0%; /* Black background */
-    --foreground: 0 0% 100%; /* White text */
+    /* Kolory - Nowoczesna Paleta */
+    --background: 210 40% 98%; /* Slate 50 */
+    --foreground: 224 71% 4%; /* Slate 950 */
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
 
-    --primary: 345 80% 40%; /* Accent color (Burgundy/Maroon) */
+    --primary: 262.1 83.3% 57.8%; /* Vibrant Indigo/Violet */
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 220 14% 96%; /* Gray 100 */
+    --secondary-foreground: 224 71% 4%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 8.9% 46.1%;
 
-    --accent: 336 100% 50%; /* Accent color */
-    --accent-foreground: 210 40% 98%;
+    --accent: 262.1 83.3% 57.8%;
+    --accent-foreground: 224 71% 4%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 262 83% 58%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 262.1 83.3% 57.8%;
 
-    --radius: 1rem;
+    --radius: 2.5rem;
 
-    /* Neon & Premium Gloss */
-    --primary-glow: 0 0 10px hsla(262, 83%, 58%, 0.5), 0 0 20px hsla(262, 83%, 58%, 0.3);
-    --neon-glow: 0 0 15px -3px hsl(var(--primary) / 0.5), 0 0 10px -4px hsl(var(--primary) / 0.3);
-    --neon-glow-strong: 0 0 25px -2px hsl(var(--primary) / 0.6), 0 0 15px -3px hsl(var(--primary) / 0.4);
-    --glass-blur: blur(12px) saturate(160%);
-    --glass-blur-heavy: blur(24px) saturate(180%);
+    /* Nowe efekty */
+    --primary-glow: 0 10px 30px -5px hsla(262, 83%, 58%, 0.3);
+    --glass-blur: blur(16px) saturate(180%);
+    --glass-blur-heavy: blur(32px) saturate(200%);
   }
 }
 
@@ -86,12 +82,12 @@
   }
 
   body {
-    background-color: #000000;
+    background-color: hsl(var(--background));
   }
 
   @media (min-width: 768px) {
     body {
-      background-color: #09090b;
+      background-color: #f1f5f9;
     }
     #app-layout {
       margin: 0;
@@ -109,6 +105,7 @@
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
   }
 
   .app-glass-strong {
@@ -116,20 +113,22 @@
     backdrop-filter: var(--glass-blur-heavy);
     -webkit-backdrop-filter: var(--glass-blur-heavy);
     border: 1px solid var(--glass-border-light);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.1);
   }
 
   .neon-border {
-    border-color: hsl(var(--primary) / 0.5);
-    box-shadow: var(--neon-glow);
+    border-color: hsl(var(--primary) / 0.3);
+    box-shadow: 0 4px 12px hsl(var(--primary) / 0.1);
   }
 
   .neon-border-strong {
     border-color: hsl(var(--primary));
-    box-shadow: var(--neon-glow-strong);
+    box-shadow: var(--primary-glow);
   }
 
   .neon-text-primary {
-    text-shadow: 0 0 8px hsl(var(--primary) / 0.8);
+    color: hsl(var(--primary));
+    font-weight: 800;
   }
 
   .secret-overlay {
@@ -167,13 +166,11 @@
     scroll-snap-align: start;
   }
   .app-modal-glass {
-    background-color: var(--glass-bg-strong);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-color: var(--glass-border-light);
+    background-color: #ffffff;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.08);
   }
   .app-handle {
-    @apply w-12 h-1.5 bg-white/20 rounded-full mx-auto my-3 flex-shrink-0;
+    @apply w-12 h-1.5 bg-black/10 rounded-full mx-auto my-3 flex-shrink-0;
   }
 }
 

@@ -85,7 +85,7 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
             animate={{ x: '0%' }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 200 }}
-            className="absolute inset-0 z-[70] app-modal-glass flex flex-col overflow-hidden border-l border-white/10"
+            className="absolute inset-0 z-[70] app-modal-glass flex flex-col overflow-hidden border-l border-black/5"
             style={{
                 height: '100%',
                 width: '100%',
@@ -97,19 +97,19 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
 
                 {/* Top Bar - Now inside scroll view and relative (not sticky/fixed to viewport) */}
                 <div
-                    className="flex items-center justify-between px-1 text-white border-b border-white/5 z-10 relative bg-black/20"
+                    className="flex items-center justify-between px-1 text-foreground border-b border-black/5 z-10 relative bg-secondary/50"
                     style={{
                       height: 'calc(var(--topbar-height) - 10px)',
                       paddingTop: '0',
                     }}
                 >
                     <div className="flex justify-start w-12">
-                        <button onClick={onClose} className="p-2 -ml-2 text-white/80 hover:text-white transition-colors">
+                        <button onClick={onClose} className="p-2 -ml-2 text-foreground/80 hover:text-foreground transition-colors">
                             <ChevronLeft size={28} />
                         </button>
                     </div>
                     <div className="flex justify-center flex-1">
-                        <span className="font-bold text-base truncate max-w-[200px] text-white">
+                        <span className="font-bold text-base truncate max-w-[200px] text-foreground">
                             {profile?.username || '...'}
                         </span>
                     </div>
@@ -140,7 +140,7 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                             </div>
 
                             {/* Name */}
-                            <h1 className={cn("text-lg font-bold mb-1", profile.role === 'patron' ? "text-yellow-400" : "text-white")}>
+                            <h1 className={cn("text-lg font-black mb-1", profile.role === 'patron' ? "text-amber-600" : "text-foreground")}>
                                 {profile.username}
                             </h1>
 
@@ -151,26 +151,26 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
 
                             {/* Bio (Description) */}
                             {profile.bio ? (
-                                <p className="text-sm text-center text-white/90 whitespace-pre-wrap mb-3 px-2 leading-tight max-w-sm">
+                                <p className="text-sm text-center text-foreground/80 whitespace-pre-wrap mb-3 px-2 leading-tight max-w-sm">
                                     {profile.bio}
                                 </p>
                             ) : (
-                                <p className="text-sm text-center text-white/40 mb-3 italic">Brak opisu</p>
+                                <p className="text-sm text-center text-foreground/40 mb-3 italic">Brak opisu</p>
                             )}
 
                             {/* Stats */}
                             <div className="flex items-center gap-6 mt-1 mb-5">
                                 <div className="flex flex-col items-center">
-                                    <span className="font-bold text-white text-lg">{formatCount(profile.slides.length)}</span>
-                                    <span className="text-xs text-white/60">Filmików</span>
+                                    <span className="font-black text-foreground text-lg">{formatCount(profile.slides.length)}</span>
+                                    <span className="text-xs text-foreground/40 font-bold uppercase tracking-wider">Filmików</span>
                                 </div>
-                                <div className="flex flex-col items-center border-x border-white/10 px-6">
-                                    <span className="font-bold text-white text-lg">{formatCount(stats.followers)}</span>
-                                    <span className="text-xs text-white/60">Patronów</span>
+                                <div className="flex flex-col items-center border-x border-black/5 px-6">
+                                    <span className="font-black text-foreground text-lg">{formatCount(stats.followers)}</span>
+                                    <span className="text-xs text-foreground/40 font-bold uppercase tracking-wider">Patronów</span>
                                 </div>
                                 <div className="flex flex-col items-center">
-                                    <span className="font-bold text-white text-lg">{formatCount(stats.likes)}</span>
-                                    <span className="text-xs text-white/60">Polubień</span>
+                                    <span className="font-black text-foreground text-lg">{formatCount(stats.likes)}</span>
+                                    <span className="text-xs text-foreground/40 font-bold uppercase tracking-wider">Polubień</span>
                                 </div>
                             </div>
 
@@ -197,32 +197,32 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                         </div>
 
                         {/* Tabs */}
-                        <div className="flex border-y border-white/5 mt-2 sticky top-0 bg-black/60 backdrop-blur-xl z-10">
+                        <div className="flex border-y border-black/5 mt-2 sticky top-0 bg-white/80 backdrop-blur-xl z-10">
                             <button
                                 onClick={() => setActiveTab('videos')}
-                                className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'videos' ? 'text-primary' : 'text-white/40 hover:text-white/60'}`}
+                                className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'videos' ? 'text-primary' : 'text-foreground/40 hover:text-foreground/60'}`}
                             >
                                 <Grid size={24} />
                                 {activeTab === 'videos' && (
-                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]" />
+                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[3px] bg-primary rounded-t-full shadow-lg shadow-primary/20" />
                                 )}
                             </button>
                             <button
                                 onClick={() => setActiveTab('liked')}
-                                className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'liked' ? 'text-primary' : 'text-white/40 hover:text-white/60'}`}
+                                className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'liked' ? 'text-primary' : 'text-foreground/40 hover:text-foreground/60'}`}
                             >
                                 <Heart size={24} />
                                 {activeTab === 'liked' && (
-                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]" />
+                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[3px] bg-primary rounded-t-full shadow-lg shadow-primary/20" />
                                 )}
                             </button>
                             <button
                                 onClick={() => setActiveTab('private')}
-                                className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'private' ? 'text-primary' : 'text-white/40 hover:text-white/60'}`}
+                                className={`flex-1 flex justify-center items-center py-3 relative transition-colors ${activeTab === 'private' ? 'text-primary' : 'text-foreground/40 hover:text-foreground/60'}`}
                             >
                                 <Lock size={24} />
                                 {activeTab === 'private' && (
-                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]" />
+                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[3px] bg-primary rounded-t-full shadow-lg shadow-primary/20" />
                                 )}
                             </button>
                         </div>
@@ -261,11 +261,11 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                                     )}
                                 </div>
                             ) : activeTab === 'liked' ? (
-                                <div className="flex flex-col items-center justify-center min-h-[300px] text-white/40 space-y-2 py-10">
-                                    <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-2">
+                                <div className="flex flex-col items-center justify-center min-h-[300px] text-foreground/40 space-y-2 py-10">
+                                    <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center mb-2">
                                         <Heart size={32} />
                                     </div>
-                                    <h3 className="font-bold text-white">Polubione filmy tego użytkownika są prywatne</h3>
+                                    <h3 className="font-bold text-foreground">Polubione filmy tego użytkownika są prywatne</h3>
                                     <p className="text-xs text-center px-8">Filmy polubione przez użytkownika @{profile.username} są widoczne tylko dla niego.</p>
                                 </div>
                             ) : (
