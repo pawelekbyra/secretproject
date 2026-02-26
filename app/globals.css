@@ -34,7 +34,7 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 345 80% 40%; /* Accent color (Burgundy/Maroon) */
+    --primary: 215 25% 75%; /* Polished Silver */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 217.2 32.6% 17.5%;
@@ -91,11 +91,40 @@
 
   @media (min-width: 768px) {
     body {
-      background-color: #09090b;
+      background: radial-gradient(circle at 50% 50%, #e2e8f0 0%, #94a3b8 25%, #475569 60%, #1e293b 100%);
+      position: relative;
     }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.1) 50%, transparent 55%);
+      background-size: 200% 200%;
+      animation: shine 15s infinite linear;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("https://www.transparenttextures.com/patterns/dust.png");
+      opacity: 0.15;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      z-index: -1;
+    }
+
     #app-layout {
       margin: 0;
     }
+  }
+
+  @keyframes shine {
+    0% { background-position: -200% -200%; }
+    100% { background-position: 200% 200%; }
   }
 
   *::-webkit-scrollbar {

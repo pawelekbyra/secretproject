@@ -82,8 +82,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
     return (
       <div
         className={cn(
-            "absolute inset-0 z-20 p-4 flex flex-col justify-end text-white",
-            isLocked && "pointer-events-none"
+            "absolute inset-0 z-20 p-4 flex flex-col justify-end text-white pointer-events-none"
         )}
         onClick={handleContainerClick}
       >
@@ -106,6 +105,17 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
         <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/70 via-black/40 to-transparent pointer-events-none" />
 
         <AnimatePresence>
+            {/* Center click area for play/pause toggle */}
+            {!isImmersionMode && (
+                <div
+                    className={cn(
+                        "absolute inset-0 z-10",
+                        !isLocked ? "pointer-events-auto cursor-pointer" : "pointer-events-none"
+                    )}
+                    onClick={handleContainerClick}
+                />
+            )}
+
             {!isLocked && showPlaybackIcon && (
                 <motion.div
                     className="absolute inset-0 flex items-center justify-center pointer-events-none z-30"
@@ -136,37 +146,37 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
             {/* UI Controls Container */}
-            <div className="relative w-full max-w-[calc(100%-60px)] flex flex-col items-start text-left mb-2 pb-[calc(max(env(safe-area-inset-bottom),24px)+8px)]">
-                <div className="flex items-center gap-2 mb-2 pointer-events-auto max-w-full">
+            <div className="relative w-full max-w-[calc(100%-60px)] flex flex-col items-start text-left mb-2 pb-6">
+                <div className="flex items-center gap-3 mb-3 pointer-events-auto max-w-full">
                     <Image
                         src={slide.avatar || DEFAULT_AVATAR_URL}
                         alt={slide.username || 'User'}
-                        width={40}
-                        height={40}
-                        className="rounded-full border-2 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)] shrink-0"
+                        width={44}
+                        height={44}
+                        className="rounded-full border-2 border-white shadow-[0_0_15px_rgba(255,255,255,0.3)] shrink-0"
                     />
                     <div className="flex items-center gap-2 truncate">
-                        <p className="font-black italic uppercase tracking-tighter text-lg truncate min-w-0 drop-shadow-lg">{slide.username}</p>
+                        <p className="font-black italic uppercase tracking-widest text-xl truncate min-w-0 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">{slide.username}</p>
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setImmersionMode(true);
                             }}
-                            className="p-1.5 bg-white/10 hover:bg-white/30 backdrop-blur-md border border-white/20 rounded-full transition-all active:scale-90 pointer-events-auto group"
+                            className="p-2 bg-white/10 hover:bg-white/30 backdrop-blur-md border border-white/20 rounded-full transition-all active:scale-90 pointer-events-auto group shadow-lg"
                             title="Tryb immersyjny"
                         >
-                            <EyeOff size={14} className="text-white/80 group-hover:text-white" />
+                            <EyeOff size={16} className="text-white group-hover:text-white" />
                         </button>
                     </div>
                 </div>
 
                 {slide.data && 'title' in slide.data && (
-                    <h2 className="text-2xl font-black italic uppercase tracking-tighter mb-1 truncate w-full drop-shadow-xl text-white">
+                    <h2 className="text-3xl font-black italic uppercase tracking-tight mb-2 truncate w-full drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] text-white leading-tight">
                         {slide.data.title}
                     </h2>
                 )}
                 {slide.data && 'description' in slide.data && (
-                    <p className="text-sm font-medium opacity-90 truncate w-full drop-shadow-md text-white/90">
+                    <p className="text-base font-bold tracking-wide opacity-100 truncate w-full drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] text-white leading-relaxed">
                         {slide.data.description}
                     </p>
                 )}
@@ -174,7 +184,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
 
             {/* Hide video controls if locked? Usually yes. */}
             {isVideoSlide && !isLocked && (
-                <div className="pointer-events-auto w-full px-2 pb-[calc(env(safe-area-inset-bottom)+32px)]">
+                <div className="pointer-events-auto w-full px-2 pb-[calc(env(safe-area-inset-bottom)+60px)]">
                     <VideoControls
                         isPlaying={isPlaying}
                         isMuted={isMuted}
@@ -187,10 +197,11 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
         </motion.div>
 
         <motion.div
-            className="absolute right-0 z-20"
+            className="absolute right-0 inset-y-0 z-30 pointer-events-none flex items-center"
             animate={{
-                x: isImmersionMode ? 100 : 0,
-                opacity: isImmersionMode ? 0 : 1,
+                // Removed x: 100 to keep it visible always as requested
+                opacity: isImmersionMode ? 0.4 : 1,
+                scale: isImmersionMode ? 0.9 : 1,
             }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >

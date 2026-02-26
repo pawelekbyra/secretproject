@@ -106,30 +106,28 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   // Shared styles
   const iconSize = 26;
-  const buttonClass = "flex flex-col items-center gap-1 justify-center cursor-pointer group";
-  const labelClass = "text-[10px] leading-none text-center font-medium text-white/80 group-hover:text-white transition-colors drop-shadow-sm";
-  const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 app-glass border-white/10 hover:border-white/20 active:scale-95";
+  const buttonClass = "flex flex-col items-center gap-1.5 justify-center cursor-pointer group";
+  const labelClass = "text-[10px] leading-none text-center font-black uppercase tracking-widest text-white/90 group-hover:text-white transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]";
+  const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-white/25 via-white/10 to-transparent backdrop-blur-xl border border-white/40 shadow-[0_0_15px_rgba(255,255,255,0.15)] hover:border-white/60 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] active:scale-95";
 
   // Determine avatar border color
-  // In Sidebar, this is the Author's avatar.
-  // Requirement: Author = White border with white glow.
-  const avatarBorderColor = 'border-white';
+  const avatarBorderColor = 'border-white/80';
 
   return (
     <aside
-      className="absolute right-0 flex flex-col items-center gap-[12px] z-20 pointer-events-auto"
+      className="absolute right-3 flex flex-col items-center gap-4 z-30 pointer-events-auto"
       style={{
-        top: 'calc((var(--app-height) - var(--topbar-height) - var(--bottombar-height)) / 2 + var(--topbar-height))',
+        top: 'calc((var(--app-height, 100vh) - var(--topbar-height, 56px) - var(--bottombar-height, 100px)) / 2 + var(--topbar-height, 56px))',
         transform: 'translateY(-50%)',
         textShadow: '0 0 4px rgba(0, 0, 0, 0.8)',
       }}
     >
       {/* Avatar / Author Profile */}
-      <div className="relative w-12 h-12 mb-1.5">
+      <div className="relative w-12 h-12 mb-2">
         <button
             onClick={handleOpenAuthorProfile}
             className={cn(
-                "w-full h-full flex items-center justify-center text-white bg-gray-600 rounded-full overflow-hidden border-2 shadow-[0_0_15px_rgba(255,255,255,0.5)] active:scale-95 transition-transform",
+                "w-full h-full flex items-center justify-center text-white bg-slate-800 rounded-full overflow-hidden border-2 shadow-[0_0_20px_rgba(255,255,255,0.4)] active:scale-95 transition-transform",
                 avatarBorderColor
             )}
         >
@@ -141,7 +139,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         </button>
          {showPlusIcon && (
              <div
-                className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-5 h-5 rounded-full flex items-center justify-center text-white border-2 border-white pointer-events-none bg-primary shadow-[0_0_8px_var(--primary-glow)]"
+                className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-5 h-5 rounded-full flex items-center justify-center text-white border-2 border-white pointer-events-none bg-primary shadow-[0_0_10px_rgba(255,255,255,0.6)]"
               >
                 <Plus size={14} strokeWidth={4} />
               </div>
