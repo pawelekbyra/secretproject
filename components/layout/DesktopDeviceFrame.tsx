@@ -48,17 +48,17 @@ const DesktopDeviceFrame: React.FC<DesktopDeviceFrameProps> = ({ children }) => 
           <div className="absolute inset-0 bg-black/40 rounded-[50px] blur-2xl transform translate-y-8 scale-90" />
 
           {/* Intense Metallic Glow */}
-          <div className="absolute -inset-4 bg-white/10 rounded-[3rem] blur-[60px] pointer-events-none animate-pulse-slow" />
-          <div className="absolute -inset-1 bg-gradient-to-tr from-white/40 to-transparent rounded-[2.5rem] blur-[20px] pointer-events-none" />
+          <div className="absolute -inset-4 bg-white/5 rounded-[3rem] blur-[60px] pointer-events-none" />
+          <div className="absolute -inset-1 bg-gradient-to-tr from-white/20 to-transparent rounded-[2.5rem] blur-[20px] pointer-events-none" />
 
-          {/* Physical Buttons with Chrome Effect */}
-          <div className="absolute -left-[3.5px] top-24 w-[4px] h-12 bg-gradient-to-b from-slate-200 via-slate-400 to-slate-200 rounded-l-md z-10 shadow-[0_0_12px_rgba(255,255,255,0.4)]" />
-          <div className="absolute -left-[3.5px] top-40 w-[4px] h-12 bg-gradient-to-b from-slate-200 via-slate-400 to-slate-200 rounded-l-md z-10 shadow-[0_0_12px_rgba(255,255,255,0.4)]" />
+          {/* Physical Buttons */}
+          <div className="absolute -left-[2px] top-24 w-[3px] h-12 bg-slate-400 rounded-l-md z-10" />
+          <div className="absolute -left-[2px] top-40 w-[3px] h-12 bg-slate-400 rounded-l-md z-10" />
 
           {/* Power Button */}
-          <div className="absolute -right-[3.5px] top-32 w-[4px] h-16 bg-gradient-to-b from-slate-200 via-slate-400 to-slate-200 rounded-r-md z-10 shadow-[0_0_12px_rgba(255,255,255,0.4)]" />
+          <div className="absolute -right-[2px] top-32 w-[3px] h-16 bg-slate-400 rounded-r-md z-10" />
 
-          {/* Fizyczna Ramka - Polished Chrome Effect */}
+          {/* Fizyczna Ramka */}
           <div
             className="
               relative
@@ -66,10 +66,10 @@ const DesktopDeviceFrame: React.FC<DesktopDeviceFrameProps> = ({ children }) => 
               min-w-[360px]
               max-w-[calc(100vw-2rem)]
               rounded-[2.4rem]
-              p-[6px]
-              bg-gradient-to-b from-slate-200 via-slate-400 to-slate-800
-              shadow-[0_0_80px_-10px_rgba(255,255,255,0.3),0_30px_60px_rgba(0,0,0,0.9)]
-              border border-white/30
+              p-[4px]
+              bg-[#2a2a2a]
+              shadow-[0_0_50px_-10px_rgba(0,0,0,0.5),0_30px_60px_rgba(0,0,0,0.8)]
+              border border-white/10
               z-20
             "
           >

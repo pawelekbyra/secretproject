@@ -108,7 +108,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const iconSize = 26;
   const buttonClass = "flex flex-col items-center gap-1.5 justify-center cursor-pointer group";
   const labelClass = "text-[10px] leading-none text-center font-black uppercase tracking-widest text-white/90 group-hover:text-white transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]";
-  const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-white/25 via-white/10 to-transparent backdrop-blur-xl border border-white/40 shadow-[0_0_15px_rgba(255,255,255,0.15)] hover:border-white/60 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] active:scale-95";
+  const iconWrapClass = "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 bg-white/10 backdrop-blur-xl border border-white/10 hover:bg-white/20 active:scale-95";
 
   // Determine avatar border color
   const avatarBorderColor = 'border-white/80';
@@ -127,7 +127,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         <button
             onClick={handleOpenAuthorProfile}
             className={cn(
-                "w-full h-full flex items-center justify-center text-white bg-slate-800 rounded-full overflow-hidden border-2 shadow-[0_0_20px_rgba(255,255,255,0.4)] active:scale-95 transition-transform",
+                "w-full h-full flex items-center justify-center text-white bg-slate-800 rounded-full overflow-hidden border-2 active:scale-95 transition-transform",
                 avatarBorderColor
             )}
         >
