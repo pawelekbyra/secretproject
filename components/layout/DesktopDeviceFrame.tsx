@@ -33,13 +33,7 @@ const DesktopDeviceFrame: React.FC<DesktopDeviceFrameProps> = ({ children }) => 
   }, []);
 
   return (
-    <div className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-[#0a0000] bg-gradient-to-br from-[#1a0508] via-[#0a0000] to-[#0a0000]">
-
-      {/* Ambient Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[100px] mix-blend-screen" />
-      </div>
+    <div className="relative w-full h-screen flex items-center justify-center overflow-hidden">
 
       <div className="relative z-10 flex items-center gap-12 xl:gap-24">
 
@@ -53,27 +47,29 @@ const DesktopDeviceFrame: React.FC<DesktopDeviceFrameProps> = ({ children }) => 
           {/* Cień i poświata telefonu */}
           <div className="absolute inset-0 bg-black/40 rounded-[50px] blur-2xl transform translate-y-8 scale-90" />
 
-          {/* Subtle Violet Glow */}
-          <div className="absolute -inset-1 bg-primary/20 rounded-[2.5rem] blur-[40px] pointer-events-none" />
+          {/* Intense Metallic Glow */}
+          <div className="absolute -inset-4 bg-white/5 rounded-[3rem] blur-[60px] pointer-events-none" />
+          <div className="absolute -inset-1 bg-gradient-to-tr from-white/20 to-transparent rounded-[2.5rem] blur-[20px] pointer-events-none" />
 
-          {/* Przyciski fizyczne (Volume Up/Down) */}
-          <div className="absolute -left-[3px] top-24 w-[3px] h-12 bg-zinc-700 rounded-l-md z-10" />
-          <div className="absolute -left-[3px] top-40 w-[3px] h-12 bg-zinc-700 rounded-l-md z-10" />
+          {/* Physical Buttons */}
+          <div className="absolute -left-[2px] top-24 w-[3px] h-12 bg-slate-400 rounded-l-md z-10" />
+          <div className="absolute -left-[2px] top-40 w-[3px] h-12 bg-slate-400 rounded-l-md z-10" />
 
-          {/* Przycisk fizyczny (Power) */}
-          <div className="absolute -right-[3px] top-32 w-[3px] h-16 bg-zinc-700 rounded-r-md z-10" />
+          {/* Power Button */}
+          <div className="absolute -right-[2px] top-32 w-[3px] h-16 bg-slate-400 rounded-r-md z-10" />
 
           {/* Fizyczna Ramka */}
           <div
             className="
-              relative bg-zinc-900/10
+              relative
               h-[94vh] aspect-[9/19] w-auto
               min-w-[360px]
               max-w-[calc(100vw-2rem)]
               rounded-[2.4rem]
-              p-[6px]
-              bg-gradient-to-b from-zinc-800 to-zinc-950
-              shadow-2xl shadow-black/80
+              p-[4px]
+              bg-[#2a2a2a]
+              shadow-[0_0_50px_-10px_rgba(0,0,0,0.5),0_30px_60px_rgba(0,0,0,0.8)]
+              border border-white/10
               z-20
             "
           >
