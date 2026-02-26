@@ -62,18 +62,18 @@ const VideoControls: React.FC<VideoControlsProps> = ({
 
   return (
     <div
-        className="flex items-center gap-3 text-white w-full transition-all"
+        className="flex items-center gap-4 text-white w-full transition-all"
         onClick={(e) => e.stopPropagation()}
     >
-      <button onClick={onTogglePlay} className="p-1 hover:text-white transition-all active:scale-90 shrink-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-        {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" />}
+      <button onClick={onTogglePlay} className="p-1 hover:text-white transition-all active:scale-90 shrink-0 drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
+        {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
       </button>
 
-      <div className="flex-1 relative flex items-center h-8 group">
+      <div className="flex-1 relative flex items-center h-10 group">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full h-[3px] bg-white/20 rounded-full overflow-hidden relative backdrop-blur-sm">
+            <div className="w-full h-[4px] bg-white/10 rounded-full overflow-hidden relative backdrop-blur-md">
               <div
-                className="absolute inset-y-0 left-0 bg-gradient-to-r from-white/80 to-white transition-all duration-100 ease-out shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                className="absolute inset-y-0 left-0 bg-gradient-to-r from-white/60 via-white to-white transition-all duration-100 ease-out shadow-[0_0_12px_rgba(255,255,255,0.7)]"
                 style={{ width: `${(currentTime / (duration || 100)) * 100}%` }}
               />
             </div>

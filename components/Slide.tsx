@@ -184,7 +184,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
 
             {/* Hide video controls if locked? Usually yes. */}
             {isVideoSlide && !isLocked && (
-                <div className="pointer-events-auto w-full max-w-[calc(100%-80px)] px-3 pb-[calc(env(safe-area-inset-bottom)+80px)]">
+                <div className="pointer-events-auto w-full px-4 pb-[calc(env(safe-area-inset-bottom)+80px)]">
                     <VideoControls
                         isPlaying={isPlaying}
                         isMuted={isMuted}
