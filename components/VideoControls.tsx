@@ -62,18 +62,18 @@ const VideoControls: React.FC<VideoControlsProps> = ({
 
   return (
     <div
-        className="flex items-center gap-3 text-white bg-black/20 px-3 py-1.5 rounded-xl backdrop-blur-md border border-white/10 w-full shadow-lg transition-all"
+        className="flex items-center gap-3 text-white w-full transition-all"
         onClick={(e) => e.stopPropagation()}
     >
-      <button onClick={onTogglePlay} className="p-1 hover:text-white transition-all active:scale-90 shrink-0">
-        {isPlaying ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" />}
+      <button onClick={onTogglePlay} className="p-1 hover:text-white transition-all active:scale-90 shrink-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+        {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" />}
       </button>
 
-      <div className="flex-1 relative flex items-center h-4 group">
+      <div className="flex-1 relative flex items-center h-8 group">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden relative">
+            <div className="w-full h-[3px] bg-white/20 rounded-full overflow-hidden relative backdrop-blur-sm">
               <div
-                className="absolute inset-y-0 left-0 bg-white transition-all duration-100 ease-out"
+                className="absolute inset-y-0 left-0 bg-gradient-to-r from-white/80 to-white transition-all duration-100 ease-out shadow-[0_0_8px_rgba(255,255,255,0.8)]"
                 style={{ width: `${(currentTime / (duration || 100)) * 100}%` }}
               />
             </div>
@@ -94,10 +94,10 @@ const VideoControls: React.FC<VideoControlsProps> = ({
           />
       </div>
 
-      <span className="text-[9px] font-bold font-mono opacity-80 shrink-0">{formatTime(currentTime)} / {formatTime(duration)}</span>
+      <span className="text-[9px] font-black italic uppercase opacity-90 shrink-0 drop-shadow-md">{formatTime(currentTime)} / {formatTime(duration)}</span>
 
-      <button onClick={onToggleMute} className="p-1 hover:text-white transition-all active:scale-90 shrink-0">
-        {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+      <button onClick={onToggleMute} className="p-1.5 hover:text-white transition-all active:scale-90 shrink-0">
+        {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
       </button>
     </div>
   );

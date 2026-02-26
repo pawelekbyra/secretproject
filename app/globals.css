@@ -92,9 +92,9 @@
   @media (min-width: 768px) {
     body {
       background:
-        linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 20%, #94a3b8 40%, #cbd5e1 60%, #f1f5f9 80%, #94a3b8 100%),
-        linear-gradient(45deg, rgba(255,255,255,0.4) 0%, transparent 40%, rgba(255,255,255,0.4) 100%);
-      background-blend-mode: overlay;
+        radial-gradient(ellipse at 0% 0%, rgba(127, 29, 29, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(30, 41, 59, 0.2) 0%, transparent 50%),
+        #050507;
       position: relative;
     }
 
@@ -102,7 +102,8 @@
       content: "";
       position: fixed;
       inset: 0;
-      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.6) 45%, rgba(255,255,255,0.6) 55%, transparent 60%);
+      background: url("https://www.transparenttextures.com/patterns/dust.png");
+      opacity: 0.05;
       pointer-events: none;
       z-index: -1;
     }
@@ -111,9 +112,7 @@
       content: "";
       position: fixed;
       inset: 0;
-      background-image: url("https://www.transparenttextures.com/patterns/dust.png");
-      opacity: 0.4;
-      mix-blend-mode: overlay;
+      background: linear-gradient(to bottom right, transparent 45%, rgba(255,255,255,0.02) 50%, transparent 55%);
       pointer-events: none;
       z-index: -1;
     }
