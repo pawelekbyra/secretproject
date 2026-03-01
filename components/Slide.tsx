@@ -146,7 +146,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
             {/* UI Controls Container */}
-            <div className="relative w-full max-w-[calc(100%-80px)] flex flex-col items-start text-left mb-1 pb-2 px-3">
+            <div className="relative w-full flex flex-col items-start text-left mb-2 pb-1 px-4">
                 <div className="flex items-center gap-2.5 mb-2.5 pointer-events-auto max-w-full">
                     <Image
                         src={slide.avatar || DEFAULT_AVATAR_URL}
@@ -184,7 +184,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
 
             {/* Hide video controls if locked? Usually yes. */}
             {isVideoSlide && !isLocked && (
-                <div className="pointer-events-auto w-full max-w-[calc(100%-80px)] px-3 pb-[calc(env(safe-area-inset-bottom)+80px)]">
+                <div className="pointer-events-auto w-full px-0 pb-[calc(env(safe-area-inset-bottom)+12px)]">
                     <VideoControls
                         isPlaying={isPlaying}
                         isMuted={isMuted}
