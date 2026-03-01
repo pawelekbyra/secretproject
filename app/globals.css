@@ -199,6 +199,13 @@
   .app-handle {
     @apply w-12 h-1.5 bg-white/20 rounded-full mx-auto my-3 flex-shrink-0;
   }
+
+  /* Stylistyka Gazetki */
+  .prose p:first-of-type::first-letter {
+    @apply text-7xl font-bold mr-3 float-left text-stone-900;
+    line-height: 0.8;
+    margin-top: 0.1em;
+  }
 }
 
 @layer utilities {
