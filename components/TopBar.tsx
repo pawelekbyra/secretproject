@@ -115,8 +115,8 @@ const TopBar = () => {
       setIsMenuOpen(false);
   };
 
-  const loggedOutTitle = lang === 'pl' ? "Nie masz psychy się zalogować" : "No guts";
-  const loggedInTitle = "Ting Tong";
+  const loggedOutTitle = lang === 'pl' ? "Eliksir Wiedźmina" : "Witcher's Elixir";
+  const loggedInTitle = "Eliksir Wiedźmina";
 
   return (
     <>
