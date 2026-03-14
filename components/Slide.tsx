@@ -98,17 +98,17 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                         onClick={() => setImmersionMode(false)}
                     />
                     <motion.div
-                        initial={{ y: 100 }}
-                        animate={{ y: 0 }}
-                        exit={{ y: 100 }}
-                        className="absolute bottom-[calc(env(safe-area-inset-bottom)+80px)] right-4 z-50 pointer-events-auto"
+                        initial={{ y: "100%" }}
+                        animate={{ y: "50%" }}
+                        exit={{ y: "100%" }}
+                        className="absolute bottom-[env(safe-area-inset-bottom)] right-16 z-50 pointer-events-auto"
                     >
                         <button
                             onClick={() => setImmersionMode(false)}
-                            className="p-2 bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-full shadow-xl active:scale-90 transition-all group"
+                            className="p-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl active:scale-90 transition-all group translate-y-[-50%]"
                             title="Przywróć interfejs"
                         >
-                            <ChevronUp size={18} className="text-white/90 group-hover:text-white transition-transform" />
+                            <ChevronUp size={18} className="text-white drop-shadow-lg group-hover:scale-110 transition-transform" />
                         </button>
                     </motion.div>
                 </>
@@ -156,7 +156,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
             className="w-full flex flex-col items-start z-20 pointer-events-none"
             initial={false}
             animate={{
-                y: isImmersionMode ? 500 : 0,
+                y: isImmersionMode ? 1000 : 0,
             }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
@@ -214,7 +214,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
         <motion.div
             className="absolute right-0 inset-y-0 z-30 pointer-events-none flex items-center"
             animate={{
-                // Removed x: 100 to keep it visible always as requested
+                x: isImmersionMode ? 100 : 0,
                 scale: isImmersionMode ? 0.9 : 1,
             }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
