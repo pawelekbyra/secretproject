@@ -98,16 +98,17 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                         onClick={() => setImmersionMode(false)}
                     />
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                        className="absolute bottom-[calc(env(safe-area-inset-bottom)+20px)] left-1/2 -translate-x-1/2 z-50 pointer-events-auto"
+                        initial={{ scale: 0.8 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0.8 }}
+                        className="absolute bottom-[calc(env(safe-area-inset-bottom)+80px)] right-4 z-50 pointer-events-auto"
                     >
                         <button
                             onClick={() => setImmersionMode(false)}
-                            className="p-4 bg-white/20 backdrop-blur-xl border border-white/30 rounded-full shadow-2xl active:scale-95 transition-all group"
+                            className="p-2 bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-full shadow-xl active:scale-90 transition-all group"
+                            title="Przywróć interfejs"
                         >
-                            <ChevronUp size={32} className="text-white drop-shadow-lg group-hover:scale-110 transition-transform" />
+                            <ChevronUp size={18} className="text-white/90 group-hover:text-white transition-transform" />
                         </button>
                     </motion.div>
                 </>
@@ -156,7 +157,6 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
             initial={false}
             animate={{
                 y: isImmersionMode ? 100 : 0,
-                opacity: isImmersionMode ? 0 : 1,
             }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
@@ -215,7 +215,6 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
             className="absolute right-0 inset-y-0 z-30 pointer-events-none flex items-center"
             animate={{
                 // Removed x: 100 to keep it visible always as requested
-                opacity: isImmersionMode ? 0.4 : 1,
                 scale: isImmersionMode ? 0.9 : 1,
             }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
