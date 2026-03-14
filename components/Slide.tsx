@@ -12,7 +12,7 @@ import PauseIcon from './icons/PauseIcon';
 import Sidebar from './Sidebar';
 import { useUser } from '@/context/UserContext';
 import { cn } from '@/lib/utils';
-import { EyeOff } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import SecretOverlay from './SecretOverlay';
 import PwaOverlay from './PwaOverlay';
 import { DEFAULT_AVATAR_URL } from '@/lib/constants';
@@ -89,13 +89,28 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
         {/* Immersion Exit Overlay */}
         <AnimatePresence>
             {isImmersionMode && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute inset-0 z-10 cursor-pointer pointer-events-auto"
-                    onClick={() => setImmersionMode(false)}
-                />
+                <>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 z-10 cursor-pointer pointer-events-auto"
+                        onClick={() => setImmersionMode(false)}
+                    />
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        className="absolute bottom-[calc(env(safe-area-inset-bottom)+20px)] left-1/2 -translate-x-1/2 z-50 pointer-events-auto"
+                    >
+                        <button
+                            onClick={() => setImmersionMode(false)}
+                            className="p-4 bg-white/20 backdrop-blur-xl border border-white/30 rounded-full shadow-2xl active:scale-95 transition-all group"
+                        >
+                            <ChevronUp size={32} className="text-white drop-shadow-lg group-hover:scale-110 transition-transform" />
+                        </button>
+                    </motion.div>
+                </>
             )}
         </AnimatePresence>
 
@@ -146,7 +161,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
             {/* UI Controls Container */}
-            <div className="relative w-full flex flex-col items-start text-left mb-2 pb-1 px-4">
+            <div className="relative w-full flex flex-col items-start text-left mb-2 pb-1 pl-4 pr-20">
                 <div className="flex items-center gap-2.5 mb-2.5 pointer-events-auto max-w-full">
                     <Image
                         src={slide.avatar || DEFAULT_AVATAR_URL}
@@ -155,8 +170,8 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                         height={36}
                         className="rounded-full border border-white/50 shrink-0"
                     />
-                    <div className="flex items-center gap-2 truncate">
-                        <p className="font-black italic uppercase tracking-widest text-lg truncate min-w-0 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">{slide.username}</p>
+                    <div className="flex items-center gap-2">
+                        <p className="font-black italic uppercase tracking-widest text-lg min-w-0 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">{slide.username}</p>
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -165,18 +180,18 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                             className="p-1.5 bg-white/5 hover:bg-white/20 backdrop-blur-md border border-white/10 rounded-full transition-all active:scale-90 pointer-events-auto group"
                             title="Tryb immersyjny"
                         >
-                            <EyeOff size={14} className="text-white/80 group-hover:text-white" />
+                            <ChevronDown size={18} className="text-white/80 group-hover:text-white" />
                         </button>
                     </div>
                 </div>
 
                 {slide.data && 'title' in slide.data && (
-                    <h2 className="text-2xl font-black italic uppercase tracking-tight mb-1 truncate w-full drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] text-white leading-tight">
+                    <h2 className="text-2xl font-black italic uppercase tracking-tight mb-1 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] text-white leading-tight">
                         {slide.data.title}
                     </h2>
                 )}
                 {slide.data && 'description' in slide.data && (
-                    <p className="text-sm font-bold tracking-wide opacity-90 truncate w-full drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] text-white leading-relaxed">
+                    <p className="text-sm font-bold tracking-wide opacity-90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] text-white leading-relaxed">
                         {slide.data.description}
                     </p>
                 )}
