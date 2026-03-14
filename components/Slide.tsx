@@ -98,9 +98,9 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                         onClick={() => setImmersionMode(false)}
                     />
                     <motion.div
-                        initial={{ scale: 0.8 }}
-                        animate={{ scale: 1 }}
-                        exit={{ scale: 0.8 }}
+                        initial={{ y: 100 }}
+                        animate={{ y: 0 }}
+                        exit={{ y: 100 }}
                         className="absolute bottom-[calc(env(safe-area-inset-bottom)+80px)] right-4 z-50 pointer-events-auto"
                     >
                         <button
@@ -156,7 +156,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
             className="w-full flex flex-col items-start z-20 pointer-events-none"
             initial={false}
             animate={{
-                y: isImmersionMode ? 100 : 0,
+                y: isImmersionMode ? 500 : 0,
             }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
