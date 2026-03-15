@@ -99,16 +99,17 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                     />
                     <motion.div
                         initial={{ y: "100%" }}
-                        animate={{ y: "50%" }}
+                        animate={{ y: "0%" }}
                         exit={{ y: "100%" }}
-                        className="absolute bottom-[env(safe-area-inset-bottom)] right-16 z-50 pointer-events-auto"
+                        className="absolute bottom-0 right-24 z-50 pointer-events-auto"
+                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                     >
                         <button
                             onClick={() => setImmersionMode(false)}
-                            className="p-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl active:scale-90 transition-all group translate-y-[-50%]"
+                            className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl active:scale-90 transition-all group translate-y-1/2"
                             title="Przywróć interfejs"
                         >
-                            <ChevronUp size={18} className="text-white drop-shadow-lg group-hover:scale-110 transition-transform" />
+                            <ChevronUp size={18} className="text-white drop-shadow-lg group-hover:scale-110 transition-transform -translate-y-2.5" />
                         </button>
                     </motion.div>
                 </>
@@ -214,7 +215,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
         <motion.div
             className="absolute right-0 inset-y-0 z-30 pointer-events-none flex items-center"
             animate={{
-                x: isImmersionMode ? 100 : 0,
+                x: 0,
                 scale: isImmersionMode ? 0.9 : 1,
             }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
