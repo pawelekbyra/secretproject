@@ -98,18 +98,18 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                         onClick={() => setImmersionMode(false)}
                     />
                     <motion.div
-                        initial={{ y: "100%" }}
-                        animate={{ y: "0%" }}
-                        exit={{ y: "100%" }}
-                        className="absolute bottom-0 right-24 z-50 pointer-events-auto"
+                        initial={{ y: 60 }}
+                        animate={{ y: 0 }}
+                        exit={{ y: 60 }}
+                        className="absolute bottom-0 right-24 z-[100] pointer-events-auto overflow-visible"
                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                     >
                         <button
                             onClick={() => setImmersionMode(false)}
-                            className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl active:scale-90 transition-all group translate-y-1/2"
+                            className="w-14 h-14 flex items-center justify-center bg-white/20 hover:bg-white/30 backdrop-blur-xl border border-white/20 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] active:scale-90 transition-all group translate-y-1/2"
                             title="Przywróć interfejs"
                         >
-                            <ChevronUp size={18} className="text-white drop-shadow-lg group-hover:scale-110 transition-transform -translate-y-2.5" />
+                            <ChevronUp size={20} className="text-white drop-shadow-lg group-hover:scale-110 transition-transform -translate-y-3" />
                         </button>
                     </motion.div>
                 </>
