@@ -82,7 +82,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
     return (
       <div
         className={cn(
-            "absolute inset-0 z-20 p-4 flex flex-col justify-end text-white pointer-events-none"
+            "absolute inset-0 z-20 flex flex-col justify-end text-white pointer-events-none"
         )}
         onClick={handleContainerClick}
       >
@@ -154,7 +154,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
 
         {/* Coordinated UI Animation Wrapper */}
         <motion.div
-            className="w-full flex flex-col items-start z-20 pointer-events-none"
+            className="w-full flex flex-col items-start z-20 pointer-events-none pb-4"
             initial={false}
             animate={{
                 y: isImmersionMode ? 1000 : 0,

@@ -115,7 +115,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className="absolute right-3 flex flex-col items-center gap-4 z-30 pointer-events-auto"
+      className="absolute right-4 flex flex-col items-center gap-4 z-30 pointer-events-auto"
       style={{
         top: 'calc((var(--app-height, 100vh) - var(--topbar-height, 56px) - var(--bottombar-height, 100px)) / 2 + var(--topbar-height, 56px))',
         transform: 'translateY(-50%)',
