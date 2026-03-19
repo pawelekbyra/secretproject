@@ -31,18 +31,18 @@ export function PatronProfileModal({ patronId, onClose }: PatronProfileModalProp
 
     return (
         <motion.div
-            variants={FADE_VARIANTS}
             initial="initial"
             animate="animate"
             exit="exit"
+            variants={FADE_VARIANTS}
             className="absolute inset-0 z-[10100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
             onClick={onClose}
         >
             <motion.div
-                variants={MODAL_VARIANTS_SCALE}
                 initial="initial"
                 animate="animate"
                 exit="exit"
+                variants={MODAL_VARIANTS_SCALE}
                 transition={TRANSITION_SPRING_MODAL}
                 className="relative flex flex-col w-full max-w-sm app-modal-glass text-white rounded-[2.5rem] shadow-2xl border border-white/20 mx-4 overflow-hidden"
                 onClick={(e) => e.stopPropagation()}

@@ -50,10 +50,10 @@ export default function AdminModal() {
     return (
         <div className="absolute inset-0 z-[10300] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
             <motion.div
-                variants={MODAL_VARIANTS_SCALE}
                 initial="initial"
                 animate="animate"
                 exit="exit"
+                variants={MODAL_VARIANTS_SCALE}
                 transition={TRANSITION_SPRING_MODAL}
                 className="w-full max-w-2xl app-modal-glass rounded-[2rem] shadow-2xl border border-white/20 overflow-hidden flex flex-col max-h-[90vh]"
             >

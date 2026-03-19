@@ -26,18 +26,18 @@ const PwaDesktopModal: React.FC<PwaDesktopModalProps> = ({ isOpen, onClose }) =>
       {isOpen && (
         <motion.div
           className="absolute inset-0 bg-black/90 z-[60] flex items-center justify-center p-4 text-center"
-          variants={FADE_VARIANTS}
           initial="initial"
           animate="animate"
           exit="exit"
+          variants={FADE_VARIANTS}
           onClick={onClose}
         >
           <motion.div
             className="app-modal-glass text-white rounded-[2.5rem] p-10 shadow-2xl max-w-sm w-full border border-white/20 overflow-hidden"
-            variants={MODAL_VARIANTS_SCALE}
             initial="initial"
             animate="animate"
             exit="exit"
+            variants={MODAL_VARIANTS_SCALE}
             transition={TRANSITION_SPRING_MODAL}
             onClick={(e) => e.stopPropagation()}
           >

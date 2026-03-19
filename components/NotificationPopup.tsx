@@ -298,18 +298,18 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ isOpen, onClose }
       {isOpen && (
         <motion.div
           className="absolute inset-0 z-[80] flex items-start justify-center bg-black/60 backdrop-blur-sm pt-3 md:pt-5"
-          variants={FADE_VARIANTS}
           initial="initial"
           animate="animate"
           exit="exit"
+          variants={FADE_VARIANTS}
           onClick={onClose}
         >
           <motion.div
             className="w-[380px] max-w-[calc(100vw-20px)] app-modal-glass border border-white/20 rounded-[2.5rem] shadow-2xl text-white flex flex-col overflow-hidden"
-            variants={MODAL_VARIANTS_SCALE}
             initial="initial"
             animate="animate"
             exit="exit"
+            variants={MODAL_VARIANTS_SCALE}
             transition={TRANSITION_SPRING_MODAL}
             onClick={(e) => e.stopPropagation()}
           >

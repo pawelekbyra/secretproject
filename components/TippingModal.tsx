@@ -350,18 +350,18 @@ const TippingModal = () => {
       {isTippingModalOpen && (
         <div className="absolute inset-0 z-[10200] flex items-center justify-center pointer-events-none font-sans">
           <motion.div
-            variants={FADE_VARIANTS}
             initial="initial"
             animate="animate"
             exit="exit"
+            variants={FADE_VARIANTS}
             className="absolute inset-0 z-[-1] pointer-events-auto bg-black/70 backdrop-blur-[2px]"
             onClick={closeTippingModal}
           />
           <motion.div
-            variants={tippingModalOptions.fromLeft ? MODAL_VARIANTS_SLIDE_LEFT : MODAL_VARIANTS_SLIDE_RIGHT}
             initial="initial"
             animate="animate"
             exit="exit"
+            variants={tippingModalOptions.fromLeft ? MODAL_VARIANTS_SLIDE_LEFT : MODAL_VARIANTS_SLIDE_RIGHT}
             transition={TRANSITION_SPRING_MODAL}
             className="relative w-[95%] max-w-[420px] max-h-[85vh] flex flex-col rounded-[2.5rem] app-modal-glass shadow-2xl pointer-events-auto border border-white/20 overflow-visible"
           >

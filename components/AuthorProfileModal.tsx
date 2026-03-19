@@ -87,10 +87,10 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
 
     return (
         <motion.div
-            variants={MODAL_VARIANTS_SLIDE_RIGHT}
             initial="initial"
             animate="animate"
             exit="exit"
+            variants={MODAL_VARIANTS_SLIDE_RIGHT}
             transition={TRANSITION_SPRING_MODAL}
             className="absolute inset-0 z-[70] app-modal-glass flex flex-col overflow-hidden border-l border-white/10"
             style={{

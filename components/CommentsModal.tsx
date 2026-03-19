@@ -612,20 +612,20 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
       {isOpen && (
         <motion.div
             className="absolute inset-0 bg-black/60 z-50 flex items-end"
-            variants={FADE_VARIANTS}
             initial="initial"
             animate="animate"
             exit="exit"
+            variants={FADE_VARIANTS}
             onClick={onClose}
         >
           <motion.div
             ref={modalRef}
             className="w-full app-modal-glass rounded-t-[2.5rem] flex flex-col border-t comments-modal overflow-hidden"
             style={{ height: modalHeight }}
-            variants={MODAL_VARIANTS_SLIDE_UP}
             initial="initial"
             animate="animate"
             exit="exit"
+            variants={MODAL_VARIANTS_SLIDE_UP}
             transition={TRANSITION_SPRING_MODAL}
             onClick={(e) => e.stopPropagation()}
           >

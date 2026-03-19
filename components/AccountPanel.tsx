@@ -50,18 +50,18 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
   return (
     <motion.div
       className="absolute inset-0 bg-black/80 z-[9999]"
-      variants={FADE_VARIANTS}
       initial="initial"
       animate="animate"
       exit="exit"
+      variants={FADE_VARIANTS}
       onClick={onClose} // Close on overlay click
     >
       <motion.div
         className="absolute top-0 left-0 h-full w-full max-w-md app-modal-glass flex flex-col shadow-2xl border-r border-white/10"
-        variants={MODAL_VARIANTS_SLIDE_LEFT}
         initial="initial"
         animate="animate"
         exit="exit"
+        variants={MODAL_VARIANTS_SLIDE_LEFT}
         transition={TRANSITION_SPRING_MODAL}
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the panel
       >

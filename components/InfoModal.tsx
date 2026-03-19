@@ -62,18 +62,18 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
       {isOpen && (
         <motion.div
           className="absolute inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          variants={FADE_VARIANTS}
           initial="initial"
           animate="animate"
           exit="exit"
+          variants={FADE_VARIANTS}
           onClick={onClose}
         >
           <motion.div
             className="modal-content app-modal-glass text-white rounded-[2.5rem] max-w-md w-full max-h-[80vh] flex flex-col border border-white/20 shadow-2xl overflow-hidden"
-            variants={MODAL_VARIANTS_SCALE}
             initial="initial"
             animate="animate"
             exit="exit"
+            variants={MODAL_VARIANTS_SCALE}
             transition={TRANSITION_SPRING_MODAL}
             onClick={(e) => e.stopPropagation()}
           >

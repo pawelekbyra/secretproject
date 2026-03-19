@@ -1,3 +1,5 @@
+"use client";
+
 export const TRANSITION_SPRING_DEFAULT = {
   type: 'spring',
   stiffness: 300,
@@ -58,3 +60,19 @@ export const ITEM_VARIANTS = {
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, scale: 0.95 },
 };
+
+const animations = {
+  TRANSITION_SPRING_DEFAULT,
+  TRANSITION_SPRING_SNAPPY,
+  TRANSITION_SPRING_MODAL,
+  TRANSITION_EASE_SMOOTH,
+  TAP_SCALE,
+  MODAL_VARIANTS_SCALE,
+  MODAL_VARIANTS_SLIDE_RIGHT,
+  MODAL_VARIANTS_SLIDE_LEFT,
+  MODAL_VARIANTS_SLIDE_UP,
+  FADE_VARIANTS,
+  ITEM_VARIANTS,
+};
+
+export default animations;

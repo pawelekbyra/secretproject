@@ -169,17 +169,17 @@ const CropModal: React.FC<CropModalProps> = ({ isOpen, onClose, imageSrc, onCrop
       {isOpen && (
         <motion.div
           className="absolute inset-0 bg-black/90 z-[999] flex items-center justify-center p-5"
-          variants={FADE_VARIANTS}
           initial="initial"
           animate="animate"
           exit="exit"
+          variants={FADE_VARIANTS}
         >
           <motion.div
             className="app-modal-glass rounded-[2rem] p-8 w-full max-w-md border border-white/20 shadow-2xl overflow-hidden"
-            variants={MODAL_VARIANTS_SCALE}
             initial="initial"
             animate="animate"
             exit="exit"
+            variants={MODAL_VARIANTS_SCALE}
             transition={TRANSITION_SPRING_MODAL}
           >
             <div className="flex justify-between items-center mb-6">

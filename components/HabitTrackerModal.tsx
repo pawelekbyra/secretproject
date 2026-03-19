@@ -330,10 +330,10 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
     return (
         <motion.div
             className="fixed inset-0 z-[100] app-modal-glass flex flex-col"
-            variants={MODAL_VARIANTS_SCALE}
             initial="initial"
             animate="animate"
             exit="exit"
+            variants={MODAL_VARIANTS_SCALE}
             transition={TRANSITION_SPRING_MODAL}
         >
             {/* Header */}
@@ -483,18 +483,18 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                 {isAddingHabit && (
                     <motion.div
                         className="fixed inset-0 z-[110] bg-black/95 backdrop-blur-md flex items-end sm:items-center justify-center p-4"
-                        variants={FADE_VARIANTS}
                         initial="initial"
                         animate="animate"
                         exit="exit"
+                        variants={FADE_VARIANTS}
                         onClick={() => setIsAddingHabit(false)}
                     >
                         <motion.div
                             className="w-full max-w-md app-modal-glass border border-white/20 rounded-[3rem] p-8 shadow-2xl overflow-hidden relative"
-                            variants={MODAL_VARIANTS_SLIDE_UP}
                             initial="initial"
                             animate="animate"
                             exit="exit"
+                            variants={MODAL_VARIANTS_SLIDE_UP}
                             transition={TRANSITION_SPRING_MODAL}
                             onClick={(e) => e.stopPropagation()}
                         >
