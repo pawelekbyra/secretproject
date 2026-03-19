@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { TRANSITION_SPRING_DEFAULT } from '@/lib/animations';
 import { CheckCircle, XCircle, Info, AlertTriangle, MessageSquare, Heart, Mail, UserPlus } from 'lucide-react';
 import { useTranslation } from './LanguageContext';
 
@@ -76,8 +77,8 @@ export const ToastContainer = () => {
             layout
             initial={{ opacity: 0, y: 50, scale: 0.3 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            transition={TRANSITION_SPRING_DEFAULT}
             className="pointer-events-auto"
           >
             <div

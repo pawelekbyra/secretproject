@@ -7,6 +7,7 @@ import { useStore } from '@/store/useStore';
 import VideoControls from './VideoControls';
 import { shallow } from 'zustand/shallow';
 import { AnimatePresence, motion } from 'framer-motion';
+import { TRANSITION_SPRING_DEFAULT, TAP_SCALE, FADE_VARIANTS } from '@/lib/animations';
 import PlayIcon from './icons/PlayIcon';
 import PauseIcon from './icons/PauseIcon';
 import Sidebar from './Sidebar';
@@ -91,9 +92,10 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
             {isImmersionMode && (
                 <>
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        variants={FADE_VARIANTS}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
                         className="absolute inset-0 z-10 cursor-pointer pointer-events-auto"
                         onClick={() => setImmersionMode(false)}
                     />
@@ -102,15 +104,16 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                         animate={{ y: "0%" }}
                         exit={{ y: "100%" }}
                         className="absolute bottom-0 right-24 z-50 pointer-events-auto"
-                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                        transition={TRANSITION_SPRING_DEFAULT}
                     >
-                        <button
+                        <motion.button
+                            whileTap={{ scale: TAP_SCALE }}
                             onClick={() => setImmersionMode(false)}
-                            className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl active:scale-90 transition-all group translate-y-1/2"
+                            className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl transition-all group translate-y-1/2"
                             title="Przywróć interfejs"
                         >
                             <ChevronUp size={18} className="text-white drop-shadow-lg group-hover:scale-110 transition-transform -translate-y-2.5" />
-                        </button>
+                        </motion.button>
                     </motion.div>
                 </>
             )}
@@ -139,7 +142,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                     initial={{ opacity: 0, scale: 1.5 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 1.2 }}
-                    transition={{ duration: 0.2 }}
+                    transition={TRANSITION_SPRING_DEFAULT}
                 >
                     <div className="bg-black/50 rounded-full p-4">
                         {isPlaying ? (
@@ -159,7 +162,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
             animate={{
                 y: isImmersionMode ? 1000 : 0,
             }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            transition={TRANSITION_SPRING_DEFAULT}
         >
             {/* UI Controls Container */}
             <div className="relative w-full flex flex-col items-start text-left mb-2 pb-1 pl-4 pr-20">
@@ -173,16 +176,17 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                     />
                     <div className="flex items-center gap-2">
                         <p className="font-black italic uppercase tracking-widest text-lg min-w-0 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">{slide.username}</p>
-                        <button
+                        <motion.button
+                            whileTap={{ scale: TAP_SCALE }}
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setImmersionMode(true);
                             }}
-                            className="p-1.5 bg-white/5 hover:bg-white/20 backdrop-blur-md border border-white/10 rounded-full transition-all active:scale-90 pointer-events-auto group"
+                            className="p-1.5 bg-white/5 hover:bg-white/20 backdrop-blur-md border border-white/10 rounded-full transition-all pointer-events-auto group"
                             title="Tryb immersyjny"
                         >
                             <ChevronDown size={18} className="text-white/80 group-hover:text-white" />
-                        </button>
+                        </motion.button>
                     </div>
                 </div>
 
@@ -218,7 +222,7 @@ const SlideUI = ({ slide, isLocked = false }: SlideUIProps) => {
                 x: 0,
                 scale: isImmersionMode ? 0.9 : 1,
             }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            transition={TRANSITION_SPRING_DEFAULT}
         >
             <Sidebar
                 slideId={slide.id}

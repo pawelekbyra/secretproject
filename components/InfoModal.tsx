@@ -2,6 +2,12 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+    TRANSITION_SPRING_MODAL,
+    MODAL_VARIANTS_SCALE,
+    FADE_VARIANTS,
+    TAP_SCALE
+} from '@/lib/animations';
 import { X, Coffee } from 'lucide-react';
 import { useTranslation } from '@/context/LanguageContext';
 import { useUser } from '@/context/UserContext';
@@ -56,17 +62,19 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
       {isOpen && (
         <motion.div
           className="absolute inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          variants={FADE_VARIANTS}
+          initial="initial"
+          animate="animate"
+          exit="exit"
           onClick={onClose}
         >
           <motion.div
             className="modal-content app-modal-glass text-white rounded-[2.5rem] max-w-md w-full max-h-[80vh] flex flex-col border border-white/20 shadow-2xl overflow-hidden"
-            initial={{ scale: 0.9, opacity: 0, y: 20 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            variants={MODAL_VARIANTS_SCALE}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={TRANSITION_SPRING_MODAL}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex-shrink-0 flex items-center justify-between p-7 border-b border-white/5 bg-black/20">

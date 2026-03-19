@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { TRANSITION_SPRING_SNAPPY, TAP_SCALE } from '@/lib/animations';
 import { cn } from '@/lib/utils';
 
 interface ToggleSwitchProps {
@@ -11,7 +12,8 @@ interface ToggleSwitchProps {
 
 const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ isActive, onToggle }) => {
   return (
-    <div
+    <motion.div
+      whileTap={{ scale: TAP_SCALE }}
       onClick={onToggle}
       className={cn(
         "relative w-[50px] h-[26px] rounded-full cursor-pointer transition-all duration-500 flex items-center p-[3px]",
@@ -25,9 +27,9 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ isActive, onToggle }) => {
         animate={{
           x: isActive ? 24 : 0,
         }}
-        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+        transition={TRANSITION_SPRING_SNAPPY}
       />
-    </div>
+    </motion.div>
   );
 };
 

@@ -2,6 +2,8 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { TAP_SCALE, TRANSITION_SPRING_SNAPPY } from '@/lib/animations';
 
 interface VideoControlsProps {
     isPlaying: boolean;
@@ -65,9 +67,14 @@ const VideoControls: React.FC<VideoControlsProps> = ({
         className="flex items-center gap-3 text-white w-full transition-all pl-4 pr-20"
         onClick={(e) => e.stopPropagation()}
     >
-      <button onClick={onTogglePlay} className="p-1 hover:text-white transition-all active:scale-90 shrink-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+      <motion.button
+        whileTap={{ scale: TAP_SCALE }}
+        transition={TRANSITION_SPRING_SNAPPY}
+        onClick={onTogglePlay}
+        className="p-1 hover:text-white transition-all shrink-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+      >
         {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
-      </button>
+      </motion.button>
 
       <div className="flex-1 relative flex items-center h-8 group">
           <div className="absolute inset-0 flex items-center">
@@ -96,9 +103,14 @@ const VideoControls: React.FC<VideoControlsProps> = ({
 
       <span className="text-[9px] font-black italic uppercase opacity-90 shrink-0 drop-shadow-md">{formatTime(currentTime)} / {formatTime(duration)}</span>
 
-      <button onClick={onToggleMute} className="p-1.5 hover:text-white transition-all active:scale-90 shrink-0">
+      <motion.button
+        whileTap={{ scale: TAP_SCALE }}
+        transition={TRANSITION_SPRING_SNAPPY}
+        onClick={onToggleMute}
+        className="p-1.5 hover:text-white transition-all shrink-0"
+      >
         {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
-      </button>
+      </motion.button>
     </div>
   );
 };

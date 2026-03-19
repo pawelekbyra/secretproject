@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Unlock, Lock, Delete, CornerDownLeft } from 'lucide-react';
+import { TAP_SCALE, TRANSITION_SPRING_SNAPPY, TRANSITION_SPRING_DEFAULT } from '@/lib/animations';
 
 const CORRECT_CODE = "96789";
 
@@ -46,6 +47,7 @@ export const SafeLock = () => {
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
+                transition={TRANSITION_SPRING_DEFAULT}
                 className="flex flex-col items-center justify-center min-h-[300px] text-white space-y-4 py-10"
             >
                 <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center mb-2 ring-2 ring-green-500 shadow-[0_0_20px_rgba(34,197,94,0.3)]">
@@ -99,6 +101,7 @@ export const SafeLock = () => {
                                         key={i}
                                         initial={{ scale: 0 }}
                                         animate={{ scale: 1 }}
+                                        transition={TRANSITION_SPRING_SNAPPY}
                                         className="w-4 h-4 rounded-full bg-primary shadow-[0_0_10px_hsl(var(--primary)/0.8)]"
                                     />
                                 ))}
@@ -148,7 +151,8 @@ export const SafeLock = () => {
 
 const KeyButton = ({ children, onClick }: { children: React.ReactNode, onClick: () => void }) => (
     <motion.button
-        whileTap={{ scale: 0.9 }}
+        whileTap={{ scale: TAP_SCALE }}
+        transition={TRANSITION_SPRING_SNAPPY}
         onClick={onClick}
         className="
             relative w-full aspect-square rounded-full flex items-center justify-center

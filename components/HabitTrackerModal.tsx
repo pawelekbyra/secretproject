@@ -3,6 +3,15 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
+    TRANSITION_SPRING_DEFAULT,
+    TRANSITION_SPRING_MODAL,
+    TRANSITION_SPRING_SNAPPY,
+    MODAL_VARIANTS_SCALE,
+    MODAL_VARIANTS_SLIDE_UP,
+    FADE_VARIANTS,
+    TAP_SCALE
+} from '@/lib/animations';
+import {
     X, Plus, ChevronLeft, ChevronRight, Trash2, Trophy,
     Flame, Target, Info, CheckCircle2, AlertCircle,
     TrendingUp, TrendingDown, Star, Zap
@@ -173,7 +182,8 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
     const renderHabitCard = (habit: Habit) => (
         <motion.div
             key={habit.id}
-            whileTap={{ scale: 0.98 }}
+            whileTap={{ scale: TAP_SCALE }}
+            transition={TRANSITION_SPRING_SNAPPY}
             onClick={() => setSelectedHabitId(habit.id)}
             className={cn(
                 "relative overflow-hidden bg-white/5 backdrop-blur-xl border p-4 rounded-3xl flex items-center justify-between group transition-all cursor-pointer shadow-xl",
@@ -320,10 +330,11 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
     return (
         <motion.div
             className="fixed inset-0 z-[100] app-modal-glass flex flex-col"
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            variants={MODAL_VARIANTS_SCALE}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={TRANSITION_SPRING_MODAL}
         >
             {/* Header */}
             <div className="flex-shrink-0 flex items-center justify-between px-6 pt-12 pb-6 border-b border-white/10 bg-black/20">
@@ -472,17 +483,19 @@ const HabitTrackerModal = ({ onClose }: { onClose: () => void }) => {
                 {isAddingHabit && (
                     <motion.div
                         className="fixed inset-0 z-[110] bg-black/95 backdrop-blur-md flex items-end sm:items-center justify-center p-4"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        variants={FADE_VARIANTS}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
                         onClick={() => setIsAddingHabit(false)}
                     >
                         <motion.div
                             className="w-full max-w-md app-modal-glass border border-white/20 rounded-[3rem] p-8 shadow-2xl overflow-hidden relative"
-                            initial={{ y: '100%' }}
-                            animate={{ y: 0 }}
-                            exit={{ y: '100%' }}
-                            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+                            variants={MODAL_VARIANTS_SLIDE_UP}
+                            initial="initial"
+                            animate="animate"
+                            exit="exit"
+                            transition={TRANSITION_SPRING_MODAL}
                             onClick={(e) => e.stopPropagation()}
                         >
                             <div className="app-handle !mt-0 !mb-6" />

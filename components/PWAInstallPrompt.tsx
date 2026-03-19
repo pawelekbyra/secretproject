@@ -4,6 +4,11 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Share, PlusSquare, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+    TRANSITION_SPRING_MODAL,
+    MODAL_VARIANTS_SLIDE_UP,
+    TAP_SCALE
+} from '@/lib/animations';
 import { useTranslation } from '@/context/LanguageContext';
 import PwaDesktopModal from './PwaDesktopModal';
 
@@ -86,10 +91,11 @@ const PWAInstallPrompt = () => {
         {isIOS && showInstructions ? (
           <motion.div
             className="absolute bottom-0 w-full bg-black/80 backdrop-blur-md text-white p-4 flex flex-col justify-between items-center z-50 rounded-t-2xl"
-            initial={{ y: '100%', opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: '100%', opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 40 }}
+            variants={MODAL_VARIANTS_SLIDE_UP}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={TRANSITION_SPRING_MODAL}
             style={{ paddingBottom: 'var(--safe-area-bottom)' }}
           >
             <div className="flex w-full justify-between items-center mb-4">

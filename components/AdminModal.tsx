@@ -2,6 +2,11 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import {
+    TRANSITION_SPRING_MODAL,
+    MODAL_VARIANTS_SCALE,
+    TAP_SCALE
+} from '@/lib/animations';
 import { X, Users, Film, Mail, Loader2, Info } from 'lucide-react';
 import { useTranslation } from '@/context/LanguageContext';
 import { useToast } from '@/context/ToastContext';
@@ -45,10 +50,11 @@ export default function AdminModal() {
     return (
         <div className="absolute inset-0 z-[10300] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
             <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ type: "spring", duration: 0.4, bounce: 0.2 }}
+                variants={MODAL_VARIANTS_SCALE}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={TRANSITION_SPRING_MODAL}
                 className="w-full max-w-2xl app-modal-glass rounded-[2rem] shadow-2xl border border-white/20 overflow-hidden flex flex-col max-h-[90vh]"
             >
                 <div className="flex items-center justify-between p-6 border-b border-white/5 bg-black/20">

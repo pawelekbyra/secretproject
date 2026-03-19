@@ -3,6 +3,12 @@
 import React, { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
+import {
+    TRANSITION_SPRING_DEFAULT,
+    TRANSITION_SPRING_MODAL,
+    MODAL_VARIANTS_SLIDE_RIGHT,
+    TAP_SCALE
+} from '@/lib/animations';
 import { ChevronLeft, Instagram, Grid, Heart, Lock, Loader2, Youtube } from 'lucide-react';
 import { useStore } from '@/store/useStore';
 import Image from 'next/image';
@@ -81,10 +87,11 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
 
     return (
         <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: '0%' }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 200 }}
+            variants={MODAL_VARIANTS_SLIDE_RIGHT}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={TRANSITION_SPRING_MODAL}
             className="absolute inset-0 z-[70] app-modal-glass flex flex-col overflow-hidden border-l border-white/10"
             style={{
                 height: '100%',
@@ -104,9 +111,13 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                     }}
                 >
                     <div className="flex justify-start w-12">
-                        <button onClick={onClose} className="p-2 -ml-2 text-white/80 hover:text-white transition-colors">
+                        <motion.button
+                            whileTap={{ scale: TAP_SCALE }}
+                            onClick={onClose}
+                            className="p-2 -ml-2 text-white/80 hover:text-white transition-colors"
+                        >
                             <ChevronLeft size={28} />
-                        </button>
+                        </motion.button>
                     </div>
                     <div className="flex justify-center flex-1">
                         <span className="font-bold text-base truncate max-w-[200px] text-white">
@@ -204,7 +215,11 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                             >
                                 <Grid size={24} />
                                 {activeTab === 'videos' && (
-                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]" />
+                                    <motion.div
+                                        layoutId="activeTab"
+                                        className="absolute bottom-0 w-full h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]"
+                                        transition={TRANSITION_SPRING_DEFAULT}
+                                    />
                                 )}
                             </button>
                             <button
@@ -213,7 +228,11 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                             >
                                 <Heart size={24} />
                                 {activeTab === 'liked' && (
-                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]" />
+                                    <motion.div
+                                        layoutId="activeTab"
+                                        className="absolute bottom-0 w-full h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]"
+                                        transition={TRANSITION_SPRING_DEFAULT}
+                                    />
                                 )}
                             </button>
                             <button
@@ -222,7 +241,11 @@ export function AuthorProfileModal({ authorId, onClose }: AuthorProfileModalProp
                             >
                                 <Lock size={24} />
                                 {activeTab === 'private' && (
-                                    <motion.div layoutId="activeTab" className="absolute bottom-0 w-full h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]" />
+                                    <motion.div
+                                        layoutId="activeTab"
+                                        className="absolute bottom-0 w-full h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]"
+                                        transition={TRANSITION_SPRING_DEFAULT}
+                                    />
                                 )}
                             </button>
                         </div>

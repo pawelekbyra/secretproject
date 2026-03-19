@@ -2,6 +2,12 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+    TRANSITION_SPRING_MODAL,
+    MODAL_VARIANTS_SCALE,
+    FADE_VARIANTS,
+    TAP_SCALE
+} from '@/lib/animations';
 import { Button } from './ui/button';
 import { X, ZoomIn, ZoomOut, Check, Loader2 } from 'lucide-react';
 import { Input } from './ui/input';
@@ -163,16 +169,18 @@ const CropModal: React.FC<CropModalProps> = ({ isOpen, onClose, imageSrc, onCrop
       {isOpen && (
         <motion.div
           className="absolute inset-0 bg-black/90 z-[999] flex items-center justify-center p-5"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          variants={FADE_VARIANTS}
+          initial="initial"
+          animate="animate"
+          exit="exit"
         >
           <motion.div
             className="app-modal-glass rounded-[2rem] p-8 w-full max-w-md border border-white/20 shadow-2xl overflow-hidden"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            variants={MODAL_VARIANTS_SCALE}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={TRANSITION_SPRING_MODAL}
           >
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-bold text-white tracking-tight">{t('cropAvatarTitle')}</h3>

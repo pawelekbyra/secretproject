@@ -2,6 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  TRANSITION_SPRING_DEFAULT,
+  TRANSITION_EASE_SMOOTH,
+  TAP_SCALE
+} from '@/lib/animations';
 import { useTranslation } from '@/context/LanguageContext';
 import Image from 'next/image';
 import { useStore } from '@/store/useStore';
@@ -68,7 +73,8 @@ const Preloader: React.FC = () => {
         <motion.div
           className="absolute inset-0 bg-black z-[10000] overflow-hidden flex flex-col items-center"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.3, delay: 0.2 } }}
+          exit={{ opacity: 0 }}
+          transition={{ ...TRANSITION_EASE_SMOOTH, delay: 0.2 }}
         >
           {/* --- UKRYTY PREFETCHER --- */}
           {firstSlide && firstSlide.type === 'video' && (
@@ -124,14 +130,14 @@ const Preloader: React.FC = () => {
                 <div className="flex flex-col gap-3 w-full max-w-[320px] px-6">
                   <Button
                     variant="outlineWhite"
-                    className="w-full h-11 rounded-full text-sm font-bold active:scale-95 transition-all duration-300"
+                    className="w-full h-11 rounded-full text-sm font-bold"
                     onClick={() => handleLangSelect('pl')}
                   >
                     Polski
                   </Button>
                   <Button
                     variant="outlineWhite"
-                    className="w-full h-11 rounded-full text-sm font-bold active:scale-95 transition-all duration-300"
+                    className="w-full h-11 rounded-full text-sm font-bold"
                     onClick={() => handleLangSelect('en')}
                   >
                     English
