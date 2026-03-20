@@ -80,7 +80,7 @@ export default function CrowdfundingPage() {
 
       <CampaignHero
         slide={featuredSlide}
-        title="Finansujemy Przyszłość"
+        title="Rytuał Finansowania"
       />
 
       <main className="max-w-6xl mx-auto px-6 py-20 lg:py-32 grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 relative z-30">
@@ -89,22 +89,22 @@ export default function CrowdfundingPage() {
         <div className="lg:col-span-8 space-y-24 order-2 lg:order-1">
 
           <CampaignStory
-            title="Nasza Wizja."
-            quote="Tworzymy schronienie dla rzemiosła wideo w oceanie cyfrowego hałasu."
-            firstParagraph="Eliksir Wiedźmina to nie tylko kolejna aplikacja z wideo. To manifest przeciwko algorytmom, które promują płytkość i toksyczną uwagę. Wierzymy, że format krótkiego wideo zasługuje na drugą szansę — jako medium dla prawdziwego rzemiosła, pasji i autentyczności."
+            title="Rytuał Przemiany."
+            quote="To, co zaczęło się jako wizja rzemiosła, musi przejść przez próbę ognia."
+            firstParagraph="Eliksir Wiedźmina to nie tylko kolejna aplikacja z wideo. To manifest przeciwko algorytmom, które promują płytkość i toksyczną uwagę. Wierzymy, że format krótkiego wideo zasługuje na drugą szansę — jako medium dla prawdziwego rzemiosła, pasji i autentyczności. W świecie zdominowanym przez gigantów, my wybieramy ścieżkę samotnego łowcy jakości."
             hiddenContent={
               <div className="space-y-8 text-stone-700">
                 <p>
-                  Obecne platformy stały się zakładnikami wskaźników retencji. Treści są tworzone tak, aby uzależniać, a nie wzbogacać. My idziemy w przeciwnym kierunku. Budujemy przestrzeń, gdzie liczy się jakość, a nie częstotliwość. Gdzie twórca jest traktowany jak rzemieślnik, a nie dostawca treści dla maszyny.
+                  Fundatorzy CD PROJEKT RED wiedzieli, że wielkość wymaga poświęcenia. Nasz Rytuał jest podobny — odcinamy się od bezpiecznych, korporacyjnych wzorców. Budujemy przestrzeń, gdzie liczy się jakość, a nie częstotliwość. Gdzie twórca jest traktowany jak rzemieślnik, a nie dostawca treści dla maszyny, która nie zna litości.
                 </p>
                 <p>
-                  Twoje wsparcie pozwoli nam sfinansować niezależną infrastrukturę streamingową. Chcemy być wolni od cenzury korporacyjnej i lagów, które zabijają immersję. Finansujemy serwery, które nie należą do gigantów Big Tech, lecz do nas — społeczności.
+                  Twoje wsparcie pozwoli nam sfinansować niezależną infrastrukturę streamingową. Chcemy być wolni od cenzury korporacyjnej i lagów, które zabijają immersję. To nasza Próba Traw — tylko najsilniejsze i najbardziej autentyczne treści przetrwają w naszym ekosystemie. Finansujemy serwery, które nie należą do gigantów Big Tech, lecz do nas — społeczności rzemieślników.
                 </p>
                 <p>
-                  W Eliksirze Wiedźmina każdy slajd to historia. Nie znajdziesz tu przypadkowych filmików. Każdy element interfejsu, od TopBaru po system komentarzy, został zaprojektowany, aby celebrować treść. Jesteśmy rzemieślnikami kodu, wspierającymi rzemieślników obrazu.
+                  W Eliksirze Wiedźmina każdy slajd to historia. Nie znajdziesz tu przypadkowych filmików. Każdy element interfejsu, od TopBaru po system komentarzy, został zaprojektowany, aby celebrować treść. Jesteśmy rzemieślnikami kodu, wspierającymi rzemieślników obrazu w ich najbardziej mrocznych i genialnych wizjach.
                 </p>
                 <p className="font-bold text-stone-900 border-l-4 border-primary pl-6">
-                  Dołączając do zbiórki, stajesz się współzałożycielem ruchu. Nie kupujesz subskrypcji. Fundujesz wolność słowa i wolność tworzenia.
+                  Dołączając do zbiórki, stajesz się współzałożycielem ruchu. Nie kupujesz subskrypcji. Fundujesz wolność słowa, wolność tworzenia i przetrwanie rzemiosła w cyfrowym lesie pełnym potworów.
                 </p>
               </div>
             }
