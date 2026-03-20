@@ -83,14 +83,22 @@ export default function CrowdfundingPage() {
 
   const { openTippingModal, setIsMuted, isMuted, isPlaying, playVideo } = useStore();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('opis'); // opis, nagrody, aktualizacje
-
   useEffect(() => {
     const handleOpenLogin = () => setIsLoginOpen(true);
     window.addEventListener('open-login', handleOpenLogin);
+
+    // Enable document-level scrolling for this page
+    document.documentElement.classList.add('allow-document-scroll');
+    document.body.classList.add('allow-document-scroll');
+
     playVideo();
     setIsMuted(true);
-    return () => window.removeEventListener('open-login', handleOpenLogin);
+
+    return () => {
+      window.removeEventListener('open-login', handleOpenLogin);
+      document.documentElement.classList.remove('allow-document-scroll');
+      document.body.classList.remove('allow-document-scroll');
+    };
   }, [playVideo, setIsMuted]);
 
   const { data: slidesData } = useQuery({
@@ -103,13 +111,6 @@ export default function CrowdfundingPage() {
   });
 
   const featuredSlide = slidesData?.slides?.[0];
-
-  const tabs = [
-    { id: 'opis', label: 'Opis Projektu' },
-    { id: 'nagrody', label: 'Nagrody' },
-    { id: 'aktualizacje', label: 'Aktualizacje', count: UPDATES.length },
-    { id: 'dyskusja', label: 'Dyskusja' }
-  ];
 
   return (
     <div className="min-h-screen bg-[#FDFBF7] text-stone-900 font-serif selection:bg-primary/20 selection:text-primary">
@@ -124,9 +125,10 @@ export default function CrowdfundingPage() {
               Eliksir Wiedźmina
             </h1>
             <div className="hidden md:flex gap-6 font-sans text-[11px] font-bold uppercase tracking-widest text-stone-400">
-              <a href="#" className="hover:text-primary transition-colors">Eksploruj</a>
-              <a href="#" className="hover:text-primary transition-colors">O Nas</a>
-              <a href="#" className="hover:text-primary transition-colors">Twórcy</a>
+              <a href="#opis" className="hover:text-primary transition-colors">Opis</a>
+              <a href="#nagrody" className="hover:text-primary transition-colors">Nagrody</a>
+              <a href="#aktualizacje" className="hover:text-primary transition-colors">Aktualizacje</a>
+              <a href="#dyskusja" className="hover:text-primary transition-colors">Dyskusja</a>
             </div>
           </div>
           <div className="flex gap-4 items-center">
@@ -231,177 +233,176 @@ export default function CrowdfundingPage() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-12 gap-16">
 
-        {/* Left Column: Details & Tabs */}
-        <div className="lg:col-span-8 space-y-12">
-           {/* Tabs Navigation */}
-           <div className="flex gap-8 border-b border-stone-200 overflow-x-auto font-sans no-scrollbar">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`pb-4 text-xs font-black uppercase tracking-[0.2em] whitespace-nowrap relative transition-colors ${
-                    activeTab === tab.id ? 'text-stone-900' : 'text-stone-400 hover:text-stone-600'
-                  }`}
-                >
-                  {tab.label}
-                  {tab.count !== undefined && (
-                    <span className="ml-2 px-1.5 py-0.5 bg-stone-100 rounded-md text-[9px]">{tab.count}</span>
-                  )}
-                  {activeTab === tab.id && (
-                    <motion.div
-                      layoutId="activeTab"
-                      className="absolute bottom-0 left-0 right-0 h-1 bg-primary"
-                    />
-                  )}
-                </button>
-              ))}
-           </div>
+        {/* Left Column: Details Staked Vertically */}
+        <div className="lg:col-span-8 space-y-32">
 
-           {/* Tab Content */}
-           <div className="min-h-[600px]">
-              <AnimatePresence mode="wait">
-                 {activeTab === 'opis' && (
-                    <motion.div
-                      key="opis"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className="prose prose-stone prose-xl lg:prose-2xl max-w-none"
-                    >
-                       <p className="first-letter:text-8xl first-letter:font-black first-letter:text-primary first-letter:mr-4 first-letter:float-left first-letter:mt-2">
-                         Eliksir Wiedźmina to nie tylko kolejna aplikacja z wideo. To manifest przeciwko algorytmom, które promują płytkość i toksyczną uwagę. Wierzymy, że format krótkiego wideo zasługuje na drugą szansę — jako medium dla prawdziwego rzemiosła, pasji i autentyczności.
-                       </p>
-                       <p>
-                         Obecne platformy stały się zakładnikami wskaźników retencji. Treści są tworzone tak, aby uzależniać, a nie wzbogacać. My idziemy w przeciwnym kierunku. Budujemy przestrzeń, gdzie liczy się jakość, a nie częstotliwość.
-                       </p>
-                       <Image
-                          src="/metal.png"
-                          alt="Wizja"
-                          width={800}
-                          height={400}
-                          className="rounded-[2rem] my-12 grayscale hover:grayscale-0 transition-all duration-700"
-                       />
-                       <h3>Schronienie dla rzemiosła.</h3>
-                       <p>
-                         Twoje wsparcie pozwoli nam sfinansować niezależną infrastrukturę streamingową. Chcemy być wolni od cenzury korporacyjnej i lagów, które zabijają immersję. Finansujemy serwery, które nie należą do gigantów Big Tech, lecz do nas — społeczności.
-                       </p>
-                       <div className="bg-stone-50 border border-stone-100 p-10 rounded-[3rem] my-12 italic text-stone-600">
-                          &quot;W Eliksirze Wiedźmina każdy slajd to historia. Nie znajdziesz tu przypadkowych filmików. Jesteśmy rzemieślnikami kodu, wspierającymi rzemieślników obrazu.&quot;
-                       </div>
-                    </motion.div>
-                 )}
+           {/* Section: Story */}
+           <section id="opis" className="scroll-mt-48">
+              <div className="flex items-center gap-4 mb-12">
+                  <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+                      <Target size={24} />
+                  </div>
+                  <div>
+                      <h3 className="text-3xl font-black tracking-tight uppercase italic">Opis Projektu</h3>
+                      <p className="text-stone-400 font-bold text-xs uppercase tracking-widest font-sans">Nasza Wizja i Cel</p>
+                  </div>
+              </div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="prose prose-stone prose-xl lg:prose-2xl max-w-none"
+              >
+                  <p className="first-letter:text-8xl first-letter:font-black first-letter:text-primary first-letter:mr-4 first-letter:float-left first-letter:mt-2">
+                    Eliksir Wiedźmina to nie tylko kolejna aplikacja z wideo. To manifest przeciwko algorytmom, które promują płytkość i toksyczną uwagę. Wierzymy, że format krótkiego wideo zasługuje na drugą szansę — jako medium dla prawdziwego rzemiosła, pasji i autentyczności.
+                  </p>
+                  <p>
+                    Obecne platformy stały się zakładnikami wskaźników retencji. Treści są tworzone tak, aby uzależniać, a nie wzbogacać. My idziemy w przeciwnym kierunku. Budujemy przestrzeń, gdzie liczy się jakość, a nie częstotliwość.
+                  </p>
+                  <Image
+                    src="/metal.png"
+                    alt="Wizja"
+                    width={800}
+                    height={400}
+                    className="rounded-[2rem] my-12 grayscale hover:grayscale-0 transition-all duration-700"
+                  />
+                  <h3>Schronienie dla rzemiosła.</h3>
+                  <p>
+                    Twoje wsparcie pozwoli nam sfinansować niezależną infrastrukturę streamingową. Chcemy być wolni od cenzury korporacyjnej i lagów, które zabijają immersję. Finansujemy serwery, które nie należą do gigantów Big Tech, lecz do nas — społeczności.
+                  </p>
+                  <div className="bg-stone-50 border border-stone-100 p-10 rounded-[3rem] my-12 italic text-stone-600">
+                    &quot;W Eliksirze Wiedźmina każdy slajd to historia. Nie znajdziesz tu przypadkowych filmików. Jesteśmy rzemieślnikami kodu, wspierającymi rzemieślników obrazu.&quot;
+                  </div>
+              </motion.div>
+           </section>
 
-                 {activeTab === 'nagrody' && (
+           {/* Section: Rewards */}
+           <section id="nagrody" className="scroll-mt-48">
+              <div className="flex items-center gap-4 mb-12">
+                  <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+                      <Award size={24} />
+                  </div>
+                  <div>
+                      <h3 className="text-3xl font-black tracking-tight uppercase italic">Nagrody</h3>
+                      <p className="text-stone-400 font-bold text-xs uppercase tracking-widest font-sans">Wybierz swój udział w projekcie</p>
+                  </div>
+              </div>
+              <div className="grid gap-8">
+                  {REWARDS.map((reward) => (
                     <motion.div
-                      key="nagrody"
+                      key={reward.id}
                       initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className="grid gap-8"
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      className={`group relative p-8 md:p-12 rounded-[3rem] border transition-all duration-500 ${
+                        reward.popular ? 'bg-stone-900 text-white border-stone-800 shadow-2xl scale-[1.02]' : 'bg-white border-stone-100 hover:border-primary/20 shadow-sm'
+                      }`}
                     >
-                       {REWARDS.map((reward) => (
-                          <div
-                            key={reward.id}
-                            className={`group relative p-8 md:p-12 rounded-[3rem] border transition-all duration-500 ${
-                              reward.popular ? 'bg-stone-900 text-white border-stone-800 shadow-2xl scale-[1.02]' : 'bg-white border-stone-100 hover:border-primary/20 shadow-sm'
-                            }`}
-                          >
-                             {reward.popular && (
-                               <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-black uppercase tracking-widest px-6 py-2 rounded-full shadow-lg">
-                                  Najczęściej Wybierane
-                               </div>
-                             )}
-                             <div className="flex flex-col md:flex-row justify-between gap-8">
-                                <div className="space-y-6 flex-1">
-                                   <div className="space-y-2">
-                                      <p className={`font-sans text-[10px] font-black uppercase tracking-widest ${reward.popular ? 'text-primary' : 'text-stone-400'}`}>
-                                        Próg wsparcia
-                                      </p>
-                                      <h4 className="text-4xl font-black italic tracking-tighter uppercase">{reward.title}</h4>
-                                   </div>
-                                   <p className={reward.popular ? 'text-stone-400' : 'text-stone-600'}>{reward.description}</p>
-                                   <ul className="space-y-3 font-sans text-xs font-bold">
-                                      {reward.items.map((item, i) => (
-                                        <li key={i} className="flex items-center gap-3">
-                                          <Award size={14} className="text-primary" />
-                                          {item}
-                                        </li>
-                                      ))}
-                                   </ul>
-                                </div>
-                                <div className="md:w-64 flex flex-col justify-between items-center md:items-end text-right gap-6">
-                                   <div className="space-y-1">
-                                      <p className="text-5xl font-black tracking-tighter">
-                                        <span className="text-xl">PLN</span> {reward.amount}
-                                      </p>
-                                      <p className={`font-sans text-[10px] font-bold uppercase tracking-widest ${reward.popular ? 'text-white/20' : 'text-stone-300'}`}>
-                                        {reward.backers} Wspierających
-                                      </p>
-                                   </div>
-                                   <Button
-                                      onClick={() => openTippingModal()}
-                                      className={`w-full md:w-auto px-8 py-6 rounded-2xl font-sans font-black text-[11px] uppercase tracking-widest transition-all active:scale-95 ${
-                                        reward.popular ? 'bg-primary text-white' : 'bg-stone-900 text-white'
-                                      }`}
-                                   >
-                                      Wybierz ten próg
-                                   </Button>
-                                </div>
-                             </div>
+                        {reward.popular && (
+                          <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-black uppercase tracking-widest px-6 py-2 rounded-full shadow-lg">
+                            Najczęściej Wybierane
                           </div>
-                       ))}
+                        )}
+                        <div className="flex flex-col md:flex-row justify-between gap-8">
+                          <div className="space-y-6 flex-1">
+                              <div className="space-y-2">
+                                <p className={`font-sans text-[10px] font-black uppercase tracking-widest ${reward.popular ? 'text-primary' : 'text-stone-400'}`}>
+                                  Próg wsparcia
+                                </p>
+                                <h4 className="text-4xl font-black italic tracking-tighter uppercase">{reward.title}</h4>
+                              </div>
+                              <p className={reward.popular ? 'text-stone-400' : 'text-stone-600'}>{reward.description}</p>
+                              <ul className="space-y-3 font-sans text-xs font-bold">
+                                {reward.items.map((item, i) => (
+                                  <li key={i} className="flex items-center gap-3">
+                                    <Award size={14} className="text-primary" />
+                                    {item}
+                                  </li>
+                                ))}
+                              </ul>
+                          </div>
+                          <div className="md:w-64 flex flex-col justify-between items-center md:items-end text-right gap-6">
+                              <div className="space-y-1">
+                                <p className="text-5xl font-black tracking-tighter">
+                                  <span className="text-xl">PLN</span> {reward.amount}
+                                </p>
+                                <p className={`font-sans text-[10px] font-bold uppercase tracking-widest ${reward.popular ? 'text-white/20' : 'text-stone-300'}`}>
+                                  {reward.backers} Wspierających
+                                </p>
+                              </div>
+                              <Button
+                                onClick={() => openTippingModal()}
+                                className={`w-full md:w-auto px-8 py-6 rounded-2xl font-sans font-black text-[11px] uppercase tracking-widest transition-all active:scale-95 ${
+                                  reward.popular ? 'bg-primary text-white' : 'bg-stone-900 text-white'
+                                }`}
+                              >
+                                Wybierz ten próg
+                              </Button>
+                          </div>
+                        </div>
                     </motion.div>
-                 )}
+                  ))}
+              </div>
+           </section>
 
-                 {activeTab === 'aktualizacje' && (
+           {/* Section: Updates */}
+           <section id="aktualizacje" className="scroll-mt-48">
+              <div className="flex items-center gap-4 mb-12">
+                  <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+                      <Zap size={24} />
+                  </div>
+                  <div>
+                      <h3 className="text-3xl font-black tracking-tight uppercase italic">Aktualizacje</h3>
+                      <p className="text-stone-400 font-bold text-xs uppercase tracking-widest font-sans">Najnowsze wieści z frontu</p>
+                  </div>
+              </div>
+              <div className="space-y-12">
+                  {UPDATES.map((update) => (
                     <motion.div
-                      key="aktualizacje"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className="space-y-12"
+                      key={update.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      className="relative pl-12 border-l-2 border-stone-100 pb-12 last:pb-0"
                     >
-                       {UPDATES.map((update) => (
-                          <div key={update.id} className="relative pl-12 border-l-2 border-stone-100 pb-12 last:pb-0">
-                             <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-white border-4 border-primary" />
-                             <div className="space-y-4">
-                                <div className="flex items-center gap-4 font-sans text-[10px] font-black uppercase tracking-widest text-stone-400">
-                                   <Calendar size={12} />
-                                   {update.date}
-                                   <span className="text-primary">— {update.author}</span>
-                                </div>
-                                <h4 className="text-3xl font-black tracking-tighter uppercase italic">{update.title}</h4>
-                                <p className="text-lg text-stone-600 leading-relaxed">{update.content}</p>
-                                <button className="text-primary font-black uppercase text-[10px] tracking-widest hover:underline">
-                                   Czytaj więcej
-                                </button>
-                             </div>
+                        <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-white border-4 border-primary" />
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-4 font-sans text-[10px] font-black uppercase tracking-widest text-stone-400">
+                              <Calendar size={12} />
+                              {update.date}
+                              <span className="text-primary">— {update.author}</span>
                           </div>
-                       ))}
+                          <h4 className="text-3xl font-black tracking-tighter uppercase italic">{update.title}</h4>
+                          <p className="text-lg text-stone-600 leading-relaxed">{update.content}</p>
+                          <button className="text-primary font-black uppercase text-[10px] tracking-widest hover:underline">
+                              Czytaj więcej
+                          </button>
+                        </div>
                     </motion.div>
-                 )}
+                  ))}
+              </div>
+           </section>
 
-                 {activeTab === 'dyskusja' && (
-                    <motion.div
-                      key="dyskusja"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                    >
-                       <div className="flex items-center gap-4 mb-12">
-                          <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
-                             <MessageSquare size={24} />
-                          </div>
-                          <div>
-                             <h4 className="text-3xl font-black tracking-tight uppercase italic">Głos Społeczności</h4>
-                             <p className="text-stone-400 font-bold text-xs uppercase tracking-widest font-sans">Publiczna Dyskusja</p>
-                          </div>
-                       </div>
-                       <EmbeddedComments />
-                    </motion.div>
-                 )}
-              </AnimatePresence>
-           </div>
+           {/* Section: Discussion */}
+           <section id="dyskusja" className="scroll-mt-48">
+              <div className="flex items-center gap-4 mb-12">
+                  <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+                      <MessageSquare size={24} />
+                  </div>
+                  <div>
+                      <h3 className="text-3xl font-black tracking-tight uppercase italic">Głos Społeczności</h3>
+                      <p className="text-stone-400 font-bold text-xs uppercase tracking-widest font-sans">Publiczna Dyskusja</p>
+                  </div>
+              </div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+              >
+                <EmbeddedComments />
+              </motion.div>
+           </section>
+
         </div>
 
         {/* Right Column: Sidebar */}
