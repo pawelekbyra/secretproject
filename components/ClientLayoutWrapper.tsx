@@ -29,7 +29,7 @@ export default function ClientLayoutWrapper({
     }
   }, []);
 
-  if (pathname?.startsWith("/robert") || pathname?.startsWith("/setup")) {
+  if (pathname === "/" || pathname?.startsWith("/robert") || pathname?.startsWith("/setup")) {
     return (
       <Providers>
         {children}

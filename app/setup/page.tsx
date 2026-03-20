@@ -136,23 +136,23 @@ export default function SetupPage() {
                                                 localStorage.setItem('language', 'pl'); // Default to PL as setup is in PL
                                             }
                                             // Force reload to apply new session
-                                            window.location.href = '/';
+                                            window.location.href = '/tingtong';
                                         } else {
                                             console.error("Re-login failed", signInResult);
                                             // Fallback: try to redirect anyway, maybe update() worked
                                             await update({ force: true });
-                                            window.location.href = '/';
+                                            window.location.href = '/tingtong';
                                         }
                                     } else {
                                         // Fallback if no identifier found (unlikely)
                                         await update({ force: true });
-                                        window.location.href = '/';
+                                        window.location.href = '/tingtong';
                                     }
 
                                 } catch (e) {
                                     console.error("Session setup failed", e);
                                     // Fallback redirect
-                                    window.location.href = '/';
+                                    window.location.href = '/tingtong';
                                 }
 
                             } else {
