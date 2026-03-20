@@ -21,12 +21,12 @@ export default auth((req) => {
 
   // If user is NOT first login but tries to access /setup, redirect to home
   if (!session?.user?.isFirstLogin && nextUrl.pathname === onBoardingPath) {
-      return NextResponse.redirect(new URL('/', nextUrl));
+      return NextResponse.redirect(new URL('/tingtong', nextUrl));
   }
 
   if (isOnAdmin) {
     if (isLoggedIn) return NextResponse.next();
-    return NextResponse.redirect(new URL('/', nextUrl));
+    return NextResponse.redirect(new URL('/tingtong', nextUrl));
   }
 
   return NextResponse.next();

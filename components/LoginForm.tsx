@@ -50,7 +50,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         setUser(data.user);
 
         // 2. Redirect
-        router.push('/');
+        router.push('/tingtong');
 
         // 3. Refresh in background
         router.refresh();
