@@ -22,8 +22,8 @@ import { CampaignStory } from "@/components/crowdfunding/CampaignStory";
 import { RewardTierCard } from "@/components/crowdfunding/RewardTierCard";
 
 export default function CrowdfundingPage() {
-  const goalAmount = 50000;
-  const fundingAmount = 32500;
+  const goalAmount = 150000;
+  const fundingAmount = 89420;
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   useEffect(() => {
@@ -45,28 +45,28 @@ export default function CrowdfundingPage() {
 
   const rewardTiers = [
     {
-      pledgeAmount: 50,
-      description: "<strong>Pakiet Entuzjasty.</strong> Otrzymasz unikalną odznakę w profilu oraz dostęp do zamkniętej grupy na Discordzie.",
-      endMonth: "Czerwiec",
+      pledgeAmount: 100,
+      description: "<strong>Księga Receptur.</strong> Otrzymasz ekskluzywny cyfrowy podręcznik tworzenia treści 'Eliksir'. Ponadto, Twój profil zyska unikalną obwódkę Czeladnika.",
+      endMonth: "Październik",
+      endYear: "2024",
+      itemLimit: 500,
+      backersCount: 215
+    },
+    {
+      pledgeAmount: 500,
+      description: "<strong>Amulet Cechu.</strong> Limitowana edycja fizycznego medalionu Polutek, dostęp do wersji beta nowych narzędzi AI oraz zestawu filtrów 'Cinematic Ritual'.",
+      endMonth: "Listopad",
       endYear: "2024",
       itemLimit: 100,
-      backersCount: 45
+      backersCount: 88
     },
     {
-      pledgeAmount: 250,
-      description: "<strong>Rzemieślnik Wideo.</strong> Wszystko co powyżej, plus zestaw profesjonalnych presetów do edycji wideo stworzonych przez naszych topowych twórców.",
-      endMonth: "Lipiec",
+      pledgeAmount: 2500,
+      description: "<strong>Zbroja Mistrza.</strong> Dożywotni status 'Master Patron', zaproszenie na zamknięte spotkanie z twórcami w Warszawie oraz wpływ na kierunki rozwoju algorytmu.",
+      endMonth: "Grudzień",
       endYear: "2024",
-      itemLimit: 50,
-      backersCount: 12
-    },
-    {
-      pledgeAmount: 1000,
-      description: "<strong>Patron Założyciel.</strong> Twoje imię znajdzie się w sekcji 'O nas' aplikacji na zawsze. Otrzymasz również dożywotnią subskrypcję Premium.",
-      endMonth: "Sierpień",
-      endYear: "2024",
-      itemLimit: 10,
-      backersCount: 3
+      itemLimit: 25,
+      backersCount: 14
     }
   ];
 
@@ -139,8 +139,8 @@ export default function CrowdfundingPage() {
           <CampaignStats
             fundingAmount={fundingAmount}
             goalAmount={goalAmount}
-            backersCount={1240}
-            daysRemaining={14}
+            backersCount={2415}
+            daysRemaining={12}
           />
 
           {/* Reward Tiers - Desktop Only */}
