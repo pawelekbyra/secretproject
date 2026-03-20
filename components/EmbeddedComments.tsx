@@ -101,7 +101,12 @@ const EmbeddedComments = () => {
       ) : (
         <div className="p-8 bg-slate-50 rounded-3xl border border-slate-200 border-dashed text-center">
           <p className="text-slate-500 font-medium mb-4">Zaloguj się, aby dołączyć do dyskusji.</p>
-          <button className="text-primary font-bold hover:underline">Zaloguj się teraz</button>
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('open-login'))}
+            className="text-primary font-bold hover:underline"
+          >
+            Zaloguj się teraz
+          </button>
         </div>
       )}
 
