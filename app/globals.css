@@ -25,26 +25,26 @@
     --bottombar-height: calc(var(--bottombar-base-height) + var(--safe-area-bottom));
 
     /* Shadcn/ui variables - adapted for the prototype's theme */
-    --background: 0 0% 0%; /* Black background */
-    --foreground: 0 0% 100%; /* White text */
+    --background: 0 0% 100%; /* White background */
+    --foreground: 240 10% 3.9%; /* Stone-950 */
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
 
-    --primary: 345 80% 40%; /* Accent color (Burgundy/Maroon) */
+    --primary: 214 100% 48%; /* Blue #0070F3 */
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 336 100% 50%; /* Accent color */
-    --accent-foreground: 210 40% 98%;
+    --accent: 214 100% 48%;
+    --accent-foreground: 240 5.9% 10%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
@@ -86,35 +86,13 @@
   }
 
   body {
-    background-color: #000000;
+    background-color: #FFFFFF;
   }
 
   @media (min-width: 768px) {
     body {
-      background:
-        radial-gradient(ellipse at 0% 0%, rgba(127, 29, 29, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 100% 100%, rgba(30, 41, 59, 0.2) 0%, transparent 50%),
-        #050507;
+      background: #FDFBF7;
       position: relative;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: url("https://www.transparenttextures.com/patterns/dust.png");
-      opacity: 0.05;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(to bottom right, transparent 45%, rgba(255,255,255,0.02) 50%, transparent 55%);
-      pointer-events: none;
-      z-index: -1;
     }
 
     #app-layout {
@@ -190,14 +168,20 @@
   .scroll-snap-align-start {
     scroll-snap-align: start;
   }
-  .app-modal-glass {
-    background-color: var(--glass-bg-strong);
+  .app-modal-glass, .glass-modal {
+    background-color: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-color: var(--glass-border-light);
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
-  .app-handle {
-    @apply w-12 h-1.5 bg-white/20 rounded-full mx-auto my-3 flex-shrink-0;
+  .app-modal-content {
+    @apply bg-white text-stone-900;
+  }
+  .app-handle, .modal-handle {
+    @apply w-12 h-1.5 bg-stone-200 rounded-full mx-auto my-3 flex-shrink-0;
+  }
+  .topbar-black {
+    @apply bg-black text-white;
   }
 }
 
