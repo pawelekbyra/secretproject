@@ -83,6 +83,7 @@ export default function CrowdfundingPage() {
 
   const { openTippingModal, setIsMuted, isMuted, isPlaying, playVideo } = useStore();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+
   useEffect(() => {
     const handleOpenLogin = () => setIsLoginOpen(true);
     window.addEventListener('open-login', handleOpenLogin);
@@ -90,6 +91,10 @@ export default function CrowdfundingPage() {
     // Enable document-level scrolling for this page
     document.documentElement.classList.add('allow-document-scroll');
     document.body.classList.add('allow-document-scroll');
+
+    // Global lock cleanup (ensure no other component is locking scroll)
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
 
     playVideo();
     setIsMuted(true);
