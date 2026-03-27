@@ -2,6 +2,7 @@ import React, { memo, useEffect } from 'react';
 import Image from 'next/image';
 import { Heart, MessageSquare, User, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { TAP_SCALE, TRANSITION_SPRING_SNAPPY } from '@/lib/animations';
 import Ably from 'ably';
 import { ably } from '@/lib/ably-client';
 import { useToast } from '@/context/ToastContext';
@@ -152,7 +153,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         className={buttonClass}
         data-action="toggle-like"
         data-slide-id={slideId}
-        whileTap={{ scale: 0.85 }}
+        whileTap={{ scale: TAP_SCALE }}
+        transition={TRANSITION_SPRING_SNAPPY}
       >
         <div className={iconWrapClass}>
           <Heart
@@ -170,7 +172,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         data-action="open-comments-modal"
         onClick={() => setActiveModal('comments')}
         className={buttonClass}
-        whileTap={{ scale: 0.85 }}
+        whileTap={{ scale: TAP_SCALE }}
+        transition={TRANSITION_SPRING_SNAPPY}
       >
         <div className={iconWrapClass}>
           <MessageSquare size={iconSize} strokeWidth={1.8} className="stroke-white/90" />
@@ -183,7 +186,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         onClick={handleShare}
         data-action="share"
         className={buttonClass}
-        whileTap={{ scale: 0.85 }}
+        whileTap={{ scale: TAP_SCALE }}
+        transition={TRANSITION_SPRING_SNAPPY}
       >
         <div className={iconWrapClass}>
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.0" strokeLinecap="round" strokeLinejoin="round" width={iconSize} height={iconSize} className="stroke-white/90">
@@ -199,7 +203,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         onClick={() => openTippingModal()}
         data-action="show-tip-jar"
         className={buttonClass}
-        whileTap={{ scale: 0.85 }}
+        whileTap={{ scale: TAP_SCALE }}
+        transition={TRANSITION_SPRING_SNAPPY}
       >
         <div className={iconWrapClass}>
           <svg viewBox="0 0 24 24" className="text-white/90" style={{ width: iconSize, height: iconSize }} fill="none" stroke="currentColor" strokeWidth="1.8">

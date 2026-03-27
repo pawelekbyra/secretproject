@@ -2,6 +2,12 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import {
+    TRANSITION_SPRING_MODAL,
+    MODAL_VARIANTS_SCALE,
+    FADE_VARIANTS,
+    TAP_SCALE
+} from '@/lib/animations';
 import { X } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
@@ -25,17 +31,19 @@ export function PatronProfileModal({ patronId, onClose }: PatronProfileModalProp
 
     return (
         <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={FADE_VARIANTS}
             className="absolute inset-0 z-[10100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
             onClick={onClose}
         >
             <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                transition={{ type: 'spring', damping: 20, stiffness: 250 }}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={MODAL_VARIANTS_SCALE}
+                transition={TRANSITION_SPRING_MODAL}
                 className="relative flex flex-col w-full max-w-sm app-modal-glass text-white rounded-[2.5rem] shadow-2xl border border-white/20 mx-4 overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >

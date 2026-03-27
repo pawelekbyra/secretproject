@@ -2,6 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+    TRANSITION_SPRING_DEFAULT,
+    TRANSITION_SPRING_MODAL,
+    MODAL_VARIANTS_SLIDE_LEFT,
+    FADE_VARIANTS,
+    TAP_SCALE
+} from '@/lib/animations';
 import { useUser } from '@/context/UserContext';
 import ProfileTab from './ProfileTab';
 import PasswordTab from './PasswordTab';
@@ -43,18 +50,19 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
   return (
     <motion.div
       className="absolute inset-0 bg-black/80 z-[9999]"
-      initial={{ opacity: 0, pointerEvents: 'none' }}
-      animate={{ opacity: 1, pointerEvents: 'auto' }}
-      exit={{ opacity: 0, pointerEvents: 'none' }}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={FADE_VARIANTS}
       onClick={onClose} // Close on overlay click
     >
       <motion.div
         className="absolute top-0 left-0 h-full w-full max-w-md app-modal-glass flex flex-col shadow-2xl border-r border-white/10"
-        // Zaktualizowana animacja: taka sama jak AuthorProfileModal, ale z lewej strony (x: -100%)
-        initial={{ x: '-100%' }}
-        animate={{ x: '0%' }}
-        exit={{ x: '-100%' }}
-        transition={{ type: 'spring', damping: 30, stiffness: 200 }}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={MODAL_VARIANTS_SLIDE_LEFT}
+        transition={TRANSITION_SPRING_MODAL}
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the panel
       >
         {/* Top Bar - styled to be distinct but integrated */}
@@ -66,13 +74,14 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
           <div className="flex flex-col items-center gap-1">
              <h2 className="text-base font-semibold text-white tracking-wide">{t('account') || 'Konto'}</h2>
           </div>
-          <button
+          <motion.button
+            whileTap={{ scale: TAP_SCALE }}
             onClick={onClose}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-all active:scale-90"
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-all"
             aria-label={t('closeAccountAriaLabel')}
           >
               <X size={20} />
-          </button>
+          </motion.button>
         </div>
 
         {/* Tabs Header */}
@@ -80,23 +89,44 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ onClose }) => {
           <button
             onClick={() => handleTabClick('profile')}
             aria-label={t('profileTab')}
-            className={`flex-1 py-4 text-sm font-bold border-b-2 transition-all ${activeTab === 'profile' ? 'text-primary border-primary bg-white/5 shadow-[inset_0_-10px_10px_-10px_hsl(var(--primary)/0.2)]' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-4 text-sm font-bold border-b-2 transition-all relative ${activeTab === 'profile' ? 'text-primary' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
           >
             {t('profileTab')}
+            {activeTab === 'profile' && (
+                <motion.div
+                    layoutId="accountTab"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]"
+                    transition={TRANSITION_SPRING_DEFAULT}
+                />
+            )}
           </button>
           <button
             onClick={() => handleTabClick('password')}
             aria-label={t('passwordTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'password' ? 'text-primary border-primary bg-white/5 shadow-[inset_0_-10px_10px_-10px_hsl(var(--primary)/0.2)]' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all relative ${activeTab === 'password' ? 'text-primary' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
           >
             {t('passwordTab')}
+            {activeTab === 'password' && (
+                <motion.div
+                    layoutId="accountTab"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]"
+                    transition={TRANSITION_SPRING_DEFAULT}
+                />
+            )}
           </button>
           <button
             onClick={() => handleTabClick('delete')}
             aria-label={t('deleteTab')}
-            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all ${activeTab === 'delete' ? 'text-primary border-primary bg-white/5 shadow-[inset_0_-10px_10px_-10px_hsl(var(--primary)/0.2)]' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
+            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-all relative ${activeTab === 'delete' ? 'text-primary' : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'}`}
           >
             {t('deleteTab')}
+            {activeTab === 'delete' && (
+                <motion.div
+                    layoutId="accountTab"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary shadow-[0_0_8px_var(--primary-glow)]"
+                    transition={TRANSITION_SPRING_DEFAULT}
+                />
+            )}
           </button>
         </div>
 

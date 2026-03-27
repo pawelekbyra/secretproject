@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+    TRANSITION_SPRING_DEFAULT,
+    TRANSITION_SPRING_MODAL,
+    MODAL_VARIANTS_SCALE,
+    FADE_VARIANTS,
+    ITEM_VARIANTS,
+    TAP_SCALE
+} from '@/lib/animations';
 import { X, Mail, ChevronDown, Loader2, Heart, MessageSquare, UserPlus, Info, Trash, Rocket } from 'lucide-react';
 import { useTranslation } from '@/context/LanguageContext';
 import { formatDistanceToNow } from 'date-fns';
@@ -69,9 +77,11 @@ const NotificationItem: React.FC<{
   return (
     <motion.li
       layout
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
+      variants={ITEM_VARIANTS}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={TRANSITION_SPRING_DEFAULT}
       className={cn(
         "rounded-2xl cursor-pointer transition-all mb-2 border border-transparent",
         isExpanded ? 'app-glass border-white/10' : 'hover:bg-white/5',
@@ -257,8 +267,19 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ isOpen, onClose }
       );
     }
     return (
-      <ul className="flex-grow p-3 max-h-[60vh] overflow-y-auto custom-scrollbar">
-        <AnimatePresence>
+      <motion.ul
+        className="flex-grow p-3 max-h-[60vh] overflow-y-auto custom-scrollbar"
+        initial="initial"
+        animate="animate"
+        variants={{
+            animate: {
+                transition: {
+                    staggerChildren: 0.05
+                }
+            }
+        }}
+      >
+        <AnimatePresence mode="popLayout">
           {notifications.map((notif) => (
             <NotificationItem
                 key={notif.id}
@@ -268,7 +289,7 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ isOpen, onClose }
             />
           ))}
         </AnimatePresence>
-      </ul>
+      </motion.ul>
     );
   };
 
@@ -277,17 +298,19 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ isOpen, onClose }
       {isOpen && (
         <motion.div
           className="absolute inset-0 z-[80] flex items-start justify-center bg-black/60 backdrop-blur-sm pt-3 md:pt-5"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={FADE_VARIANTS}
           onClick={onClose}
         >
           <motion.div
             className="w-[380px] max-w-[calc(100vw-20px)] app-modal-glass border border-white/20 rounded-[2.5rem] shadow-2xl text-white flex flex-col overflow-hidden"
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={MODAL_VARIANTS_SCALE}
+            transition={TRANSITION_SPRING_MODAL}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex-shrink-0 flex justify-between items-center p-6 border-b border-white/5 bg-black/20">

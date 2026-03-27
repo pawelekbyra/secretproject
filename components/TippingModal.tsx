@@ -9,6 +9,14 @@ import { useToast } from '@/context/ToastContext';
 import { useStore } from '@/store/useStore';
 import { X, ChevronDown, Check, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+    TRANSITION_SPRING_DEFAULT,
+    TRANSITION_SPRING_MODAL,
+    MODAL_VARIANTS_SLIDE_RIGHT,
+    MODAL_VARIANTS_SLIDE_LEFT,
+    FADE_VARIANTS,
+    TAP_SCALE
+} from '@/lib/animations';
 import { cn } from '@/lib/utils';
 import StatusMessage from '@/components/ui/StatusMessage';
 import { Button } from './ui/button';
@@ -342,18 +350,19 @@ const TippingModal = () => {
       {isTippingModalOpen && (
         <div className="absolute inset-0 z-[10200] flex items-center justify-center pointer-events-none font-sans">
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={FADE_VARIANTS}
             className="absolute inset-0 z-[-1] pointer-events-auto bg-black/70 backdrop-blur-[2px]"
             onClick={closeTippingModal}
           />
           <motion.div
-            initial={{ x: tippingModalOptions.fromLeft ? '-100%' : '100%' }}
-            animate={{ x: '0%' }}
-            exit={{ x: tippingModalOptions.fromLeft ? '-100%' : '100%' }}
-            transition={{ type: "spring", stiffness: 200, damping: 30 }}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={tippingModalOptions.fromLeft ? MODAL_VARIANTS_SLIDE_LEFT : MODAL_VARIANTS_SLIDE_RIGHT}
+            transition={TRANSITION_SPRING_MODAL}
             className="relative w-[95%] max-w-[420px] max-h-[85vh] flex flex-col rounded-[2.5rem] app-modal-glass shadow-2xl pointer-events-auto border border-white/20 overflow-visible"
           >
 

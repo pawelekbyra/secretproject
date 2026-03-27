@@ -2,6 +2,12 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+    TRANSITION_SPRING_MODAL,
+    MODAL_VARIANTS_SCALE,
+    FADE_VARIANTS,
+    TAP_SCALE
+} from '@/lib/animations';
 import { Button } from './ui/button';
 import { X } from 'lucide-react';
 import { useTranslation } from '@/context/LanguageContext';
@@ -20,17 +26,19 @@ const PwaDesktopModal: React.FC<PwaDesktopModalProps> = ({ isOpen, onClose }) =>
       {isOpen && (
         <motion.div
           className="absolute inset-0 bg-black/90 z-[60] flex items-center justify-center p-4 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={FADE_VARIANTS}
           onClick={onClose}
         >
           <motion.div
             className="app-modal-glass text-white rounded-[2.5rem] p-10 shadow-2xl max-w-sm w-full border border-white/20 overflow-hidden"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={MODAL_VARIANTS_SCALE}
+            transition={TRANSITION_SPRING_MODAL}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-end mb-2">

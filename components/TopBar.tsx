@@ -5,6 +5,12 @@ import { useUser } from '@/context/UserContext';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  TAP_SCALE,
+  TRANSITION_SPRING_DEFAULT,
+  TRANSITION_SPRING_SNAPPY,
+  MODAL_VARIANTS_SLIDE_UP
+} from '@/lib/animations';
 import { useTranslation } from '@/context/LanguageContext';
 import { useStore } from '@/store/useStore';
 import LoginForm from './LoginForm';
@@ -131,7 +137,8 @@ const TopBar = () => {
           <>
             <div className="flex justify-start w-8">
               <motion.button
-                whileTap={{ scale: 0.9 }}
+                whileTap={{ scale: TAP_SCALE }}
+                transition={TRANSITION_SPRING_SNAPPY}
                 className="p-1 -ml-1 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
                 onClick={handleLoggedOutMenuClick}
                 aria-label={t('menuAriaLabel')}
@@ -153,7 +160,8 @@ const TopBar = () => {
             </div>
             <div className="flex justify-end items-center w-8">
               <motion.button
-                 whileTap={{ scale: 0.9 }}
+                 whileTap={{ scale: TAP_SCALE }}
+                 transition={TRANSITION_SPRING_SNAPPY}
                  className="p-1 -mr-1 text-white hover:text-white transition-colors active:bg-white/10 rounded-md outline-none"
                  onClick={handleBellClick}
                  aria-label={t('notificationAriaLabel')}
@@ -213,6 +221,7 @@ const TopBar = () => {
                                         initial={{ height: 0, opacity: 0 }}
                                         animate={{ height: 'auto', opacity: 1 }}
                                         exit={{ height: 0, opacity: 0 }}
+                                        transition={TRANSITION_SPRING_DEFAULT}
                                         className="overflow-hidden flex flex-col gap-1"
                                       >
                                           <button
@@ -272,8 +281,9 @@ const TopBar = () => {
             className="absolute left-0 w-full z-[50] bg-black/80 backdrop-blur-md pt-0 border-b border-white/5"
             style={{ top: 'var(--topbar-height)' }}
             initial={{ y: '-100%' }}
-            animate={{ y: '0%', transition: { type: 'spring', stiffness: 200, damping: 30 } }}
-            exit={{ y: '-100%', transition: { ease: 'easeInOut', duration: 0.5 } }}
+            animate={{ y: '0%' }}
+            exit={{ y: '-100%' }}
+            transition={TRANSITION_SPRING_DEFAULT}
           >
             <div className="relative z-[70] pt-5">
                 <LoginForm onLoginSuccess={() => {

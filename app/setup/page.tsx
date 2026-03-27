@@ -11,6 +11,7 @@ import { checkDisplayNameAvailability, completeFirstLoginSetup } from '@/lib/set
 import { Loader2, Check, X, ShieldCheck, Mail, ChevronRight, Lock } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { TRANSITION_SPRING_DEFAULT, TAP_SCALE } from '@/lib/animations';
 import ToggleSwitch from '@/components/ui/ToggleSwitch';
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -218,6 +219,7 @@ function Step1({ onNext, initialData }: { onNext: (data: any) => void, initialDa
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
+            transition={TRANSITION_SPRING_DEFAULT}
             className="bg-[#121212] border border-white/10 rounded-3xl p-8 shadow-2xl"
         >
              <div className="text-center mb-8">
@@ -321,6 +323,7 @@ function Step2({
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
+            transition={TRANSITION_SPRING_DEFAULT}
             className="bg-[#121212] border border-white/10 rounded-3xl p-8 shadow-2xl"
         >
              <div className="text-center mb-8">
@@ -386,6 +389,7 @@ function Step3({ onNext, initialData, isSubmitting }: { onNext: (data: any) => v
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
+            transition={TRANSITION_SPRING_DEFAULT}
             className="bg-[#121212] border border-white/10 rounded-3xl p-8 shadow-2xl"
         >
              <div className="text-center mb-8">
@@ -410,22 +414,25 @@ function Step3({ onNext, initialData, isSubmitting }: { onNext: (data: any) => v
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
+                            transition={TRANSITION_SPRING_DEFAULT}
                             className="overflow-hidden"
                         >
                             <label className="text-xs uppercase font-bold text-white/30 pl-1 mb-2 block">Język wiadomości</label>
                             <div className="flex gap-3">
-                                <button
+                                <motion.button
+                                    whileTap={{ scale: TAP_SCALE }}
                                     onClick={() => setEmailLanguage('pl')}
                                     className={`flex-1 h-12 rounded-xl border font-bold transition-all ${emailLanguage === 'pl' ? 'bg-primary/20 border-primary text-primary' : 'bg-black/20 border-white/10 text-white/40 hover:bg-white/5'}`}
                                 >
                                     Polski 🇵🇱
-                                </button>
-                                <button
+                                </motion.button>
+                                <motion.button
+                                    whileTap={{ scale: TAP_SCALE }}
                                     onClick={() => setEmailLanguage('en')}
                                     className={`flex-1 h-12 rounded-xl border font-bold transition-all ${emailLanguage === 'en' ? 'bg-primary/20 border-primary text-primary' : 'bg-black/20 border-white/10 text-white/40 hover:bg-white/5'}`}
                                 >
                                     English 🇬🇧
-                                </button>
+                                </motion.button>
                             </div>
                         </motion.div>
                     )}
@@ -434,7 +441,7 @@ function Step3({ onNext, initialData, isSubmitting }: { onNext: (data: any) => v
                 <Button
                     onClick={handleEnter}
                     disabled={isSubmitting}
-                    className="w-full h-16 bg-gradient-to-r from-primary to-purple-600 hover:from-primary hover:to-purple-500 text-white font-black text-2xl tracking-widest rounded-xl shadow-lg shadow-primary/30 active:scale-[0.98] transition-all"
+                    className="w-full h-16 bg-gradient-to-r from-primary to-purple-600 hover:from-primary hover:to-purple-500 text-white font-black text-2xl tracking-widest rounded-xl shadow-lg shadow-primary/30 transition-all"
                 >
                     {isSubmitting ? <Loader2 className="animate-spin" /> : 'ENTER.'}
                 </Button>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { TRANSITION_SPRING_DEFAULT } from '@/lib/animations';
 import { cn } from '@/lib/utils';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 
@@ -25,7 +26,7 @@ const StatusMessage: React.FC<StatusMessageProps> = ({
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
+          transition={TRANSITION_SPRING_DEFAULT}
           className={cn(
             'flex items-center gap-2 rounded-xl py-3 px-4 text-sm font-medium border app-glass',
             type === 'success'

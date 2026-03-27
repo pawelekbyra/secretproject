@@ -3,6 +3,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useInfiniteQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+    TRANSITION_SPRING_DEFAULT,
+    TRANSITION_SPRING_MODAL,
+    MODAL_VARIANTS_SLIDE_UP,
+    FADE_VARIANTS,
+    ITEM_VARIANTS,
+    TAP_SCALE
+} from '@/lib/animations';
 import { X, Heart, MessageSquare, Loader2, MoreHorizontal, Trash, Flag, Smile, ChevronDown, ImageIcon, ArrowUp } from 'lucide-react';
 import Image from 'next/image';
 import { ably } from '@/lib/ably-client';
@@ -115,9 +123,11 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onLike, onDelete, on
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
+      variants={ITEM_VARIANTS}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={TRANSITION_SPRING_DEFAULT}
       className={cn("flex items-start gap-2 group", isL1Plus && "pl-8")}
     >
       <div
@@ -554,7 +564,18 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
 
     return (
       <div className="px-2 pt-2 custom-scrollbar flex-1">
-        <div className="space-y-3">
+        <motion.div
+            className="space-y-3"
+            initial="initial"
+            animate="animate"
+            variants={{
+                animate: {
+                    transition: {
+                        staggerChildren: 0.05
+                    }
+                }
+            }}
+        >
           {comments.map((comment) => (
             <MemoizedCommentItem
               key={comment.id}
@@ -573,7 +594,8 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
               lastRepliedParentId={lastRepliedParentId}
             />
           ))}
-          {hasNextPage && (
+        </motion.div>
+        {hasNextPage && (
             <div className="flex justify-center py-2">
               <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage} className="text-sm text-primary hover:text-primary/80 disabled:opacity-50 flex items-center gap-2">
                 {isFetchingNextPage && <Loader2 className="animate-spin h-3 w-3" />}
@@ -581,7 +603,6 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
               </button>
             </div>
           )}
-        </div>
       </div>
     );
   };
@@ -589,15 +610,23 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div className="absolute inset-0 bg-black/60 z-50 flex items-end" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={onClose}>
+        <motion.div
+            className="absolute inset-0 bg-black/60 z-50 flex items-end"
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={FADE_VARIANTS}
+            onClick={onClose}
+        >
           <motion.div
             ref={modalRef}
             className="w-full app-modal-glass rounded-t-[2.5rem] flex flex-col border-t comments-modal overflow-hidden"
             style={{ height: modalHeight }}
-            initial={{ y: '100%' }}
-            animate={{ y: '0%' }}
-            exit={{ y: '100%' }}
-            transition={{ type: 'spring', stiffness: 400, damping: 40 }}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={MODAL_VARIANTS_SLIDE_UP}
+            transition={TRANSITION_SPRING_MODAL}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="app-handle" />
@@ -659,7 +688,12 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
                          <EmojiPicker onEmojiClick={onEmojiClick} theme={Theme.DARK} previewConfig={{ showPreview: false }} />
                       </div>
                    )}
-                   <button type="submit" className="p-2 disabled:opacity-50 flex items-center justify-center transition-all active:scale-90" disabled={(!newComment.trim() && !imageFile) || replyMutation.isPending}>
+                   <motion.button
+                        whileTap={{ scale: TAP_SCALE }}
+                        type="submit"
+                        className="p-2 disabled:opacity-50 flex items-center justify-center transition-all"
+                        disabled={(!newComment.trim() && !imageFile) || replyMutation.isPending}
+                    >
                     {replyMutation.isPending ? (
                         <Loader2 className="h-6 w-6 animate-spin text-primary" />
                     ) : (
@@ -667,7 +701,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ isOpen, onClose, slideId,
                             <ArrowUp size={20} strokeWidth={3} />
                         </div>
                     )}
-                  </button>
+                  </motion.button>
                 </form>
               ) : (
                 <div className="flex items-center justify-center h-12 text-center px-4 text-[#8F8F8F] text-sm">

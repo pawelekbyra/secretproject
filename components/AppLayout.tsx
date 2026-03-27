@@ -13,7 +13,8 @@ import CommentsModal from './CommentsModal';
 import AccountPanel from './AccountPanel';
 import HabitTrackerModal from './HabitTrackerModal';
 import NotificationPopup from './NotificationPopup';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { FADE_VARIANTS, TRANSITION_SPRING_DEFAULT } from '@/lib/animations';
 import { useUser } from '@/context/UserContext';
 import PWAInstallPrompt from './PWAInstallPrompt';
 import { ToastContainer } from '@/context/ToastContext';
@@ -113,11 +114,18 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       </AnimatePresence>
       <AnimatePresence>
         {activeModal === 'financial' && (
-            <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center p-6 text-center">
+            <motion.div
+                className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center p-6 text-center"
+                variants={FADE_VARIANTS}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={TRANSITION_SPRING_DEFAULT}
+            >
                  <h2 className="text-2xl font-bold mb-4">Dziennik Finansowy</h2>
                  <p className="text-white/60 mb-8">Ta funkcja będzie dostępna wkrótce! Pracujemy nad tym, abyś mógł lepiej zarządzać swoim sianem. 💸</p>
                  <button onClick={() => setActiveModal(null)} className="px-8 py-3 bg-white text-black font-bold rounded-full">Zamknij</button>
-            </div>
+            </motion.div>
         )}
       </AnimatePresence>
 
