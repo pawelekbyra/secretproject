@@ -16,7 +16,11 @@ import {
   ArrowDown,
   ChevronRight,
   ChevronDown,
-  X
+  X,
+  MapPin,
+  Award,
+  Calendar,
+  Zap
 } from "lucide-react";
 import Image from "next/image";
 import EmbeddedComments from "@/components/EmbeddedComments";
@@ -27,6 +31,51 @@ import TippingModal from '@/components/TippingModal';
 import LoginForm from '@/components/LoginForm';
 import { ToastContainer } from '@/context/ToastContext';
 
+const REWARDS = [
+  {
+    id: 1,
+    title: "Uczeń",
+    amount: 50,
+    description: "Wsparcie bazowe, które daje Ci dostęp do zamkniętej bety aplikacji oraz specjalną odznakę na profilu.",
+    items: ["Dostęp do Bety", "Odznaka Ucznia", "Newsletter dla fundatorów"],
+    backers: 421
+  },
+  {
+    id: 2,
+    title: "Wiedźmin",
+    amount: 150,
+    description: "Dla tych, którzy chcą zanurzyć się głębiej. Otrzymasz unikalny zestaw filtrów wideo oraz dostęp do ekskluzywnych treści.",
+    items: ["Wszystko z progu Uczeń", "Zestaw filtrów 'Eliksir'", "Dostęp do kanału Discord", "Early access do nowych funkcji"],
+    backers: 189,
+    popular: true
+  },
+  {
+    id: 3,
+    title: "Mistrz Eliksirów",
+    amount: 500,
+    description: "Najwyższy wyraz zaufania. Twoje imię zostanie uwiecznione w sekcji 'Fundatorzy' wewnątrz aplikacji na zawsze.",
+    items: ["Wszystko z progu Wiedźmin", "Imię w napisach/sekcji Hall of Fame", "Limitowany T-shirt (fizyczny)", "Dożywotnia subskrypcja Premium"],
+    backers: 45
+  }
+];
+
+const UPDATES = [
+  {
+    id: 1,
+    date: "12 Marca 2024",
+    title: "Przekroczyliśmy 50% celu!",
+    content: "Dzięki Waszemu niesamowitemu wsparciu, w zaledwie tydzień udało nam się zebrać połowę kwoty. To dowód na to, że rynek potrzebuje jakościowych treści.",
+    author: "Robert"
+  },
+  {
+    id: 2,
+    date: "5 Marca 2024",
+    title: "Pierwsze testy infrastruktury wideo",
+    content: "Nasze serwery pomyślnie przeszły testy obciążeniowe. Jesteśmy gotowi na obsługę wysokiej jakości streamingu bez opóźnień.",
+    author: "Zespół Techniczny"
+  }
+];
+
 export default function CrowdfundingPage() {
   const goalAmount = 50000;
   const fundingAmount = 32500;
@@ -34,17 +83,27 @@ export default function CrowdfundingPage() {
 
   const { openTippingModal, setIsMuted, isMuted, isPlaying, playVideo } = useStore();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   useEffect(() => {
     const handleOpenLogin = () => setIsLoginOpen(true);
     window.addEventListener('open-login', handleOpenLogin);
 
-    // Auto-play the featured video (muted)
+    // Enable document-level scrolling for this page
+    document.documentElement.classList.add('allow-document-scroll');
+    document.body.classList.add('allow-document-scroll');
+
+    // Global lock cleanup (ensure no other component is locking scroll)
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+
     playVideo();
     setIsMuted(true);
 
-    return () => window.removeEventListener('open-login', handleOpenLogin);
+    return () => {
+      window.removeEventListener('open-login', handleOpenLogin);
+      document.documentElement.classList.remove('allow-document-scroll');
+      document.body.classList.remove('allow-document-scroll');
+    };
   }, [playVideo, setIsMuted]);
 
   const { data: slidesData } = useQuery({
@@ -59,277 +118,416 @@ export default function CrowdfundingPage() {
   const featuredSlide = slidesData?.slides?.[0];
 
   return (
-      <div className="min-h-screen bg-[#FDFBF7] text-stone-900 font-serif selection:bg-primary/20 selection:text-primary">
+    <div className="min-h-screen bg-[#FDFBF7] text-stone-900 font-serif selection:bg-primary/20 selection:text-primary">
+      <ToastContainer />
+      <TippingModal />
 
-        {/* Navigation Bar */}
-        <nav className="fixed top-0 left-0 right-0 z-[100] bg-white/80 backdrop-blur-md border-b border-stone-200 px-6 py-4">
-          <div className="max-w-6xl mx-auto flex justify-between items-center">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-[100] bg-white/80 backdrop-blur-md border-b border-stone-200 px-6 py-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-8">
             <h1 className="text-xl font-black italic uppercase tracking-tighter text-stone-900">
               Eliksir Wiedźmina
             </h1>
-            <div className="flex gap-4 items-center">
-              <button
-                onClick={() => setIsLoginOpen(true)}
-                className="font-sans font-bold text-xs uppercase tracking-widest text-stone-500 hover:text-stone-900 transition-colors"
-              >
-                Zaloguj.
-              </button>
-              <Button
-                onClick={() => window.location.href = '/tingtong'}
-                className="bg-stone-900 hover:bg-stone-800 text-white px-6 py-5 rounded-full font-sans font-bold text-xs tracking-widest uppercase shadow-lg group"
-              >
-                Aplikacja.
-                <ChevronRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
+            <div className="hidden md:flex gap-6 font-sans text-[11px] font-bold uppercase tracking-widest text-stone-400">
+              <a href="#opis" className="hover:text-primary transition-colors">Opis</a>
+              <a href="#nagrody" className="hover:text-primary transition-colors">Nagrody</a>
+              <a href="#aktualizacje" className="hover:text-primary transition-colors">Aktualizacje</a>
+              <a href="#dyskusja" className="hover:text-primary transition-colors">Dyskusja</a>
             </div>
           </div>
-        </nav>
+          <div className="flex gap-4 items-center">
+            <button
+              onClick={() => setIsLoginOpen(true)}
+              className="font-sans font-bold text-xs uppercase tracking-widest text-stone-500 hover:text-stone-900 transition-colors"
+            >
+              Zaloguj.
+            </button>
+            <Button
+              onClick={() => window.location.href = '/tingtong'}
+              className="bg-stone-900 hover:bg-stone-800 text-white px-6 py-5 rounded-full font-sans font-bold text-xs tracking-widest uppercase shadow-lg group"
+            >
+              Aplikacja.
+              <ChevronRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
+        </div>
+      </nav>
 
-        {/* Hero Section: The Video */}
-        <section className="relative pt-20 h-[85vh] w-full bg-stone-900 overflow-hidden">
-           <div className="absolute inset-0 z-0">
-             {featuredSlide ? (
-                <div className="w-full h-full relative group">
-                  <LocalVideoPlayer
-                    slide={featuredSlide}
-                    isActive={true}
-                  />
-                  <div className="absolute bottom-10 right-10 z-30 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                     <button
-                       onClick={() => setIsMuted(!isMuted)}
-                       className="w-14 h-14 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center text-white border border-white/20 hover:bg-white/20 transition-all shadow-2xl"
-                     >
-                       {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
-                     </button>
+      {/* Hero Section */}
+      <header className="relative pt-20 bg-stone-900 min-h-[90vh] flex flex-col">
+        <div className="absolute inset-0 z-0 opacity-60">
+           {featuredSlide && (
+              <LocalVideoPlayer slide={featuredSlide} isActive={true} />
+           )}
+           <div className="absolute inset-0 bg-gradient-to-b from-stone-900/20 via-stone-900/40 to-stone-900" />
+        </div>
+
+        <div className="relative z-10 flex-1 flex flex-col justify-end max-w-7xl mx-auto w-full px-6 pb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-6 max-w-4xl"
+          >
+            <div className="flex flex-wrap gap-4 items-center font-sans">
+              <span className="px-3 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-full">
+                Wideo & Sztuka
+              </span>
+              <div className="flex items-center gap-2 text-white/60 text-xs font-bold uppercase tracking-widest">
+                <MapPin size={14} /> Warszawa, PL
+              </div>
+            </div>
+
+            <h2 className="text-6xl md:text-[7rem] font-black italic uppercase tracking-tighter leading-[0.85] text-white">
+              Budujemy<br /><span className="text-primary italic">Nowy Standard</span>.
+            </h2>
+
+            <div className="flex items-center gap-4 pt-4 border-t border-white/10 mt-8">
+              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-primary">
+                <Image src="https://i.pravatar.cc/150?u=robert" alt="Robert" width={48} height={48} />
+              </div>
+              <div className="font-sans">
+                <p className="text-white font-bold text-sm">Robert Pawłowski</p>
+                <p className="text-white/40 text-[10px] font-black uppercase tracking-widest">Założyciel & Twórca</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </header>
+
+      {/* Campaign Dashboard (Sticky Stats) */}
+      <section className="sticky top-[72px] z-[50] bg-white border-b border-stone-200 py-6 px-6 shadow-sm">
+        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-8">
+          <div className="flex-1 min-w-[300px] space-y-2">
+            <div className="flex justify-between items-end font-sans">
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-black tracking-tighter">PLN 32,500</span>
+                <span className="text-stone-400 text-xs font-bold uppercase tracking-widest">zabrane z 50,000 PLN</span>
+              </div>
+              <span className="text-primary font-black text-sm">{Math.round(progressPercent)}%</span>
+            </div>
+            <div className="h-2 w-full bg-stone-100 rounded-full overflow-hidden">
+               <motion.div
+                 initial={{ width: 0 }}
+                 animate={{ width: `${progressPercent}%` }}
+                 className="h-full bg-primary"
+               />
+            </div>
+          </div>
+
+          <div className="flex gap-12 font-sans">
+            <div className="text-center md:text-left">
+              <p className="text-xl font-black">1,240</p>
+              <p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest">Wspierających</p>
+            </div>
+            <div className="text-center md:text-left">
+              <p className="text-xl font-black">14</p>
+              <p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest">Dni do końca</p>
+            </div>
+          </div>
+
+          <Button
+            onClick={() => openTippingModal()}
+            className="bg-primary hover:bg-primary/90 text-white px-8 py-6 rounded-2xl font-sans font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/20 transition-all active:scale-95"
+          >
+            Wesprzyj Projekt.
+          </Button>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-12 gap-16">
+
+        {/* Left Column: Details Staked Vertically */}
+        <div className="lg:col-span-8 space-y-32">
+
+           {/* Section: Story */}
+           <section id="opis" className="scroll-mt-48">
+              <div className="flex items-center gap-4 mb-12">
+                  <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+                      <Target size={24} />
                   </div>
-                  {!isPlaying && (
-                    <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-                       <button
-                         onClick={() => playVideo()}
-                         className="w-24 h-24 bg-primary rounded-full flex items-center justify-center text-white shadow-2xl shadow-primary/40 pointer-events-auto active:scale-90 transition-transform"
-                       >
-                         <Play size={40} fill="currentColor" className="ml-2" />
-                       </button>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-white/10 font-sans font-bold uppercase tracking-widest">
-                   Ładowanie wizji...
-                </div>
-              )}
-           </div>
-
-           {/* Cinematic Overlay */}
-           <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#FDFBF7] via-transparent to-black/40 pointer-events-none" />
-
-           <div className="absolute inset-x-0 bottom-0 z-20 p-8 md:p-20 text-center">
-             <motion.div
-               initial={{ opacity: 0, y: 30 }}
-               animate={{ opacity: 1, y: 0 }}
-               transition={{ duration: 1 }}
-             >
-                <p className="font-sans text-xs font-black uppercase tracking-[0.6em] text-white/60 mb-4">Kampania Crowdfundingowa</p>
-                <h2 className="text-5xl md:text-8xl font-black italic uppercase tracking-tighter leading-none text-white drop-shadow-2xl">
-                   Finansujemy<br /><span className="text-primary italic">Przyszłość</span>.
-                </h2>
-                <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                  className="mt-12 text-stone-400"
-                >
-                  <ArrowDown size={32} className="mx-auto" />
-                </motion.div>
-             </motion.div>
-           </div>
-        </section>
-
-        {/* Main Content Container */}
-        <main className="max-w-6xl mx-auto px-6 py-20 md:py-32 grid md:grid-cols-12 gap-16 lg:gap-24">
-
-           {/* Sidebar: Progress Card (Sticky on Desktop) */}
-           <aside className="md:col-span-4 order-2 md:order-1">
-              <div className="sticky top-32 space-y-8">
-                 <div className="bg-white p-10 rounded-[3rem] shadow-[0_40px_100px_rgba(0,0,0,0.06)] border border-stone-100">
-                    <div className="space-y-6">
-                       <div className="space-y-1">
-                          <p className="text-sm font-sans font-black uppercase tracking-widest text-primary">Status Zbiórki</p>
-                          <p className="text-5xl font-black tracking-tighter">PLN 32,500</p>
-                       </div>
-
-                       <div className="space-y-3">
-                          <div className="h-4 w-full bg-stone-50 rounded-full overflow-hidden border border-stone-100 p-0.5">
-                             <motion.div
-                               initial={{ width: 0 }}
-                               whileInView={{ width: `${progressPercent}%` }}
-                               transition={{ duration: 1.5, ease: "easeOut" }}
-                               className="h-full bg-primary rounded-full relative"
-                             >
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/10" />
-                             </motion.div>
-                          </div>
-                          <div className="flex justify-between text-[10px] font-sans font-black uppercase tracking-tighter text-stone-400">
-                            <span>{Math.round(progressPercent)}% CELU</span>
-                            <span>50,000 PLN</span>
-                          </div>
-                       </div>
-
-                       <div className="grid grid-cols-2 gap-4 pt-4">
-                          <div className="p-4 bg-stone-50 rounded-2xl border border-stone-100 text-center">
-                             <p className="text-2xl font-black">1.2k</p>
-                             <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-stone-400">Wspierających</p>
-                          </div>
-                          <div className="p-4 bg-stone-50 rounded-2xl border border-stone-100 text-center">
-                             <p className="text-2xl font-black">14 dni</p>
-                             <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-stone-400">Do końca</p>
-                          </div>
-                       </div>
-
-                       <Button
-                        onClick={() => openTippingModal()}
-                        className="w-full bg-primary hover:bg-primary/90 text-white h-20 rounded-[2rem] text-xl font-black uppercase tracking-widest shadow-2xl shadow-primary/30 active:scale-95 transition-all mt-4"
-                       >
-                         Wesprzyj Projekt
-                       </Button>
-                    </div>
-                 </div>
-
-                 <div className="p-8 bg-stone-900 rounded-[2.5rem] text-white space-y-6">
-                    <div className="flex items-center gap-4">
-                       <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center text-primary">
-                          <ShieldCheck size={20} />
-                       </div>
-                       <p className="text-sm font-bold tracking-tight">Bezpieczne płatności Stripe</p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                       <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center text-blue-400">
-                          <Users size={20} />
-                       </div>
-                       <p className="text-sm font-bold tracking-tight">System Patronek 2.0</p>
-                    </div>
-                 </div>
+                  <div>
+                      <h3 className="text-3xl font-black tracking-tight uppercase italic">Opis Projektu</h3>
+                      <p className="text-stone-400 font-bold text-xs uppercase tracking-widest font-sans">Nasza Wizja i Cel</p>
+                  </div>
               </div>
-           </aside>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="prose prose-stone prose-xl lg:prose-2xl max-w-none"
+              >
+                  <p className="first-letter:text-8xl first-letter:font-black first-letter:text-primary first-letter:mr-4 first-letter:float-left first-letter:mt-2">
+                    Eliksir Wiedźmina to nie tylko kolejna aplikacja z wideo. To manifest przeciwko algorytmom, które promują płytkość i toksyczną uwagę. Wierzymy, że format krótkiego wideo zasługuje na drugą szansę — jako medium dla prawdziwego rzemiosła, pasji i autentyczności.
+                  </p>
+                  <p>
+                    Obecne platformy stały się zakładnikami wskaźników retencji. Treści są tworzone tak, aby uzależniać, a nie wzbogacać. My idziemy w przeciwnym kierunku. Budujemy przestrzeń, gdzie liczy się jakość, a nie częstotliwość.
+                  </p>
+                  <Image
+                    src="/metal.png"
+                    alt="Wizja"
+                    width={800}
+                    height={400}
+                    className="rounded-[2rem] my-12 grayscale hover:grayscale-0 transition-all duration-700"
+                  />
+                  <h3>Schronienie dla rzemiosła.</h3>
+                  <p>
+                    Twoje wsparcie pozwoli nam sfinansować niezależną infrastrukturę streamingową. Chcemy być wolni od cenzury korporacyjnej i lagów, które zabijają immersję. Finansujemy serwery, które nie należą do gigantów Big Tech, lecz do nas — społeczności.
+                  </p>
+                  <div className="bg-stone-50 border border-stone-100 p-10 rounded-[3rem] my-12 italic text-stone-600">
+                    &quot;W Eliksirze Wiedźmina każdy slajd to historia. Nie znajdziesz tu przypadkowych filmików. Jesteśmy rzemieślnikami kodu, wspierającymi rzemieślników obrazu.&quot;
+                  </div>
+              </motion.div>
+           </section>
 
-           {/* Main Content: Manifesto & Long Description */}
-           <article className="md:col-span-8 order-1 md:order-2 space-y-16">
-              <div className="space-y-8">
-                 <h3 className="text-6xl md:text-8xl font-black uppercase tracking-tight leading-[0.85] text-stone-900 decoration-primary decoration-8 underline-offset-[16px]">
-                   Nasza<br />Wizja.
-                 </h3>
-                 <p className="text-2xl md:text-3xl leading-snug text-stone-800 font-bold tracking-tight italic">
-                   &quot;Tworzymy schronienie dla rzemiosła wideo w oceanie cyfrowego hałasu.&quot;
-                 </p>
+           {/* Section: Rewards */}
+           <section id="nagrody" className="scroll-mt-48">
+              <div className="flex items-center gap-4 mb-12">
+                  <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+                      <Award size={24} />
+                  </div>
+                  <div>
+                      <h3 className="text-3xl font-black tracking-tight uppercase italic">Nagrody</h3>
+                      <p className="text-stone-400 font-bold text-xs uppercase tracking-widest font-sans">Wybierz swój udział w projekcie</p>
+                  </div>
               </div>
-
-              <div className="prose prose-stone prose-xl lg:prose-2xl max-w-none">
-                 <p className="first-letter:text-8xl first-letter:font-black first-letter:text-primary first-letter:mr-4 first-letter:float-left first-letter:mt-2">
-                   Eliksir Wiedźmina to nie tylko kolejna aplikacja z wideo. To manifest przeciwko algorytmom, które promują płytkość i toksyczną uwagę. Wierzymy, że format krótkiego wideo zasługuje na drugą szansę — jako medium dla prawdziwego rzemiosła, pasji i autentyczności.
-                 </p>
-
-                 <p>
-                   Obecne platformy stały się zakładnikami wskaźników retencji. Treści są tworzone tak, aby uzależniać, a nie wzbogacać. My idziemy w przeciwnym kierunku. Budujemy przestrzeń, gdzie liczy się jakość, a nie częstotliwość. Gdzie twórca jest traktowany jak rzemieślnik, a nie dostawca treści dla maszyny.
-                 </p>
-
-                 <AnimatePresence>
-                   {!isDescriptionExpanded ? (
-                     <button
-                       onClick={() => setIsDescriptionExpanded(true)}
-                       className="flex items-center gap-2 text-primary font-black uppercase tracking-widest text-sm py-4 group"
-                     >
-                       Czytaj dalej Manifest
-                       <ChevronDown size={16} className="group-hover:translate-y-1 transition-transform" />
-                     </button>
-                   ) : (
-                     <motion.div
-                       initial={{ opacity: 0, height: 0 }}
-                       animate={{ opacity: 1, height: 'auto' }}
-                       className="space-y-8"
-                     >
-                        <p>
-                          Twoje wsparcie pozwoli nam sfinansować niezależną infrastrukturę streamingową. Chcemy być wolni od cenzury korporacyjnej i lagów, które zabijają immersję. Finansujemy serwery, które nie należą do gigantów Big Tech, lecz do nas — społeczności.
-                        </p>
-                        <p>
-                          W Eliksirze Wiedźmina każdy slajd to historia. Nie znajdziesz tu przypadkowych filmików. Każdy element interfejsu, od TopBaru po system komentarzy, został zaprojektowany, aby celebrować treść. Jesteśmy rzemieślnikami kodu, wspierającymi rzemieślników obrazu.
-                        </p>
-                        <p className="font-bold text-stone-900">
-                          Dołączając do zbiórki, stajesz się współzałożycielem ruchu. Nie kupujesz subskrypcji. Fundujesz wolność słowa i wolność tworzenia.
-                        </p>
-                        <button
-                          onClick={() => setIsDescriptionExpanded(false)}
-                          className="text-stone-400 font-bold uppercase tracking-widest text-xs py-4"
-                        >
-                          Zwiń opis
-                        </button>
-                     </motion.div>
-                   )}
-                 </AnimatePresence>
+              <div className="grid gap-8">
+                  {REWARDS.map((reward) => (
+                    <motion.div
+                      key={reward.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      className={`group relative p-8 md:p-12 rounded-[3rem] border transition-all duration-500 ${
+                        reward.popular ? 'bg-stone-900 text-white border-stone-800 shadow-2xl scale-[1.02]' : 'bg-white border-stone-100 hover:border-primary/20 shadow-sm'
+                      }`}
+                    >
+                        {reward.popular && (
+                          <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-black uppercase tracking-widest px-6 py-2 rounded-full shadow-lg">
+                            Najczęściej Wybierane
+                          </div>
+                        )}
+                        <div className="flex flex-col md:flex-row justify-between gap-8">
+                          <div className="space-y-6 flex-1">
+                              <div className="space-y-2">
+                                <p className={`font-sans text-[10px] font-black uppercase tracking-widest ${reward.popular ? 'text-primary' : 'text-stone-400'}`}>
+                                  Próg wsparcia
+                                </p>
+                                <h4 className="text-4xl font-black italic tracking-tighter uppercase">{reward.title}</h4>
+                              </div>
+                              <p className={reward.popular ? 'text-stone-400' : 'text-stone-600'}>{reward.description}</p>
+                              <ul className="space-y-3 font-sans text-xs font-bold">
+                                {reward.items.map((item, i) => (
+                                  <li key={i} className="flex items-center gap-3">
+                                    <Award size={14} className="text-primary" />
+                                    {item}
+                                  </li>
+                                ))}
+                              </ul>
+                          </div>
+                          <div className="md:w-64 flex flex-col justify-between items-center md:items-end text-right gap-6">
+                              <div className="space-y-1">
+                                <p className="text-5xl font-black tracking-tighter">
+                                  <span className="text-xl">PLN</span> {reward.amount}
+                                </p>
+                                <p className={`font-sans text-[10px] font-bold uppercase tracking-widest ${reward.popular ? 'text-white/20' : 'text-stone-300'}`}>
+                                  {reward.backers} Wspierających
+                                </p>
+                              </div>
+                              <Button
+                                onClick={() => openTippingModal()}
+                                className={`w-full md:w-auto px-8 py-6 rounded-2xl font-sans font-black text-[11px] uppercase tracking-widest transition-all active:scale-95 ${
+                                  reward.popular ? 'bg-primary text-white' : 'bg-stone-900 text-white'
+                                }`}
+                              >
+                                Wybierz ten próg
+                              </Button>
+                          </div>
+                        </div>
+                    </motion.div>
+                  ))}
               </div>
+           </section>
 
-              {/* Discussion Section */}
-              <section className="pt-20 border-t border-stone-200">
-                 <div className="flex items-center gap-4 mb-12">
-                    <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
-                       <MessageSquare size={24} />
+           {/* Section: Updates */}
+           <section id="aktualizacje" className="scroll-mt-48">
+              <div className="flex items-center gap-4 mb-12">
+                  <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+                      <Zap size={24} />
+                  </div>
+                  <div>
+                      <h3 className="text-3xl font-black tracking-tight uppercase italic">Aktualizacje</h3>
+                      <p className="text-stone-400 font-bold text-xs uppercase tracking-widest font-sans">Najnowsze wieści z frontu</p>
+                  </div>
+              </div>
+              <div className="space-y-12">
+                  {UPDATES.map((update) => (
+                    <motion.div
+                      key={update.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      className="relative pl-12 border-l-2 border-stone-100 pb-12 last:pb-0"
+                    >
+                        <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-white border-4 border-primary" />
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-4 font-sans text-[10px] font-black uppercase tracking-widest text-stone-400">
+                              <Calendar size={12} />
+                              {update.date}
+                              <span className="text-primary">— {update.author}</span>
+                          </div>
+                          <h4 className="text-3xl font-black tracking-tighter uppercase italic">{update.title}</h4>
+                          <p className="text-lg text-stone-600 leading-relaxed">{update.content}</p>
+                          <button className="text-primary font-black uppercase text-[10px] tracking-widest hover:underline">
+                              Czytaj więcej
+                          </button>
+                        </div>
+                    </motion.div>
+                  ))}
+              </div>
+           </section>
+
+           {/* Section: Discussion */}
+           <section id="dyskusja" className="scroll-mt-48">
+              <div className="flex items-center gap-4 mb-12">
+                  <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+                      <MessageSquare size={24} />
+                  </div>
+                  <div>
+                      <h3 className="text-3xl font-black tracking-tight uppercase italic">Głos Społeczności</h3>
+                      <p className="text-stone-400 font-bold text-xs uppercase tracking-widest font-sans">Publiczna Dyskusja</p>
+                  </div>
+              </div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+              >
+                <EmbeddedComments />
+              </motion.div>
+           </section>
+
+        </div>
+
+        {/* Right Column: Sidebar */}
+        <aside className="lg:col-span-4">
+           <div className="sticky top-48 space-y-8">
+              {/* Creator Info */}
+              <div className="bg-white border border-stone-100 rounded-[2.5rem] p-8 shadow-sm">
+                 <h5 className="font-sans text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 mb-6">O Twórcy</h5>
+                 <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-stone-50">
+                       <Image src="https://i.pravatar.cc/150?u=robert" alt="Robert" width={64} height={64} />
                     </div>
                     <div>
-                       <h4 className="text-3xl font-black tracking-tight">Dyskusja</h4>
-                       <p className="text-stone-400 font-bold text-xs uppercase tracking-widest font-sans">Głos Społeczności</p>
+                       <p className="text-xl font-black tracking-tight">Robert Pawłowski</p>
+                       <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-primary">Ostatnio widziany: Teraz</p>
                     </div>
                  </div>
-                 <EmbeddedComments />
-              </section>
-           </article>
-        </main>
-
-        <footer className="bg-stone-900 text-white py-20 px-6">
-           <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
-              <div className="text-center md:text-left space-y-4">
-                 <h2 className="text-3xl font-black italic uppercase tracking-tighter">Eliksir Wiedźmina</h2>
-                 <p className="text-stone-500 text-sm font-sans max-w-xs leading-relaxed">
-                   Budujemy standardy nowej generacji mediów społecznościowych. Autentycznie, niezależnie, bezkompromisowo.
+                 <p className="text-sm text-stone-500 mb-6 font-sans leading-relaxed">
+                    Niezależny programista i artysta wideo. Przez ostatnie 5 lat budowałem systemy dla największych domów produkcyjnych w Europie. Teraz buduję własną wizję.
                  </p>
-              </div>
-              <div className="flex gap-8 items-center">
-                 <div className="flex gap-4">
-                   <a href="#" className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors"><Share2 size={20} /></a>
-                   <a href="#" className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors"><Heart size={20} /></a>
+                 <div className="flex gap-3">
+                    <Button variant="outline" className="flex-1 rounded-xl font-sans text-[10px] font-black uppercase tracking-widest h-12">Kontakt</Button>
+                    <Button variant="outline" className="flex-1 rounded-xl font-sans text-[10px] font-black uppercase tracking-widest h-12">Portfolio</Button>
                  </div>
-                 <div className="text-right hidden md:block">
-                   <p className="text-[10px] font-sans font-black uppercase tracking-[0.2em] text-stone-500">Wszystkie prawa zastrzeżone</p>
-                   <p className="text-xs font-bold text-stone-400">© 2024 Witcher&apos;s Elixir</p>
+              </div>
+
+              {/* Trust Badge */}
+              <div className="bg-stone-900 rounded-[2.5rem] p-8 text-white space-y-6">
+                 <div className="flex items-start gap-4">
+                    <div className="p-3 bg-white/10 rounded-xl text-primary">
+                       <ShieldCheck size={24} />
+                    </div>
+                    <div>
+                       <p className="font-bold text-sm tracking-tight">Gwarancja Bezpieczeństwa</p>
+                       <p className="text-[10px] text-white/40 font-sans font-medium mt-1">Środki są zabezpieczone przez system Stripe i zostaną wypłacone dopiero po osiągnięciu progu.</p>
+                    </div>
+                 </div>
+                 <div className="flex items-start gap-4">
+                    <div className="p-3 bg-white/10 rounded-xl text-blue-400">
+                       <Zap size={24} />
+                    </div>
+                    <div>
+                       <p className="font-bold text-sm tracking-tight">Szybki Start</p>
+                       <p className="text-[10px] text-white/40 font-sans font-medium mt-1">Infrastruktura jest już w 70% gotowa. Twoje wsparcie przyspieszy premierę o 3 miesiące.</p>
+                    </div>
+                 </div>
+              </div>
+
+              {/* Share */}
+              <div className="text-center space-y-4">
+                 <p className="font-sans text-[10px] font-black uppercase tracking-widest text-stone-400">Podziel się wizją</p>
+                 <div className="flex justify-center gap-4">
+                    <a href="#" className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center text-stone-400 hover:text-primary hover:border-primary transition-all"><Share2 size={18} /></a>
+                    <a href="#" className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center text-stone-400 hover:text-primary hover:border-primary transition-all"><Heart size={18} /></a>
                  </div>
               </div>
            </div>
-        </footer>
+        </aside>
 
-        {/* Modals & Utils */}
-        <TippingModal />
-        <ToastContainer />
+      </main>
 
-        <AnimatePresence>
-          {isLoginOpen && (
-            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
-               <motion.div
-                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                 className="w-full max-w-md app-modal-glass rounded-[2.5rem] shadow-2xl border border-white/20 overflow-hidden flex flex-col"
-               >
-                  <div className="flex items-center justify-between p-6 border-b border-white/5 bg-black/20">
-                      <h2 className="text-xl font-bold text-white tracking-tight">Logowanie</h2>
-                      <button onClick={() => setIsLoginOpen(false)} className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-full transition-colors">
-                          <X size={20} />
-                      </button>
-                  </div>
-                  <div className="p-6 pb-8">
-                    <LoginForm onLoginSuccess={() => setIsLoginOpen(false)} />
-                  </div>
-               </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
+      {/* Footer */}
+      <footer className="bg-stone-900 text-white py-32 px-6">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-16">
+          <div className="col-span-2 space-y-8">
+            <h2 className="text-4xl font-black italic uppercase tracking-tighter">Eliksir Wiedźmina</h2>
+            <p className="text-stone-500 font-sans max-w-sm text-lg leading-relaxed">
+              Tworzymy nową erę konsumpcji mediów. Skupioną, estetyczną i przede wszystkim — ludzką. Dołącz do rewolucji rzemiosła.
+            </p>
+          </div>
+          <div className="space-y-6">
+             <p className="font-sans text-[10px] font-black uppercase tracking-widest text-primary">Nawigacja</p>
+             <ul className="space-y-4 font-sans text-sm font-bold text-stone-400">
+                <li><a href="#" className="hover:text-white transition-colors">Strona Główna</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Kampania</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Zasady</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
+             </ul>
+          </div>
+          <div className="space-y-6">
+             <p className="font-sans text-[10px] font-black uppercase tracking-widest text-primary">Kontakt</p>
+             <ul className="space-y-4 font-sans text-sm font-bold text-stone-400">
+                <li>kontakt@eliksir-wiedzmina.pl</li>
+                <li>Press Kit</li>
+                <li>Social Media</li>
+             </ul>
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 font-sans text-[10px] font-black uppercase tracking-widest text-stone-600">
+           <p>© 2024 Eliksir Wiedźmina. Wszelkie prawa zastrzeżone.</p>
+           <div className="flex gap-8">
+              <a href="#">Polityka Prywatności</a>
+              <a href="#">Regulamin</a>
+           </div>
+        </div>
+      </footer>
 
-      </div>
+      {/* Login Modal */}
+      <AnimatePresence>
+        {isLoginOpen && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
+             <motion.div
+               initial={{ opacity: 0, scale: 0.95, y: 20 }}
+               animate={{ opacity: 1, scale: 1, y: 0 }}
+               exit={{ opacity: 0, scale: 0.95, y: 20 }}
+               className="w-full max-w-md app-modal-glass rounded-[2.5rem] shadow-2xl border border-white/20 overflow-hidden flex flex-col"
+             >
+                <div className="flex items-center justify-between p-6 border-b border-white/5 bg-black/20">
+                    <h2 className="text-xl font-bold text-white tracking-tight">Logowanie</h2>
+                    <button onClick={() => setIsLoginOpen(false)} className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-full transition-colors">
+                        <X size={20} />
+                    </button>
+                </div>
+                <div className="p-6 pb-8">
+                  <LoginForm onLoginSuccess={() => setIsLoginOpen(false)} />
+                </div>
+             </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
